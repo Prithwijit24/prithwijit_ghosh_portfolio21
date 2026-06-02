@@ -42,14 +42,84 @@ function useElementScroll(ref: RefObject<HTMLElement | null>) {
   return progress;
 }
 
+type SpringAccent = 'blossom' | 'mint' | 'sunshine' | 'sky';
+
+type SceneLine = {
+  emoji: string;
+  text: string;
+  accent: SpringAccent;
+};
+
 type TransitionSceneProps = {
   image1: string;
   image2: string;
-  text1: string;
-  text2: string;
+  line1: SceneLine;
+  line2: SceneLine;
 };
 
-const TransitionScene = ({ image1, image2, text1, text2 }: TransitionSceneProps) => {
+const SPRING_PETALS = ['🌸', '🌼', '🦋', '🌷', '✨', '🍃', '🌺', '☀️'] as const;
+
+const SpringPetals = () => (
+  <div className="spring-petals" aria-hidden="true">
+    {SPRING_PETALS.map((petal, index) => (
+      <span
+        key={petal}
+        className="spring-petal"
+        style={{
+          left: `${8 + index * 11}%`,
+          animationDelay: `${index * -1.7}s`,
+          animationDuration: `${12 + index * 1.4}s`
+        }}
+      >
+        {petal}
+      </span>
+    ))}
+  </div>
+);
+
+type SceneHeadlineProps = {
+  line: SceneLine;
+  opacity: number;
+  transform: string;
+};
+
+const SceneHeadline = ({ line, opacity, transform }: SceneHeadlineProps) => (
+  <h2
+    className={`scene-headline scene-headline--${line.accent} absolute`}
+    style={{
+      opacity,
+      transform,
+      visibility: opacity < 0.02 ? 'hidden' : 'visible'
+    }}
+  >
+    <span className="scene-headline-emoji" aria-hidden="true">{line.emoji}</span>
+    <span className="scene-headline-copy">{line.text}</span>
+  </h2>
+);
+
+const SectionHeading = ({ emoji, title }: { emoji: string; title: string }) => (
+  <div className="section-heading">
+    <span className="section-heading-icon" aria-hidden="true">{emoji}</span>
+    <h3 className="text-3xl font-bold spring-gradient-text">{title}</h3>
+  </div>
+);
+
+const CloudOverlay = ({ progress }: { progress: number }) => {
+  const drift = progress * 12;
+
+  return (
+    <div className="scene-clouds pointer-events-none" aria-hidden="true">
+      <div className="cloud-blob cloud-blob-a" style={{ transform: `translateX(${-drift}px)` }} />
+      <div className="cloud-blob cloud-blob-b" style={{ transform: `translateX(${drift * 0.6}px)` }} />
+      <div className="cloud-blob cloud-blob-c" style={{ transform: `translateX(${-drift * 0.4}px)` }} />
+      <div className="cloud-blob cloud-blob-d" style={{ transform: `translateX(${drift * 0.8}px)` }} />
+      <div className="cloud-blob cloud-blob-e" style={{ transform: `translateX(${-drift * 0.5}px)` }} />
+      <div className="scene-cloud-mist" />
+    </div>
+  );
+};
+
+const TransitionScene = ({ image1, image2, line1, line2 }: TransitionSceneProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const progress = useElementScroll(containerRef);
 
@@ -67,8 +137,9 @@ const TransitionScene = ({ image1, image2, text1, text2 }: TransitionSceneProps)
 
   const transitionPeak = Math.sin(progress * Math.PI);
 
-  const img1Blur = transitionPeak * 12;
-  const img2Blur = (1 - progress) * 10;
+  const baseImageBlur = 10;
+  const img1Blur = baseImageBlur + transitionPeak * 6;
+  const img2Blur = baseImageBlur + (1 - progress) * 6;
 
   const flashOpacity =
     Math.max(
@@ -92,26 +163,28 @@ const TransitionScene = ({ image1, image2, text1, text2 }: TransitionSceneProps)
       <div className="sticky top-0 h-screen overflow-hidden bg-black">
 
         <div
-          className="absolute inset-0 bg-cover will-change-transform"
+          className="scene-image-layer absolute inset-0 bg-cover will-change-transform"
           style={{
             backgroundImage: `url(${image1})`,
             backgroundPosition: `center ${50 + progress * 8}%`,
             opacity: img1Opacity,
             transform: `scale(${img1Scale}) translateY(${img1Y}px)`,
-            filter: `blur(${img1Blur}px) brightness(${100 + transitionPeak * 30}%)`
+            filter: `blur(${img1Blur}px) brightness(${98 + transitionPeak * 12}%) saturate(1.18)`
           }}
         />
 
         <div
-          className="absolute inset-0 bg-cover will-change-transform"
+          className="scene-image-layer absolute inset-0 bg-cover will-change-transform"
           style={{
             backgroundImage: `url(${image2})`,
             backgroundPosition: `center ${58 - progress * 8}%`,
             opacity: img2Opacity,
             transform: `scale(${img2Scale}) translateY(${img2Y}px)`,
-            filter: `blur(${img2Blur}px)`
+            filter: `blur(${img2Blur}px) brightness(0.98) saturate(1.15)`
           }}
         />
+
+        <CloudOverlay progress={progress} />
 
         <div
           className="absolute inset-0 pointer-events-none"
@@ -128,41 +201,22 @@ const TransitionScene = ({ image1, image2, text1, text2 }: TransitionSceneProps)
           style={{ opacity: flashOpacity }}
         />
 
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(circle at center, transparent 40%, rgba(0,0,0,.55) 100%)'
-          }}
-        />
-
-        <div className="absolute inset-0 bg-black/35" />
+        <div className="absolute inset-0 scene-vignette" />
+        <div className="absolute inset-0 scene-spring-wash" />
+        <div className="absolute inset-0 bg-black/25" />
         <div className="absolute inset-0 scene-edge-fade pointer-events-none" />
 
-        <div className="absolute inset-0 flex items-center justify-center text-center px-6 overflow-hidden">
-
-          <h2
-            className="absolute text-white font-black tracking-tight text-5xl md:text-8xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
-            style={{
-              opacity: text1Opacity,
-              transform: `translateY(-${text1Translate}px) scale(${0.9 + text1Opacity * 0.1})`,
-              filter: `blur(${(1 - text1Opacity) * 12}px)`
-            }}
-          >
-            {text1}
-          </h2>
-
-          <h2
-            className="absolute text-white font-black tracking-tight text-5xl md:text-8xl drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
-            style={{
-              opacity: text2Opacity,
-              transform: `translateY(${text2Translate}px) scale(${0.9 + text2Opacity * 0.1})`,
-              filter: `blur(${(1 - text2Opacity) * 12}px)`
-            }}
-          >
-            {text2}
-          </h2>
-
+        <div className="scene-copy-layer absolute inset-0 flex items-center justify-center text-center px-6 overflow-hidden">
+          <SceneHeadline
+            line={line1}
+            opacity={text1Opacity}
+            transform={`translate(-50%, calc(-50% - ${text1Translate}px)) scale(${0.94 + text1Opacity * 0.06})`}
+          />
+          <SceneHeadline
+            line={line2}
+            opacity={text2Opacity}
+            transform={`translate(-50%, calc(-50% + ${text2Translate}px)) scale(${0.94 + text2Opacity * 0.06})`}
+          />
         </div>
       </div>
     </div>
@@ -200,11 +254,11 @@ const FadeIn = ({ children, delay = 0 }: FadeInProps) => {
 };
 
 const DataNodesAnimation = () => (
-  <div className="relative w-full h-48 border border-slate-800 rounded-xl overflow-hidden bg-slate-900/50 flex items-center justify-center">
+  <div className="data-spring relative w-full h-48 border rounded-xl overflow-hidden flex items-center justify-center">
     <div className="absolute flex space-x-12">
-      <div className="flex flex-col space-y-4">{[1, 2, 3].map(i => <div key={`in-${i}`} className="w-3 h-3 rounded-full bg-slate-700" />)}</div>
-      <div className="flex flex-col space-y-8 justify-center">{[1, 2].map(i => <div key={`hid-${i}`} className="w-4 h-4 rounded-full bg-teal-500" />)}</div>
-      <div className="flex flex-col justify-center"><div className="w-5 h-5 rounded-full bg-blue-500" /></div>
+      <div className="flex flex-col space-y-4">{['🌱', '🌿', '🍀'].map((icon, i) => <span key={`in-${i}`} className="text-2xl" aria-hidden="true">{icon}</span>)}</div>
+      <div className="flex flex-col space-y-8 justify-center">{['📊', '✨'].map((icon, i) => <span key={`hid-${i}`} className="text-3xl" aria-hidden="true">{icon}</span>)}</div>
+      <div className="flex flex-col justify-center"><span className="text-4xl" aria-hidden="true">🎯</span></div>
     </div>
   </div>
 );
@@ -234,22 +288,26 @@ const HeroSignalPanel = () => (
   <div className="hero-panel">
     <div className="hero-panel-header">
       <span className="status-dot" />
-      <span>Model pipeline active</span>
+      <span>🌱 Model pipeline in full bloom</span>
     </div>
     <div className="metric-grid">
       <div>
+        <span className="metric-emoji" aria-hidden="true">📈</span>
         <strong>15%</strong>
         <span>Efficiency lift</span>
       </div>
       <div>
+        <span className="metric-emoji" aria-hidden="true">🤖</span>
         <strong>3+</strong>
         <span>Years applied ML</span>
       </div>
       <div>
+        <span className="metric-emoji" aria-hidden="true">🎓</span>
         <strong>IITK</strong>
         <span>Statistics foundation</span>
       </div>
       <div>
+        <span className="metric-emoji" aria-hidden="true">☁️</span>
         <strong>AWS</strong>
         <span>Cloud ETL systems</span>
       </div>
@@ -296,22 +354,27 @@ const AICloneChat = () => {
   };
 
   return (
-    <div className="bg-slate-900 border border-teal-500/30 rounded-2xl p-8 shadow-[0_0_30px_rgba(45,212,191,0.1)] relative overflow-hidden">
-      <h4 className="text-2xl font-bold text-white mb-2 flex items-center gap-2"><SparklesIcon className="text-teal-400 w-6 h-6" /> Interview My AI Clone</h4>
-      <p className="text-slate-400 text-sm mb-6">Ask my digital twin about my background.</p>
+    <div className="chat-spring bg-slate-900 border border-teal-500/30 rounded-2xl p-8 shadow-[0_0_30px_rgba(45,212,191,0.1)] relative overflow-hidden">
+      <h4 className="text-2xl font-bold text-spring-ink mb-2 flex items-center gap-2">
+        <span aria-hidden="true">🌸</span>
+        <SparklesIcon className="text-teal-400 w-6 h-6" />
+        Interview My AI Clone
+        <span aria-hidden="true">✨</span>
+      </h4>
+      <p className="text-spring-muted text-sm mb-6">🦋 Ask my digital twin about my background — spring into the details!</p>
       <form onSubmit={handleSubmit} className="relative mb-6">
         <input
           type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g., Have you worked with cloud ETL pipelines?"
-          className="w-full bg-slate-950 border border-slate-700 rounded-lg py-4 pl-4 pr-16 text-slate-200"
+          placeholder="🌼 e.g., Have you worked with cloud ETL pipelines?"
+          className="w-full bg-white border border-slate-700 rounded-lg py-4 pl-4 pr-16 text-spring-ink"
         />
-        <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-teal-500/10 text-teal-400 rounded-md">
+        <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-teal-500/10 text-teal-400 rounded-md" aria-label="Send message">
           {isLoading ? <LoaderIcon className="w-5 h-5 animate-spin" /> : <SendIcon className="w-5 h-5" />}
         </button>
       </form>
       {(response || error) && (
-        <div className="p-5 rounded-xl border border-slate-800 bg-slate-950/80 text-slate-300">
-          <p className="text-sm">{error || response}</p>
+        <div className="p-5 rounded-xl border border-slate-800 bg-white/90 text-spring-ink">
+          <p className="text-sm">💬 {error || response}</p>
         </div>
       )}
     </div>
@@ -330,55 +393,93 @@ export default function App() {
   };
 
   return (
-    <div className="bg-slate-950 text-slate-200 font-sans">
+    <div className="spring-page bg-slate-950 text-slate-200 font-sans">
       <section className="hero-section h-screen px-6">
+        <SpringPetals />
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-glow hero-glow-a" aria-hidden="true" />
         <div className="hero-glow hero-glow-b" aria-hidden="true" />
         <div className="hero-content">
           <div className="hero-copy">
-            <div className="hero-kicker">Data science portfolio</div>
-            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6">Data Scientist.<br /><span className="text-slate-500">Problem Solver.</span></h1>
-            <p className="text-lg md:text-xl text-slate-400">M.Sc. Statistics @ IIT Kanpur | 3+ Years @ Accenture</p>
+            <div className="hero-kicker icon-chip">🌷 Spring portfolio · Data science</div>
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 spring-gradient-text">
+              Data Scientist.<br />
+              <span className="hero-accent-line">Problem Solver.</span> 🌈
+            </h1>
+            <p className="text-lg md:text-xl text-spring-muted icon-chip">
+              <span aria-hidden="true">🎓</span>
+              M.Sc. Statistics @ IIT Kanpur
+              <span aria-hidden="true"> · </span>
+              <span aria-hidden="true">💼</span>
+              3+ Years @ Accenture
+            </p>
             <div className="hero-tags">
-              <span>ML pipelines</span>
-              <span>NLP systems</span>
-              <span>Cloud ETL</span>
+              <span className="tag-blossom icon-chip"><span aria-hidden="true">🤖</span> ML pipelines</span>
+              <span className="tag-mint icon-chip"><span aria-hidden="true">💬</span> NLP systems</span>
+              <span className="tag-sky icon-chip"><span aria-hidden="true">☁️</span> Cloud ETL</span>
             </div>
           </div>
           <HeroSignalPanel />
         </div>
       </section>
 
-      <TransitionScene image1={IMAGES.jungle} image2={IMAGES.road} text1="Navigating the wilderness of raw data." text2="Paving the road to actionable insights." />
+      <TransitionScene
+        image1={IMAGES.jungle}
+        image2={IMAGES.road}
+        line1={{ emoji: '🌿', text: 'Navigating the wilderness of raw data.', accent: 'mint' }}
+        line2={{ emoji: '🛣️', text: 'Paving the road to actionable insights.', accent: 'sunshine' }}
+      />
 
-      <section className="py-32 px-6 bg-slate-950 blend-section content-section">
+      <section className="py-32 px-6 bg-spring-section blend-section content-section">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <FadeIn>
-            <h3 className="text-3xl font-bold mb-6">The Analytical Foundation</h3>
-            <p className="text-slate-400 text-lg">My foundation is built on rigorous mathematics. From IIT Kanpur to Accenture, I translate theory into impact.</p>
+            <SectionHeading emoji="📐" title="The Analytical Foundation" />
+            <p className="text-spring-muted text-lg icon-chip">
+              <span aria-hidden="true">🌱</span>
+              My foundation is built on rigorous mathematics. From IIT Kanpur to Accenture, I translate theory into blooming impact.
+              <span aria-hidden="true"> ✨</span>
+            </p>
           </FadeIn>
           <DataNodesAnimation />
         </div>
       </section>
 
-      <TransitionScene image1={IMAGES.road} image2={IMAGES.mountain} text1="Scaling complex architectures." text2="Reaching peak model performance." />
+      <TransitionScene
+        image1={IMAGES.road}
+        image2={IMAGES.mountain}
+        line1={{ emoji: '🏗️', text: 'Scaling complex architectures.', accent: 'sky' }}
+        line2={{ emoji: '⛰️', text: 'Reaching peak model performance.', accent: 'blossom' }}
+      />
 
-      <section className="py-32 px-6 bg-slate-950 blend-section content-section">
+      <section className="py-32 px-6 bg-spring-section blend-section content-section">
         <div className="max-w-4xl mx-auto">
-          <h3 className="text-3xl font-bold mb-16">Professional Experience</h3>
+          <SectionHeading emoji="💼" title="Professional Experience" />
           <div className="space-y-12">
             <FadeIn>
-              <h4 className="text-2xl font-bold text-white">Data Scientist @ Accenture</h4>
-              <p className="text-slate-400">Architected scalable ETL pipelines and deployed ML models that improved operational efficiency by 15%.</p>
+              <div className="experience-card">
+                <h4 className="text-2xl font-bold text-spring-ink icon-chip">
+                  <span aria-hidden="true">🌸</span>
+                  Data Scientist @ Accenture
+                </h4>
+                <p className="text-spring-muted mt-4 icon-chip">
+                  <span aria-hidden="true">🚀</span>
+                  Architected scalable ETL pipelines and deployed ML models that improved operational efficiency by 15%.
+                  <span aria-hidden="true"> 🎉</span>
+                </p>
+              </div>
             </FadeIn>
           </div>
         </div>
       </section>
 
-      <TransitionScene image1={IMAGES.mountain} image2={IMAGES.city} text1="From isolated algorithms..." text2="To enterprise-scale deployments." />
+      <TransitionScene
+        image1={IMAGES.mountain}
+        image2={IMAGES.city}
+        line1={{ emoji: '🧪', text: 'From isolated algorithms...', accent: 'blossom' }}
+        line2={{ emoji: '🏙️', text: 'To enterprise-scale deployments.', accent: 'mint' }}
+      />
 
-      <section className="py-32 px-6 bg-slate-950 blend-section content-section">
+      <section className="py-32 px-6 bg-spring-section blend-section content-section">
         <div className="max-w-4xl mx-auto">
           <AICloneChat />
         </div>
