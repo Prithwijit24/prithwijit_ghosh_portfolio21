@@ -1,60 +1,131 @@
-import { type FormEvent, type ReactNode, type RefObject, useEffect, useRef, useState } from 'react';
+import { type FormEvent, type ReactNode, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './style.css';
 
-if (typeof document !== 'undefined') {
-  const styleId = 'cinematic-transitions';
-  if (!document.getElementById(styleId)) {
-    const style = document.createElement('style');
-    style.id = styleId;
-    style.innerHTML = `
-      .will-change-transform {
-      will-change: transform, opacity, filter;
-      backface-visibility: hidden;
-      transform-style: preserve-3d;
-    }
-  `;
-    document.head.appendChild(style);
-  }
-}
-
-function useElementScroll(ref: RefObject<HTMLElement | null>) {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!ref.current) return;
-
-      const rect = ref.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const totalScroll = Math.max(1, rect.height - windowHeight);
-      const currentScroll = -rect.top;
-
-      setProgress(Math.max(0, Math.min(1, currentScroll / totalScroll)));
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [ref]);
-
-  return progress;
-}
-
 type SpringAccent = 'blossom' | 'mint' | 'sunshine' | 'sky';
 
-type SceneLine = {
-  emoji: string;
-  text: string;
-  accent: SpringAccent;
-};
+const NAV_SECTIONS = [
+  { id: 'home', label: 'Home', emoji: '🏠' },
+  { id: 'foundation', label: 'Foundation', emoji: '📐' },
+  { id: 'skills', label: 'Skills', emoji: '🧰' },
+  { id: 'experience', label: 'Experience', emoji: '💼' },
+  { id: 'chat', label: 'AI Chat', emoji: '✨' },
+  { id: 'contact', label: 'Contact', emoji: '📬' }
+] as const;
 
-type TransitionSceneProps = {
-  image1: string;
-  image2: string;
-  line1: SceneLine;
-  line2: SceneLine;
+const NAV_CENTER_SECTIONS = NAV_SECTIONS.filter(
+  (section) => section.id !== 'home' && section.id !== 'contact'
+);
+
+const PROFILE_LINKS = {
+  email: 'ghoshprithwijit39@gmail.com',
+  github: 'https://github.com/Prithwijit24',
+  linkedin: 'https://www.linkedin.com/in/prithwijit-ghosh-datascience/'
+} as const;
+
+const SiteNav = () => {
+  const [activeId, setActiveId] = useState<string>(NAV_SECTIONS[0].id);
+
+  useEffect(() => {
+    const sections = NAV_SECTIONS
+      .map(({ id }) => document.getElementById(id))
+      .filter((node): node is HTMLElement => node !== null);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible[0]?.target.id) {
+          setActiveId(visible[0].target.id);
+        }
+      },
+      { rootMargin: '-18% 0px -52% 0px', threshold: [0.12, 0.35, 0.6] }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActiveId(id);
+  };
+
+  return (
+    <header className="site-nav">
+      <nav className="site-nav-inner" aria-label="Page sections">
+        <div className="site-nav-left">
+          <a
+            href="#home"
+            className="site-nav-brand"
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('home');
+            }}
+          >
+            Portfolio
+          </a>
+        </div>
+
+        <div className="site-nav-center">
+          <ul className="site-nav-links">
+            {NAV_CENTER_SECTIONS.map(({ id, label, emoji }) => (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  className={`site-nav-link${activeId === id ? ' site-nav-link--active' : ''}`}
+                  aria-current={activeId === id ? 'true' : undefined}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToSection(id);
+                  }}
+                >
+                  <span className="site-nav-link-emoji" aria-hidden="true">{emoji}</span>
+                  <span>{label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="site-nav-right">
+          <a
+            href="#contact"
+            className={`site-nav-action${activeId === 'contact' ? ' site-nav-action--active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToSection('contact');
+            }}
+          >
+            Contact
+          </a>
+          <a
+            href={PROFILE_LINKS.github}
+            className="site-nav-action site-nav-action--icon"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub profile"
+          >
+            <GitHubIcon className="site-nav-action-icon" />
+          </a>
+          <a
+            href={PROFILE_LINKS.linkedin}
+            className="site-nav-action site-nav-action--icon"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn profile"
+          >
+            <LinkedInIcon className="site-nav-action-icon" />
+          </a>
+        </div>
+      </nav>
+    </header>
+  );
 };
 
 const SPRING_PETALS = ['🌸', '🌼', '🦋', '🌷', '✨', '🍃', '🌺', '☀️'] as const;
@@ -77,151 +148,12 @@ const SpringPetals = () => (
   </div>
 );
 
-type SceneHeadlineProps = {
-  line: SceneLine;
-  opacity: number;
-  transform: string;
-};
-
-const SceneHeadline = ({ line, opacity, transform }: SceneHeadlineProps) => (
-  <h2
-    className={`scene-headline scene-headline--${line.accent} absolute`}
-    style={{
-      opacity,
-      transform,
-      visibility: opacity < 0.02 ? 'hidden' : 'visible'
-    }}
-  >
-    <span className="scene-headline-emoji" aria-hidden="true">{line.emoji}</span>
-    <span className="scene-headline-copy">{line.text}</span>
-  </h2>
-);
-
 const SectionHeading = ({ emoji, title }: { emoji: string; title: string }) => (
   <div className="section-heading">
     <span className="section-heading-icon" aria-hidden="true">{emoji}</span>
     <h3 className="text-3xl font-bold spring-gradient-text">{title}</h3>
   </div>
 );
-
-const CloudOverlay = ({ progress }: { progress: number }) => {
-  const drift = progress * 12;
-
-  return (
-    <div className="scene-clouds pointer-events-none" aria-hidden="true">
-      <div className="cloud-blob cloud-blob-a" style={{ transform: `translateX(${-drift}px)` }} />
-      <div className="cloud-blob cloud-blob-b" style={{ transform: `translateX(${drift * 0.6}px)` }} />
-      <div className="cloud-blob cloud-blob-c" style={{ transform: `translateX(${-drift * 0.4}px)` }} />
-      <div className="cloud-blob cloud-blob-d" style={{ transform: `translateX(${drift * 0.8}px)` }} />
-      <div className="cloud-blob cloud-blob-e" style={{ transform: `translateX(${-drift * 0.5}px)` }} />
-      <div className="scene-cloud-mist" />
-    </div>
-  );
-};
-
-const TransitionScene = ({ image1, image2, line1, line2 }: TransitionSceneProps) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const progress = useElementScroll(containerRef);
-
-  const img1Opacity =
-    progress < 0.55 ? 1 : Math.max(0, 1 - (progress - 0.55) * 4);
-
-  const img2Opacity =
-    progress < 0.45 ? 0 : Math.min(1, (progress - 0.45) * 4);
-
-  const img1Scale = 1 + progress * 0.8;
-  const img2Scale = 1.8 - progress * 0.8;
-
-  const img1Y = progress * -120;
-  const img2Y = (1 - progress) * 120;
-
-  const transitionPeak = Math.sin(progress * Math.PI);
-
-  const baseImageBlur = 10;
-  const img1Blur = baseImageBlur + transitionPeak * 6;
-  const img2Blur = baseImageBlur + (1 - progress) * 6;
-
-  const flashOpacity =
-    Math.max(
-      0,
-      Math.sin(Math.max(0, Math.min(1, (progress - 0.4) / 0.2)) * Math.PI)
-    ) * 0.35;
-
-  const sweepX = -120 + progress * 240;
-
-  const text1Opacity =
-    progress < 0.35 ? 1 : Math.max(0, 1 - (progress - 0.35) * 4);
-
-  const text2Opacity =
-    progress < 0.55 ? 0 : Math.min(1, (progress - 0.55) * 4);
-
-  const text1Translate = Math.max(0, progress - 0.2) * 150;
-  const text2Translate = (1 - text2Opacity) * 150;
-
-  return (
-    <div ref={containerRef} className="relative transition-scroll">
-      <div className="sticky top-0 h-screen overflow-hidden bg-black">
-
-        <div
-          className="scene-image-layer absolute inset-0 bg-cover will-change-transform"
-          style={{
-            backgroundImage: `url(${image1})`,
-            backgroundPosition: `center ${50 + progress * 8}%`,
-            opacity: img1Opacity,
-            transform: `scale(${img1Scale}) translateY(${img1Y}px)`,
-            filter: `blur(${img1Blur}px) brightness(${98 + transitionPeak * 12}%) saturate(1.18)`
-          }}
-        />
-
-        <div
-          className="scene-image-layer absolute inset-0 bg-cover will-change-transform"
-          style={{
-            backgroundImage: `url(${image2})`,
-            backgroundPosition: `center ${58 - progress * 8}%`,
-            opacity: img2Opacity,
-            transform: `scale(${img2Scale}) translateY(${img2Y}px)`,
-            filter: `blur(${img2Blur}px) brightness(0.98) saturate(1.15)`
-          }}
-        />
-
-        <CloudOverlay progress={progress} />
-
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent)',
-            transform: `translateX(${sweepX}%)`,
-            mixBlendMode: 'screen'
-          }}
-        />
-
-        <div
-          className="absolute inset-0 bg-white pointer-events-none"
-          style={{ opacity: flashOpacity }}
-        />
-
-        <div className="absolute inset-0 scene-vignette" />
-        <div className="absolute inset-0 scene-spring-wash" />
-        <div className="absolute inset-0 bg-black/25" />
-        <div className="absolute inset-0 scene-edge-fade pointer-events-none" />
-
-        <div className="scene-copy-layer absolute inset-0 flex items-center justify-center text-center px-6 overflow-hidden">
-          <SceneHeadline
-            line={line1}
-            opacity={text1Opacity}
-            transform={`translate(-50%, calc(-50% - ${text1Translate}px)) scale(${0.94 + text1Opacity * 0.06})`}
-          />
-          <SceneHeadline
-            line={line2}
-            opacity={text2Opacity}
-            transform={`translate(-50%, calc(-50% + ${text2Translate}px)) scale(${0.94 + text2Opacity * 0.06})`}
-          />
-        </div>
-      </div>
-    </div>
-  );
-};
 
 type FadeInProps = {
   children: ReactNode;
@@ -253,6 +185,94 @@ const FadeIn = ({ children, delay = 0 }: FadeInProps) => {
   );
 };
 
+type SkillDomain = {
+  title: string;
+  emoji: string;
+  accent: SpringAccent;
+  description: string;
+  skills: string[];
+};
+
+const SKILL_DOMAINS: SkillDomain[] = [
+  {
+    title: 'Data Science',
+    emoji: '🧠',
+    accent: 'blossom',
+    description: 'Building predictive models and intelligent systems from complex data.',
+    skills: ['Python', 'Scikit-learn', 'TensorFlow', 'PyTorch', 'NLP', 'Deep Learning', 'Feature Engineering', 'Model Evaluation', 'Statistics', 'Experiment Design']
+  },
+  {
+    title: 'Data Analysis',
+    emoji: '📊',
+    accent: 'mint',
+    description: 'Turning raw data into clear insights and evidence-backed decisions.',
+    skills: ['SQL', 'Pandas', 'NumPy', 'EDA', 'Hypothesis Testing', 'A/B Testing', 'R', 'Data Wrangling', 'Time Series', 'Reporting']
+  },
+  {
+    title: 'Dashboards & BI',
+    emoji: '📈',
+    accent: 'sunshine',
+    description: 'Designing intuitive views that help teams monitor and act faster.',
+    skills: ['Power BI', 'Tableau', 'Plotly', 'Matplotlib', 'Seaborn', 'KPI Design', 'Data Storytelling', 'Executive Summaries', 'Dash', 'Excel Analytics']
+  },
+  {
+    title: 'Deployment & MLOps',
+    emoji: '☁️',
+    accent: 'sky',
+    description: 'Shipping reliable pipelines and models into production environments.',
+    skills: ['AWS', 'Apache Spark', 'Docker', 'CI/CD', 'ETL Pipelines', 'FastAPI', 'Model Monitoring', 'Git', 'Airflow', 'Cloud Storage']
+  },
+  {
+    title: 'Engineering & Tools',
+    emoji: '⚙️',
+    accent: 'mint',
+    description: 'Solid software practices that keep analytics work maintainable.',
+    skills: ['Git', 'Linux', 'REST APIs', 'Jupyter', 'Agile Delivery', 'Code Review', 'Unit Testing', 'Documentation', 'VS Code', 'Jira']
+  }
+];
+
+const SkillsSection = () => (
+  <section id="skills" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
+    <div className="max-w-6xl mx-auto skills-section">
+      <FadeIn>
+        <SectionHeading emoji="🧰" title="Skills & Domains" />
+        <p className="text-spring-muted text-lg skills-intro icon-chip">
+          <span aria-hidden="true">🌱</span>
+          A cross-functional toolkit spanning modeling, analysis, visualization, and production delivery.
+          <span aria-hidden="true"> ✨</span>
+        </p>
+      </FadeIn>
+
+      <div className="skills-grid">
+        {SKILL_DOMAINS.map((domain, index) => (
+          <FadeIn key={domain.title} delay={index * 100}>
+            <article className={`skill-domain-card skill-domain-card--${domain.accent}`}>
+              <header className="skill-domain-header">
+                <span className="skill-domain-icon" aria-hidden="true">{domain.emoji}</span>
+                <div>
+                  <h4 className="skill-domain-title">{domain.title}</h4>
+                  <p className="skill-domain-description">{domain.description}</p>
+                </div>
+              </header>
+              <ul className="skill-chip-list">
+                {domain.skills.map((skill, skillIndex) => (
+                  <li
+                    key={skill}
+                    className="skill-chip"
+                    style={{ animationDelay: `${skillIndex * 45}ms` }}
+                  >
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </FadeIn>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const DataNodesAnimation = () => (
   <div className="data-spring relative w-full h-48 border rounded-xl overflow-hidden flex items-center justify-center">
     <div className="absolute flex space-x-12">
@@ -275,6 +295,18 @@ const SendIcon = ({ className = '' }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path d="M22 2 11 13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     <path d="m22 2-7 20-4-9-9-4 20-7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const GitHubIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.36-3.37-1.36-.45-1.17-1.12-1.48-1.12-1.48-.92-.64.07-.63.07-.63 1.02.07 1.55 1.07 1.55 1.07.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.56-1.14-4.56-5.07 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.32.1-2.74 0 0 .84-.27 2.75 1.03A9.2 9.2 0 0 1 12 6.84c.85 0 1.71.12 2.51.34 1.91-1.3 2.75-1.03 2.75-1.03.55 1.42.2 2.48.1 2.74.64.72 1.03 1.63 1.03 2.75 0 3.94-2.34 4.81-4.57 5.07.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.8 0 .27.18.6.69.49A10.03 10.03 0 0 0 22 12.26C22 6.58 17.52 2 12 2Z" />
+  </svg>
+);
+
+const LinkedInIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.59 0 4.25 2.36 4.25 5.43v6.31ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.02H3.55V9h3.57v11.45Z" />
   </svg>
 );
 
@@ -382,19 +414,10 @@ const AICloneChat = () => {
 };
 
 export default function App() {
-  const IMAGES = {
-    jungle: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=2000&q=80",
-    road: "https://images.unsplash.com/photo-1449844908441-8829872d2607?auto=format&fit=crop&w=2000&q=80",
-    mountain: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=80",
-    city: "https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=2000&q=80",
-    space: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=2000&q=80",
-    forest: "https://images.unsplash.com/photo-1498050106439-482786f9d7ea?auto=format&fit=crop&w=2000&q=80",
-    sea: "https://images.unsplash.com/photo-1475113548554-5a3690a74604?auto=format&fit=crop&w=2000&q=80"
-  };
-
   return (
     <div className="spring-page bg-slate-950 text-slate-200 font-sans">
-      <section className="hero-section h-screen px-6">
+      <SiteNav />
+      <section id="home" className="hero-section h-screen px-6 scroll-section">
         <SpringPetals />
         <div className="hero-grid" aria-hidden="true" />
         <div className="hero-glow hero-glow-a" aria-hidden="true" />
@@ -423,20 +446,13 @@ export default function App() {
         </div>
       </section>
 
-      <TransitionScene
-        image1={IMAGES.jungle}
-        image2={IMAGES.road}
-        line1={{ emoji: '🌿', text: 'Navigating the wilderness of raw data.', accent: 'mint' }}
-        line2={{ emoji: '🛣️', text: 'Paving the road to actionable insights.', accent: 'sunshine' }}
-      />
-
-      <section className="py-32 px-6 bg-spring-section blend-section content-section">
+      <section id="foundation" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           <FadeIn>
             <SectionHeading emoji="📐" title="The Analytical Foundation" />
             <p className="text-spring-muted text-lg icon-chip">
               <span aria-hidden="true">🌱</span>
-              My foundation is built on rigorous mathematics. From IIT Kanpur to Accenture, I translate theory into blooming impact.
+              <b>Data Scientist</b> at Accenture with 3+ years of experience and a Master’s from IIT Kanpur. Delivered analytics solutions to six+ global clients across sales, finance and operations. Built production-grade models for account receivable forecasting and late payment prediction, cash flow, and sales forecasting. Skilled at translating insights into executive-facing Excel and Power BI dashboards and communicating effectively with leadership. Collaborative team player with a strong focus on delivering high-quality client solutions.
               <span aria-hidden="true"> ✨</span>
             </p>
           </FadeIn>
@@ -444,14 +460,9 @@ export default function App() {
         </div>
       </section>
 
-      <TransitionScene
-        image1={IMAGES.road}
-        image2={IMAGES.mountain}
-        line1={{ emoji: '🏗️', text: 'Scaling complex architectures.', accent: 'sky' }}
-        line2={{ emoji: '⛰️', text: 'Reaching peak model performance.', accent: 'blossom' }}
-      />
+      <SkillsSection />
 
-      <section className="py-32 px-6 bg-spring-section blend-section content-section">
+      <section id="experience" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
         <div className="max-w-4xl mx-auto">
           <SectionHeading emoji="💼" title="Professional Experience" />
           <div className="space-y-12">
@@ -472,16 +483,32 @@ export default function App() {
         </div>
       </section>
 
-      <TransitionScene
-        image1={IMAGES.mountain}
-        image2={IMAGES.city}
-        line1={{ emoji: '🧪', text: 'From isolated algorithms...', accent: 'blossom' }}
-        line2={{ emoji: '🏙️', text: 'To enterprise-scale deployments.', accent: 'mint' }}
-      />
-
-      <section className="py-32 px-6 bg-spring-section blend-section content-section">
+      <section id="chat" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
         <div className="max-w-4xl mx-auto">
           <AICloneChat />
+        </div>
+      </section>
+
+      <section id="contact" className="contact-page-section px-6 bg-spring-section blend-section scroll-section">
+        <div className="max-w-4xl mx-auto contact-section">
+          <SectionHeading emoji="📬" title="Get in Touch" />
+          <p className="text-spring-muted text-lg mb-8">
+            Open to data science roles, collaborations, and interesting problems. Reach out anytime.
+          </p>
+          <div className="contact-links">
+            <a href={PROFILE_LINKS.email} className="contact-card">
+              <span aria-hidden="true">✉️</span>
+              <span>Email me</span>
+            </a>
+            <a href={PROFILE_LINKS.github} className="contact-card" target="_blank" rel="noopener noreferrer">
+              <GitHubIcon className="contact-card-icon" />
+              <span>GitHub</span>
+            </a>
+            <a href={PROFILE_LINKS.linkedin} className="contact-card" target="_blank" rel="noopener noreferrer">
+              <LinkedInIcon className="contact-card-icon" />
+              <span>LinkedIn</span>
+            </a>
+          </div>
         </div>
       </section>
     </div>
