@@ -329,6 +329,7 @@ const BackToTop = () => {
 const SiteNav = () => {
   const [activeId, setActiveId] = useState<string>(NAV_SECTIONS[0].id);
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -350,9 +351,17 @@ const SiteNav = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Close the mobile menu automatically if the viewport grows back past the breakpoint
+  useEffect(() => {
+    const handleResize = () => { if (window.innerWidth > 860) setIsMenuOpen(false); };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setActiveId(id);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -388,8 +397,46 @@ const SiteNav = () => {
           <a href={PROFILE_LINKS.linkedin} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
             <LinkedInIcon className="site-nav-action-icon" />
           </a>
+          <button
+            type="button"
+            className="site-nav-toggle"
+            aria-expanded={isMenuOpen}
+            aria-controls="site-nav-mobile-menu"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            onClick={() => setIsMenuOpen((open) => !open)}
+          >
+            {isMenuOpen ? <CloseIcon className="site-nav-toggle-icon" /> : <MenuIcon className="site-nav-toggle-icon" />}
+          </button>
         </div>
       </nav>
+
+      <div id="site-nav-mobile-menu" className={`site-nav-mobile-menu${isMenuOpen ? ' site-nav-mobile-menu--open' : ''}`}>
+        <ul className="site-nav-mobile-links">
+          {NAV_SECTIONS.map(({ id, label, emoji }) => (
+            <li key={id}>
+              <a href={`#${id}`}
+                className={`site-nav-link${activeId === id ? ' site-nav-link--active' : ''}`}
+                aria-current={activeId === id ? 'true' : undefined}
+                onClick={(e) => { e.preventDefault(); scrollToSection(id); }}>
+                <span className="site-nav-link-emoji" aria-hidden="true">{emoji}</span>
+                <span>{label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div className="site-nav-mobile-social">
+          <a href={PROFILE_LINKS.resume} target="_blank" rel="noopener noreferrer" className="site-nav-action">
+            <DownloadIcon className="site-nav-action-icon" />
+            <span>Resume</span>
+          </a>
+          <a href={PROFILE_LINKS.github} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+            <GitHubIcon className="site-nav-action-icon" />
+          </a>
+          <a href={PROFILE_LINKS.linkedin} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+            <LinkedInIcon className="site-nav-action-icon" />
+          </a>
+        </div>
+      </div>
     </header>
   );
 };
@@ -802,6 +849,21 @@ const LinkedInIcon = ({ className = '' }: { className?: string }) => (
     <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.35-1.85 3.59 0 4.25 2.36 4.25 5.43v6.31ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12Zm1.78 13.02H3.55V9h3.57v11.45Z" />
   </svg>
 );
+const DownloadIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 3v12m0 0-4-4m4 4 4-4M4 21h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+const MenuIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+const CloseIcon = ({ className = '' }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
 const QuoteIcon = ({ className = '' }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M9.983 3v7.391c0 5.704-3.731 9.57-8.983 10.609l-.995-2.151c2.432-.917 3.995-3.638 3.995-5.849h-4v-10h9.983zm14.017 0v7.391c0 5.704-3.748 9.571-9 10.609l-.996-2.151c2.433-.917 3.996-3.638 3.996-5.849h-3.983v-10h9.983z" />
@@ -832,7 +894,8 @@ const AICloneChat = () => {
         <SparklesIcon className="text-teal-400 w-6 h-6" />
         Interview My AI Clone
       </h4>
-      <p className="text-spring-muted text-sm mb-6">🧠 Ask my digital twin about my background — get real answers.</p>
+      <p className="text-spring-muted text-sm mb-2">🧠 Ask my digital twin about my background.</p>
+      <p className="chat-demo-note">✨ Demo preview — replies are scripted for now, not a live AI connection.</p>
       <form onSubmit={handleSubmit} className="relative mb-6">
         <input type="text" value={query} onChange={e => setQuery(e.target.value)}
           placeholder="💡 e.g., Have you worked with cloud ETL pipelines?"
