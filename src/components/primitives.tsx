@@ -106,3 +106,44 @@ export const SkillBar = ({ level, accent }: SkillBarProps) => {
     </div>
   );
 };
+
+/* ───────── Reveal: scroll-driven 3D entrance ───────── */
+type RevealProps = {
+  children: ReactNode;
+  delay?: number;
+  rotateY?: number;     // entrance rotateY in degrees (default -25)
+  className?: string;
+};
+
+export const Reveal = ({ children, delay = 0, rotateY = -25, className = '' }: RevealProps) => {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); observer.unobserve(entry.target); }
+    }, { rootMargin: '0px 0px -80px 0px' });
+    const node = ref.current;
+    if (node) observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <div
+      ref={ref}
+      className={`reveal ${visible ? 'reveal--visible' : ''} ${className}`}
+      style={{ transitionDelay: `${delay}ms`, '--reveal-rotate-y': `${rotateY}deg` } as CSSProperties}
+    >
+      {children}
+    </div>
+  );
+};
+
+/* ───────── Scene3D: establishes a perspective + preserve-3d context ───────── */
+type Scene3DProps = { children: ReactNode; className?: string; depth?: number };
+
+export const Scene3D = ({ children, className = '', depth = 1000 }: Scene3DProps) => (
+  <div className={`scene-3d ${className}`} style={{ perspective: `${depth}px` }}>
+    <div className="scene-3d-inner" style={{ transformStyle: 'preserve-3d' }}>
+      {children}
+    </div>
+  </div>
+);
