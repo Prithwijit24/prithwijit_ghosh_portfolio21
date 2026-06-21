@@ -7,28 +7,46 @@ type TiltCardProps = { children: ReactNode; className?: string };
 export const TiltCard = ({ children, className = '' }: TiltCardProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [style, setStyle] = useState<CSSProperties>({});
+  const [glare, setGlare] = useState<{ x: number; y: number; o: number }>({ x: 50, y: 50, o: 0 });
 
   const handleMouseMove = useCallback((e: MouseEvent) => {
     if (!ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    const px = (e.clientX - rect.left) / rect.width;   // 0..1
+    const py = (e.clientY - rect.top) / rect.height;   // 0..1
+    const x = px - 0.5;
+    const y = py - 0.5;
     setStyle({
-      transform: `perspective(1000px) rotateX(${y * -8}deg) rotateY(${x * 8}deg) translateZ(6px)`,
-      transition: 'transform 0.1s ease-out'
+      transform: `perspective(1000px) rotateX(${y * -10}deg) rotateY(${x * 10}deg) translateZ(8px)`,
+      transition: 'transform 0.08s ease-out'
     });
+    setGlare({ x: px * 100, y: py * 100, o: 0.25 });
   }, []);
 
   const handleMouseLeave = useCallback(() => {
     setStyle({
       transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)',
-      transition: 'transform 0.5s ease-out'
+      transition: 'transform 0.5s cubic-bezier(0.16,1,0.3,1)'
     });
+    setGlare((g) => ({ ...g, o: 0 }));
   }, []);
 
   return (
-    <div ref={ref} className={className} style={style} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-      {children}
+    <div
+      ref={ref}
+      className={`tilt-card ${className}`}
+      style={style}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="tilt-card-layer" style={{ transform: 'translateZ(2rem)' }}>
+        {children}
+      </div>
+      <span
+        className="tilt-card-glare"
+        aria-hidden="true"
+        style={{ background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.o}), transparent 60%)` }}
+      />
     </div>
   );
 };
