@@ -632,7 +632,27 @@ input:focus { outline: 2px solid rgba(244,114,182,.55); outline-offset: 2px; }
 .contact-card:hover { transform: translateY(-3px); box-shadow: 0 16px 36px rgba(190,120,90,.18); border-color: rgba(251,113,133,.4); }
 .contact-card-icon { width: 1.75rem; height: 1.75rem; }
 
-/* ────── Section blend ────── */
+/* ────── Section shell + color-blend transitions ────── */
+.section-shell {
+  position: relative; z-index: 1;
+  margin-top: -12vh; padding-top: 16vh;
+  background:
+    radial-gradient(circle at 8% 20%, color-mix(in srgb, var(--accent-in) 14%, transparent), transparent 26%),
+    radial-gradient(circle at 92% 30%, color-mix(in srgb, var(--accent-out) 12%, transparent), transparent 30%),
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--accent-in) 8%, rgba(236,253,245,.92)) 0%,
+      color-mix(in srgb, var(--accent-out) 10%, rgba(254,243,199,.95)) 100%);
+}
+.section-shell-content { width: min(72rem, 100%); margin: 0 auto; }
+.section-blend-overlay {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 30vh;
+  pointer-events: none; z-index: 0;
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--accent-out) 18%, transparent) 70%,
+    color-mix(in srgb, var(--accent-out) 30%, transparent) 100%);
+}
+/* Keep the old class working for any section not yet migrated */
 .blend-section { margin-top: -12vh; padding-top: 16vh; position: relative; z-index: 1; background: linear-gradient(to bottom, transparent 0%, rgba(236,253,245,.9) 8vh, rgba(254,243,199,.95) 100%); }
 .content-section { min-height: 100vh; display: flex; align-items: center; padding-bottom: 14rem; position: relative; }
 .hero-section, .content-section, .achievements-section, .edu-section, .contact-page-section, #chat { text-align: center; }
