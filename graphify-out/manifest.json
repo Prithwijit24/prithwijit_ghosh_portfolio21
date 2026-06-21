@@ -1,0 +1,62 @@
+{
+  "/home/prithwijit/Downloads/portfolio_app/eslint.config.js": {
+    "mtime": 1780394515.9494672,
+    "ast_hash": "0355276bc79439afe3c53e3a2470ca1e",
+    "semantic_hash": "0355276bc79439afe3c53e3a2470ca1e"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/package.json": {
+    "mtime": 1780394515.9572165,
+    "ast_hash": "df0397d4a77f670f65fa1a833c109568",
+    "semantic_hash": "df0397d4a77f670f65fa1a833c109568"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/main.tsx": {
+    "mtime": 1782047578.9268804,
+    "ast_hash": "105c9b244fb351f90eea2f0ddff39233",
+    "semantic_hash": "105c9b244fb351f90eea2f0ddff39233"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/tsconfig.app.json": {
+    "mtime": 1780394515.956164,
+    "ast_hash": "136630b5accce1ca50663df229534a26",
+    "semantic_hash": "136630b5accce1ca50663df229534a26"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/tsconfig.json": {
+    "mtime": 1780394515.9564996,
+    "ast_hash": "a3d39fa780ebff65444de257f291ce6c",
+    "semantic_hash": "a3d39fa780ebff65444de257f291ce6c"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/tsconfig.node.json": {
+    "mtime": 1780394515.9567711,
+    "ast_hash": "70bdd0a673bcfc0e828080b306e7c680",
+    "semantic_hash": "70bdd0a673bcfc0e828080b306e7c680"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/vite.config.ts": {
+    "mtime": 1780394515.9572165,
+    "ast_hash": "88439104b3c207f17d33ef3160e3b080",
+    "semantic_hash": "88439104b3c207f17d33ef3160e3b080"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/README.md": {
+    "mtime": 1780394515.945468,
+    "ast_hash": "f6e3faf55d738cf2affe1b44195f27cf",
+    "semantic_hash": "f6e3faf55d738cf2affe1b44195f27cf"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/index.html": {
+    "mtime": 1780854811.991058,
+    "ast_hash": "4ef107c7d59e67afd6b3c756e7815fb1",
+    "semantic_hash": "4ef107c7d59e67afd6b3c756e7815fb1"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/Prithwijit_Ghosh_Resume_20260523.pdf": {
+    "mtime": 1779530182.665722,
+    "ast_hash": "3a55687eb764922a88a0318dc62dded9",
+    "semantic_hash": "3a55687eb764922a88a0318dc62dded9"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/public/favicon.svg": {
+    "mtime": 1780394515.9528563,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": "7e840862161341271697daa99a40d76b"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/public/icons.svg": {
+    "mtime": 1780394515.953136,
+    "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
+    "semantic_hash": "3b4fcfcf393eca4d264dca4a4663bc37"
+  }
+}
