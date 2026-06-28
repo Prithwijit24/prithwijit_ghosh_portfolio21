@@ -1,12 +1,13 @@
 /* ───────── Navigation ───────── */
 export const NAV_SECTIONS = [
   { id: 'home', label: 'Home', emoji: '🏠' },
-  { id: 'foundation', label: 'About', emoji: '📐' },
+  { id: 'achievements', label: 'Wins', emoji: '🏆' },
   { id: 'skills', label: 'Skills', emoji: '🧰' },
   { id: 'experience', label: 'Experience', emoji: '💼' },
+  { id: 'msc', label: 'MSc Project', emoji: '🎓' },
   { id: 'projects', label: 'Projects', emoji: '🧪' },
   { id: 'education', label: 'Education', emoji: '🎓' },
-  { id: 'chat', label: 'AI Chat', emoji: '✨' },
+  { id: 'certifications', label: 'Certs', emoji: '📜' },
   { id: 'contact', label: 'Contact', emoji: '📬' }
 ] as const;
 
@@ -47,21 +48,21 @@ export const SKILL_DOMAINS: SkillDomain[] = [
 ];
 
 export const EXPERIENCE_ITEMS: ExperienceItem[] = [
-  { title: 'Data Scientist Specialist', client: 'Accenture · Global QSR Brand', timeline: 'Jul 2023 – Present',
+  { title: 'Multi-Country Forecasting System', client: 'Accenture · Global QSR Brand', timeline: 'Jul 2023 – Present',
     summary: 'Multi-country sales & guest-count forecasting system for long-range planning.',
     bullets: [
       'Built ensemble forecasts up to 48 months ahead using Prophet, Theta, MSTL, LightGBM across 6 countries and macroeconomic indicators.',
       'Created a horizon-aware evaluation framework across 450+ models; reached 97–99% accuracy for 24-month forecasts.',
       'Shipped Docker + GitHub Actions MLOps pipeline with SonarQube, Snyk, JFrog, Airflow, Astronomer, and AWS Fargate.'
     ], tags: ['Time Series','MLOps','AWS Fargate','Airflow','LightGBM'] },
-  { title: 'Data Scientist Specialist', client: 'Accenture · Water Treatment Brand', timeline: 'Jul 2023 – Present',
+  { title: 'Late-Payment Risk Prediction', client: 'Accenture · Water Treatment Brand', timeline: 'Jul 2023 – Present',
     summary: 'Customer-level late-payment prediction, calibrated risk scoring & AR forecasting.',
     bullets: [
       'Selected 50 features from 1000+ derived features; XGBoost models for 10K+ monthly customer base with 90% AUC due-month.',
       'Reduced overdue amount by 38%, lowered AR by 15%, increased collections by 12% post go-live.',
       'Power BI dashboards delivering 95–98% accuracy across Not Yet Due, Current Due, and Over Due categories.'
     ], tags: ['XGBoost','Risk Scoring','Power BI','AR Forecasting','Collections'] },
-  { title: 'Data Science POCs', client: 'Power Utility & Liquor Brand Clients', timeline: 'Accenture',
+  { title: 'Cash-Flow & Marketing Analytics', client: 'Power Utility & Liquor Brand Clients', timeline: 'Accenture',
     summary: 'Forecasting & marketing analytics prototypes for cash-flow accuracy and customer growth.',
     bullets: [
       'B2C cash-flow forecasting over 6M+ records: Cash-In accuracy 98% (from 70%), Cash-Out 93% (from 64%).',

@@ -116,12 +116,13 @@ export const DataFloatIcons = () => {
 /* ───────── Decorative corner symbols per section ───────── */
 type CornerIcons = { bottomLeft?: string; bottomRight?: string };
 const SECTION_CORNERS: Record<string, CornerIcons> = {
-  foundation: { bottomRight: '📐' },
+  achievements: { bottomLeft: '🏆', bottomRight: '📈' },
   skills: { bottomLeft: '🔧', bottomRight: '⚡' },
   experience: { bottomLeft: '💼', bottomRight: '📋' },
+  msc: { bottomLeft: '📐', bottomRight: '📊' },
   projects: { bottomLeft: '🧪', bottomRight: '🔬' },
   education: { bottomLeft: '🎓', bottomRight: '📜' },
-  chat: { bottomRight: '🤖' },
+  certifications: { bottomLeft: '📜', bottomRight: '🏅' },
   contact: { bottomLeft: '✉️', bottomRight: '📡' }
 };
 

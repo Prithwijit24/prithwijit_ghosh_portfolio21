@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { NAV_SECTIONS, NAV_CENTER_SECTIONS, PROFILE_LINKS } from '../data';
 import { GitHubIcon, LinkedInIcon, DownloadIcon, MenuIcon, CloseIcon } from './Icons';
+import { InterviewChatModal } from './InterviewChatModal';
 
 export const SiteNav = () => {
   const [activeId, setActiveId] = useState<string>(NAV_SECTIONS[0].id);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -64,6 +66,7 @@ export const SiteNav = () => {
           </ul>
         </div>
         <div className="site-nav-right">
+          <button type="button" className="site-nav-action" onClick={() => setIsChatOpen(true)}>Interview Me</button>
           <a href="#contact"
             className={`site-nav-action${activeId === 'contact' ? ' site-nav-action--active' : ''}`}
             onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
@@ -101,6 +104,9 @@ export const SiteNav = () => {
           ))}
         </ul>
         <div className="site-nav-mobile-social">
+          <button type="button" className="site-nav-action" onClick={() => { setIsChatOpen(true); setIsMenuOpen(false); }}>
+            Interview Me
+          </button>
           <a href={PROFILE_LINKS.resume} target="_blank" rel="noopener noreferrer" className="site-nav-action">
             <DownloadIcon className="site-nav-action-icon" />
             <span>Resume</span>
@@ -113,6 +119,7 @@ export const SiteNav = () => {
           </a>
         </div>
       </div>
+      <InterviewChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </header>
   );
 };

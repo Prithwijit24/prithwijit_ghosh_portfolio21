@@ -10,9 +10,9 @@
     "semantic_hash": "df0397d4a77f670f65fa1a833c109568"
   },
   "/home/prithwijit/Downloads/portfolio_app/src/main.tsx": {
-    "mtime": 1782047578.9268804,
-    "ast_hash": "105c9b244fb351f90eea2f0ddff39233",
-    "semantic_hash": "105c9b244fb351f90eea2f0ddff39233"
+    "mtime": 1782056730.436633,
+    "ast_hash": "5bebc252a56e20793e683bc734dae20c",
+    "semantic_hash": "5bebc252a56e20793e683bc734dae20c"
   },
   "/home/prithwijit/Downloads/portfolio_app/tsconfig.app.json": {
     "mtime": 1780394515.956164,
@@ -58,5 +58,55 @@
     "mtime": 1780394515.953136,
     "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
     "semantic_hash": "3b4fcfcf393eca4d264dca4a4663bc37"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/components/Icons.tsx": {
+    "mtime": 1782056609.872271,
+    "ast_hash": "d24016f5b597f35346d44e3f86490746",
+    "semantic_hash": "d24016f5b597f35346d44e3f86490746"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/components/SectionShell.tsx": {
+    "mtime": 1782056853.6778095,
+    "ast_hash": "5170e7fb3f878a7514e6e94699727bf5",
+    "semantic_hash": "5170e7fb3f878a7514e6e94699727bf5"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/components/SiteNav.tsx": {
+    "mtime": 1782056609.8862708,
+    "ast_hash": "6d49832392d973edf1127e2623415345",
+    "semantic_hash": "6d49832392d973edf1127e2623415345"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/components/decorations.tsx": {
+    "mtime": 1782056772.8183851,
+    "ast_hash": "6543d1c76d39ba921b32f9b40872bf31",
+    "semantic_hash": "6543d1c76d39ba921b32f9b40872bf31"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/components/primitives.tsx": {
+    "mtime": 1782056609.877271,
+    "ast_hash": "5fdf53affc84429381d4152e4bbbc75b",
+    "semantic_hash": "5fdf53affc84429381d4152e4bbbc75b"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/data.ts": {
+    "mtime": 1782056772.8293848,
+    "ast_hash": "46d503b2c68fbe1d401a6b8926407854",
+    "semantic_hash": "46d503b2c68fbe1d401a6b8926407854"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/hooks/useTypewriter.ts": {
+    "mtime": 1782056609.8662713,
+    "ast_hash": "63d3f78b1cc1548b6114529e7606dc7a",
+    "semantic_hash": "63d3f78b1cc1548b6114529e7606dc7a"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/src/theme.ts": {
+    "mtime": 1782056609.8612714,
+    "ast_hash": "b37464bcbafbed20956885a9b3fec0af",
+    "semantic_hash": "b37464bcbafbed20956885a9b3fec0af"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/docs/superpowers/plans/2026-06-21-portfolio-redesign.md": {
+    "mtime": 1782055038.5075583,
+    "ast_hash": "6ce416e9a41e89d8cd9680349a99241e",
+    "semantic_hash": "6ce416e9a41e89d8cd9680349a99241e"
+  },
+  "/home/prithwijit/Downloads/portfolio_app/docs/superpowers/specs/2026-06-21-portfolio-redesign-design.md": {
+    "mtime": 1782053959.1532917,
+    "ast_hash": "6aab0f6f035f39379a3cb48240781797",
+    "semantic_hash": "6aab0f6f035f39379a3cb48240781797"
   }
 }

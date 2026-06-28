@@ -1,4 +1,11 @@
 import { HeroSignalPanel } from './HeroSignalPanel';
 
-/* Placeholder wrapper — real parallax layers added in Phase 4 Task 4.1 */
-export const HeroScene = () => <HeroSignalPanel />;
+export const HeroScene = () => (
+  <div className="hero-scene scene-3d">
+    <div className="hero-scene-depth hero-scene-depth--back" aria-hidden="true" />
+    <div className="hero-scene-depth hero-scene-depth--mid" aria-hidden="true" />
+    <div className="hero-scene-panel">
+      <HeroSignalPanel />
+    </div>
+  </div>
+);
