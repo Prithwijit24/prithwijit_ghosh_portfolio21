@@ -1,0 +1,72 @@
+name: CI / CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel an in-progress run when a newer commit is pushed to the same ref.
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint, typecheck & build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # `npm run build` is `tsc -b && vite build`, so this gates on both
+      # the TypeScript typecheck and the production build.
+      - name: Typecheck & build
+        run: npm run build
+
+  deploy:
+    name: Deploy to Vercel
+    needs: ci
+    # Only deploy on a push to main — never on pull requests.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build for production
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: echo "url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})" >> "$GITHUB_OUTPUT"
