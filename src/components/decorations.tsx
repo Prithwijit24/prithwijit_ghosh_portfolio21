@@ -1,5 +1,4 @@
-import { type CSSProperties, useEffect, useMemo, useRef, useState } from 'react';
-import { DS_ICONS } from '../data';
+import { useEffect, useRef, useState } from 'react';
 
 /* ───────── Canvas data network ───────── */
 export const DataNetworkCanvas = () => {
@@ -17,60 +16,83 @@ export const DataNetworkCanvas = () => {
     resize();
     window.addEventListener('resize', resize);
 
-    const particles: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
-    const COUNT = 70;
+    const PALETTE = [
+      [244, 63, 94],   // rose
+      [245, 158, 11],  // amber
+      [16, 185, 129],  // emerald
+      [14, 165, 233],  // sky
+      [139, 92, 246],  // violet
+    ];
+    type P = { x: number; y: number; z: number; vx: number; vy: number; r: number; c: number[]; sx: number; sy: number };
+    const particles: P[] = [];
+    const COUNT = 78;
     for (let i = 0; i < COUNT; i++) {
       particles.push({
         x: Math.random() * w, y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        r: 1.5 + Math.random() * 2.5
+        z: 0.18 + Math.random() * 0.82,
+        vx: (Math.random() - 0.5) * 0.62,
+        vy: (Math.random() - 0.5) * 0.62,
+        r: 1.5 + Math.random() * 2.4,
+        c: PALETTE[(Math.random() * PALETTE.length) | 0],
+        sx: 0, sy: 0
       });
     }
 
+    const DIST = 150;
+    const cam = { x: 0, y: 0 };
+    let t = 0;
     let animId: number;
     const draw = () => {
+      t += 1;
       ctx!.clearRect(0, 0, w, h);
+
+      // gentle auto-sway + mouse parallax — nearer points shift more, revealing depth
+      const targetX = Math.sin(t * 0.011) * 30 + (mouse.current.x > -9000 ? (mouse.current.x - w / 2) * 0.09 : 0);
+      const targetY = Math.cos(t * 0.009) * 18 + (mouse.current.y > -9000 ? (mouse.current.y - h / 2) * 0.09 : 0);
+      cam.x += (targetX - cam.x) * 0.16;
+      cam.y += (targetY - cam.y) * 0.16;
 
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
         if (p.x < 0 || p.x > w) p.vx *= -1;
         if (p.y < 0 || p.y > h) p.vy *= -1;
-
-        const dx = p.x - mouse.current.x;
-        const dy = p.y - mouse.current.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          p.x -= dx * 0.02;
-          p.y -= dy * 0.02;
-        }
+        p.sx = p.x + cam.x * p.z;
+        p.sy = p.y + cam.y * p.z;
       }
 
       for (let i = 0; i < COUNT; i++) {
         for (let j = i + 1; j < COUNT; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
+          const a = particles[i], b = particles[j];
+          const dx = a.sx - b.sx;
+          const dy = a.sy - b.sy;
           const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < 140) {
+          if (d < DIST) {
+            const dz = (a.z + b.z) / 2;
             ctx!.beginPath();
-            ctx!.moveTo(particles[i].x, particles[i].y);
-            ctx!.lineTo(particles[j].x, particles[j].y);
-            ctx!.strokeStyle = `rgba(251,113,133,${(1 - d / 140) * 0.25})`;
-            ctx!.lineWidth = 0.8;
+            ctx!.moveTo(a.sx, a.sy);
+            ctx!.lineTo(b.sx, b.sy);
+            ctx!.strokeStyle = `rgba(71, 85, 105, ${(1 - d / DIST) * 0.55 * dz})`;
+            ctx!.lineWidth = 0.6 + dz * 1.1;
             ctx!.stroke();
           }
         }
       }
 
-      for (const p of particles) {
-        ctx!.beginPath();
-        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        const grad = ctx!.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2);
-        grad.addColorStop(0, 'rgba(251,113,133,0.7)');
-        grad.addColorStop(0.5, 'rgba(52,211,153,0.4)');
-        grad.addColorStop(1, 'rgba(56,189,248,0)');
+      // draw far points first so nearer ones sit on top (depth ordering)
+      const order = particles.slice().sort((a, b) => a.z - b.z);
+      for (const p of order) {
+        const [cr, cg, cb] = p.c;
+        const size = p.r * (0.55 + p.z);
+        const halo = size * 2.8;
+        const a0 = 0.4 + p.z * 0.55;
+        const grad = ctx!.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, halo);
+        grad.addColorStop(0, `rgba(${cr},${cg},${cb},${a0})`);
+        grad.addColorStop(0.45, `rgba(${cr},${cg},${cb},${a0 * 0.45})`);
+        grad.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
         ctx!.fillStyle = grad;
+        ctx!.beginPath();
+        ctx!.arc(p.sx, p.sy, halo, 0, Math.PI * 2);
         ctx!.fill();
       }
 
@@ -92,25 +114,6 @@ export const DataNetworkCanvas = () => {
   }, []);
 
   return <canvas ref={canvasRef} className="hero-canvas" aria-hidden="true" />;
-};
-
-/* ───────── Data science floating icons ───────── */
-export const DataFloatIcons = () => {
-  const icons = useMemo(() =>
-    DS_ICONS.map((ic, i) => ({
-      icon: ic,
-      left: `${(i * 7.3 + 2) % 100}%`,
-      delay: `${(i * -1.4) % 10}s`,
-      duration: `${14 + (i * 0.9) % 8}s`,
-      size: `${1.2 + (i * 0.15) % 1.2}rem`
-    })), []);
-  return (
-    <div className="data-float-icons" aria-hidden="true">
-      {icons.map(({ icon, left, delay, duration, size }) => (
-        <span key={icon} className="data-float-icon" style={{ left, animationDelay: delay, animationDuration: duration, fontSize: size }}>{icon}</span>
-      ))}
-    </div>
-  );
 };
 
 /* ───────── Decorative corner symbols per section ───────── */
@@ -136,63 +139,6 @@ export const SectionCorners = ({ section }: { section: string }) => {
     </div>
   );
 };
-
-/* ───────── Large education scholar icon ───────── */
-export const ScholarDecor = () => (
-  <div className="scholar-decor" aria-hidden="true">
-    <div className="scholar-hat">
-      <svg viewBox="0 0 120 80" className="scholar-svg">
-        <defs>
-          <linearGradient id="hatGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#fb7185" />
-            <stop offset="50%" stopColor="#fbbf24" />
-            <stop offset="100%" stopColor="#4ade80" />
-          </linearGradient>
-          <linearGradient id="hatGrad2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#38bdf8" />
-            <stop offset="100%" stopColor="#0ea5e9" />
-          </linearGradient>
-        </defs>
-        <path d="M60 5 L5 35 L60 65 L115 35 Z" fill="url(#hatGrad)" opacity="0.3">
-          <animate attributeName="opacity" values="0.2;0.5;0.2" dur="4s" repeatCount="indefinite" />
-        </path>
-        <path d="M60 15 L20 37 L60 59 L100 37 Z" fill="url(#hatGrad)" opacity="0.5">
-          <animate attributeName="opacity" values="0.4;0.7;0.4" dur="4s" begin="1s" repeatCount="indefinite" />
-        </path>
-        <path d="M60 25 L35 39 L60 53 L85 39 Z" fill="url(#hatGrad)" opacity="0.7">
-          <animate attributeName="opacity" values="0.6;0.9;0.6" dur="4s" begin="2s" repeatCount="indefinite" />
-        </path>
-        <rect x="57" y="60" width="6" height="15" fill="url(#hatGrad2)" opacity="0.6" rx="2">
-          <animate attributeName="height" values="12;16;12" dur="3s" repeatCount="indefinite" />
-        </rect>
-
-        <circle cx="60" cy="35" r="18" fill="none" stroke="rgba(251,113,133,0.2)" strokeWidth="1.5">
-          <animate attributeName="r" values="16;22;16" dur="5s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.2;0.5;0.2" dur="5s" repeatCount="indefinite" />
-        </circle>
-        <circle cx="60" cy="35" r="10" fill="none" stroke="rgba(52,211,153,0.25)" strokeWidth="1.5">
-          <animate attributeName="r" values="8;14;8" dur="5s" begin="1.5s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.25;0.6;0.25" dur="5s" begin="1.5s" repeatCount="indefinite" />
-        </circle>
-
-        {[0, 60, 120, 180, 240, 300].map((angle, i) => (
-          <text key={i} x={60 + Math.cos(angle * Math.PI / 180) * 28} y={35 + Math.sin(angle * Math.PI / 180) * 28}
-            textAnchor="middle" dominantBaseline="central" fontSize="10" opacity="0.6">
-            <animate attributeName="opacity" values="0.3;0.8;0.3" dur={`${3 + i * 0.5}s`} repeatCount="indefinite" />
-            {['📊','📈','🧮','📉','🔢','💡'][i]}
-          </text>
-        ))}
-      </svg>
-    </div>
-    <div className="scholar-ring">
-      {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
-        <span key={i} className="scholar-ring-icon" style={{ '--i': i } as CSSProperties}>
-          {['🎓','📚','📐','📊','🧮','📜','🔬','💡'][i]}
-        </span>
-      ))}
-    </div>
-  </div>
-);
 
 export const CursorGlow = () => {
   const glowRef = useRef<HTMLDivElement>(null);

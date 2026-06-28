@@ -11,15 +11,22 @@ import {
   CursorGlow, ScrollProgress, BackToTop, SectionCorners
 } from './components/decorations';
 import { SiteNav } from './components/SiteNav';
+import { SceneFx } from './components/SceneFx';
+import { ExperienceViz } from './components/ExperienceViz';
+import { ProjectArch, type ArchKind } from './components/ProjectArch';
 import { Hero } from './sections/Hero';
 import {
   GitHubIcon, LinkedInIcon
 } from './components/Icons';
 
+/* per-project architecture diagrams, in PROJECTS order */
+const PROJECT_ARCH: ArchKind[] = ['recommender', 'fraud', 'travel', 'music'];
+
 /* ───────── Section components ───────── */
 
 const SkillsSection = () => (
   <section id="skills" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
+    <SceneFx variant="flow" accent={[16, 185, 129]} />
     <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="🧰" title="Skills & Expertise" /></FadeIn>
       <div className="skills-grid">
@@ -50,14 +57,13 @@ const ExperienceSection = () => (
   <section id="experience" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
     <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="💼" title="Professional Experience" /></FadeIn>
-      <div className="experience-list">
-        {EXPERIENCE_ITEMS.map((item, index) => (
-          <FadeIn key={`${item.client}-${item.summary}`} delay={index * 100} direction="left">
-            <div className="experience-row">
-              <div className="timeline-node" aria-hidden="true">
-                <div className="timeline-dot" style={{ animationDelay: `${index * 0.3}s` }} />
-                {index < EXPERIENCE_ITEMS.length - 1 && <div className="timeline-line" />}
-              </div>
+      <div className="experience-layout">
+        <FadeIn delay={80} direction="left">
+          <div className="experience-rail" aria-hidden="true"><ExperienceViz /></div>
+        </FadeIn>
+        <div className="experience-list">
+          {EXPERIENCE_ITEMS.map((item, index) => (
+            <FadeIn key={`${item.client}-${item.summary}`} delay={index * 100} direction="left">
               <TiltCard className="experience-card">
                 <h3 className="experience-role-heading">{item.title}</h3>
                 <div className="experience-meta-row">
@@ -72,9 +78,9 @@ const ExperienceSection = () => (
                   {item.tags.map((t, i) => <span key={t} className={`tag-chip skill-pill--${['blossom','mint','sunshine','sky'][i % 4]}`}>{t}</span>)}
                 </div>
               </TiltCard>
-            </div>
-          </FadeIn>
-        ))}
+            </FadeIn>
+          ))}
+        </div>
       </div>
     </div>
     <SectionCorners section="experience" />
@@ -85,23 +91,30 @@ const ProjectsSection = () => (
   <section id="projects" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
     <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="🧪" title="Portfolio Projects" /></FadeIn>
-      <div className="project-grid">
-        {PROJECTS.slice(0, 3).map((project, index) => (
+      <div className="project-list">
+        {PROJECTS.map((project, index) => (
           <FadeIn key={project.title} delay={index * 80}>
-            <div className="experience-row">
+            <div className="project-row">
               <TiltCard className="experience-card project-card">
-              {project.timeline && <p className="experience-eyebrow">{project.timeline}</p>}
-              <h3 className="project-card-heading">{project.title}</h3>
-              <ul className="detail-list">
-                {project.bullets.map(b => <li key={b}>{b}</li>)}
-              </ul>
-              <div className="compact-tags">
-                {project.tags.map((t, i) => <span key={t} className={`tag-chip skill-pill--${['blossom','mint','sunshine','sky'][i % 4]}`}>{t}</span>)}
+                {project.timeline && <p className="experience-eyebrow">{project.timeline}</p>}
+                <h3 className="project-card-heading">{project.title}</h3>
+                <ul className="detail-list">
+                  {project.bullets.map(b => <li key={b}>{b}</li>)}
+                </ul>
+                <div className="compact-tags">
+                  {project.tags.map((t, i) => <span key={t} className={`tag-chip skill-pill--${['blossom','mint','sunshine','sky'][i % 4]}`}>{t}</span>)}
+                </div>
+                {project.link && (
+                  <a className="project-repo-link" href={project.link} target="_blank" rel="noopener noreferrer">
+                    <GitHubIcon className="project-repo-icon" /> View repository
+                  </a>
+                )}
+              </TiltCard>
+              <div className="project-arch-cell" aria-hidden="true">
+                <ProjectArch kind={PROJECT_ARCH[index]} />
               </div>
-              {project.link && <a className="text-link" href={project.link} target="_blank" rel="noopener noreferrer">View repository</a>}
-            </TiltCard>
-          </div>
-        </FadeIn>
+            </div>
+          </FadeIn>
         ))}
       </div>
       <FadeIn delay={280}>
@@ -122,6 +135,7 @@ const ProjectsSection = () => (
 
 const EducationSection = () => (
   <section id="education" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section edu-section">
+    <SceneFx variant="orbits" accent={[244, 63, 94]} />
     <div className="max-w-6xl mx-auto">
       <FadeIn><SectionHeading emoji="🎓" title="Education" /></FadeIn>
       <div className="education-grid">
@@ -209,6 +223,7 @@ export default function App() {
 
       {/* ───── CONTACT ───── */}
       <section id="contact" className="contact-page-section px-6 bg-spring-section blend-section scroll-section">
+        <SceneFx variant="ripples" accent={[56, 189, 248]} />
         <div className="max-w-4xl mx-auto contact-section">
           <FadeIn><SectionHeading emoji="📬" title="Get in Touch" /></FadeIn>
           <FadeIn delay={100}>

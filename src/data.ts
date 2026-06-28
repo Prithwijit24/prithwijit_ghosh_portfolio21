@@ -4,10 +4,8 @@ export const NAV_SECTIONS = [
   { id: 'achievements', label: 'Wins', emoji: '🏆' },
   { id: 'skills', label: 'Skills', emoji: '🧰' },
   { id: 'experience', label: 'Experience', emoji: '💼' },
-  { id: 'msc', label: 'MSc Project', emoji: '🎓' },
   { id: 'projects', label: 'Projects', emoji: '🧪' },
   { id: 'education', label: 'Education', emoji: '🎓' },
-  { id: 'certifications', label: 'Certs', emoji: '📜' },
   { id: 'contact', label: 'Contact', emoji: '📬' }
 ] as const;
 
@@ -22,15 +20,6 @@ export const PROFILE_LINKS = {
   linkedin: 'https://www.linkedin.com/in/prithwijit-ghosh-datascience/',
   resume: new URL('./Prithwijit_Ghosh_Resume_20260523.pdf', import.meta.url).href
 } as const;
-
-export const ROLES = [
-  'Data Scientist',
-  'Forecasting Engineer',
-  'MLOps Specialist',
-  'IIT Kanpur Alumnus'
-];
-
-export const DS_ICONS = ['📊','📈','🔢','📉','🧮','💻','📀','🔬','🤖','📡','🧠','💾','🔣','📋','🗂️'];
 
 import type { SpringAccent } from './theme';
 
@@ -51,39 +40,59 @@ export const EXPERIENCE_ITEMS: ExperienceItem[] = [
   { title: 'Multi-Country Forecasting System', client: 'Accenture · Global QSR Brand', timeline: 'Jul 2023 – Present',
     summary: 'Multi-country sales & guest-count forecasting system for long-range planning.',
     bullets: [
-      'Built ensemble forecasts up to 48 months ahead using Prophet, Theta, MSTL, LightGBM across 6 countries and macroeconomic indicators.',
-      'Created a horizon-aware evaluation framework across 450+ models; reached 97–99% accuracy for 24-month forecasts.',
-      'Shipped Docker + GitHub Actions MLOps pipeline with SonarQube, Snyk, JFrog, Airflow, Astronomer, and AWS Fargate.'
+      'Ensemble forecasts up to 48 months ahead (Prophet, Theta, MSTL, LightGBM) across 6 countries, blended with macroeconomic indicators.',
+      'Horizon-aware evaluation framework spanning 450+ models — 97–99% accuracy on 24-month forecasts.',
+      'Shipped an MLOps pipeline on Docker, GitHub Actions, Airflow, Astronomer and AWS Fargate, gated by SonarQube, Snyk and JFrog.'
     ], tags: ['Time Series','MLOps','AWS Fargate','Airflow','LightGBM'] },
   { title: 'Late-Payment Risk Prediction', client: 'Accenture · Water Treatment Brand', timeline: 'Jul 2023 – Present',
     summary: 'Customer-level late-payment prediction, calibrated risk scoring & AR forecasting.',
     bullets: [
-      'Selected 50 features from 1000+ derived features; XGBoost models for 10K+ monthly customer base with 90% AUC due-month.',
-      'Reduced overdue amount by 38%, lowered AR by 15%, increased collections by 12% post go-live.',
-      'Power BI dashboards delivering 95–98% accuracy across Not Yet Due, Current Due, and Over Due categories.'
+      'Selected 50 of 1000+ engineered features; XGBoost across a 10K+ monthly customer base, reaching 90% due-month AUC.',
+      'Cut overdue amounts by 38%, lowered AR by 15% and lifted collections by 12% post go-live.',
+      'Power BI dashboards delivering 95–98% accuracy across Not Yet Due, Current Due and Over Due categories.'
     ], tags: ['XGBoost','Risk Scoring','Power BI','AR Forecasting','Collections'] },
   { title: 'Cash-Flow & Marketing Analytics', client: 'Power Utility & Liquor Brand Clients', timeline: 'Accenture',
     summary: 'Forecasting & marketing analytics prototypes for cash-flow accuracy and customer growth.',
     bullets: [
-      'B2C cash-flow forecasting over 6M+ records: Cash-In accuracy 98% (from 70%), Cash-Out 93% (from 64%).',
-      'Subscription behavior, campaigns, funnels, up-sell, cross-sell, churn propensity, and RFM segmentation.'
+      'B2C cash-flow forecasting over 6M+ records — Cash-In accuracy 98% (from 70%), Cash-Out 93% (from 64%).',
+      'Marketing analytics: subscription behavior, campaigns, funnels, up-sell, cross-sell, churn propensity and RFM segmentation.'
     ], tags: ['Cash Flow','RFM','Marketing Analytics','Dashboards'] }
 ];
 
 export const PROJECTS: ProjectItem[] = [
-  { title: 'Demographic-Aware Recommender', timeline: 'Jun 2025 – Mar 2026',
-    summary: 'Facial-embedding recommendation engine with demographic prediction & bias-aware LangChain agent.',
-    bullets: ['Predicted age, gender, race with 97% accuracy using facial embeddings.','Containerized Streamlit app on Hugging Face.'],
-    tags: ['FaceNet','LangChain','Streamlit','Hugging Face'] },
-  { title: 'Real-Time Fraud Detection', timeline: 'Jan 2026 – Mar 2026',
+  { title: 'Agentic Product Recommender', timeline: 'Jun 2025 – Mar 2026',
+    summary: 'Facial-embedding demographic prediction feeding a bias-aware LangChain agent that recommends products.',
+    bullets: [
+      'FaceNet 512-dim embeddings on 23K UTKFace images — 98% gender (SVM), 94% race (KNN), 5.8 age MAPE (LGBM).',
+      'Bias-aware LangChain agent turns predicted demographics into tailored product recommendations.',
+      'End-to-end Streamlit app containerized and deployed on Hugging Face.'
+    ],
+    link: 'https://github.com/Prithwijit24/product_recommendation_with_agent',
+    tags: ['LangChain','FaceNet','Streamlit','Recommender'] },
+  { title: 'Credit Card Fraud Detection', timeline: 'Jan 2026 – Mar 2026',
     summary: 'Scalable transaction monitoring for low-latency fraud inference and explainable risk scores.',
-    bullets: ['Streaming ML inference & explainable scoring.','Production deployment with Docker, Kubernetes, FastAPI.'],
+    bullets: [
+      'Streaming ML inference with explainable risk scoring on highly imbalanced transaction data.',
+      'Production deployment with Docker, Kubernetes and FastAPI.'
+    ],
+    link: 'https://github.com/Prithwijit24/credit_card_fraud_detection/tree/fraud_v1',
     tags: ['Fraud Detection','FastAPI','Kubernetes','Streaming ML'] },
-  { title: 'Age, Race & Gender Detection',
-    summary: 'UTKFace preprocessing and facial embeddings project.',
-    bullets: ['23K UTKFace images with augmentation; FaceNet → 512-dim embeddings.','98% SVM gender, 94% KNN race, 5.8 age MAPE with LGBM.','End-to-end Streamlit app deployed.'],
-    link: 'https://github.com/Prithwijit24/age-identification',
-    tags: ['Computer Vision','FaceNet','SVM','LGBM'] }
+  { title: 'Agentic Travel Planner',
+    summary: 'An LLM agent that plans end-to-end trips — itineraries, budgets and routes — using external tools.',
+    bullets: [
+      'LangGraph agent orchestrates tools for destinations, routes and day-by-day itineraries.',
+      'Retrieval-augmented context produces personalized, budget-aware travel plans.'
+    ],
+    link: 'https://github.com/Prithwijit24/agentic_travel_planner',
+    tags: ['LangGraph','AI Agents','RAG','FastAPI'] },
+  { title: 'Music Recommendation System',
+    summary: 'Personalized music recommendations from listening patterns and audio/content features.',
+    bullets: [
+      'Hybrid recommender blending collaborative filtering with content-based audio features.',
+      'Embedding-based similarity for next-track and playlist suggestions.'
+    ],
+    link: 'https://github.com/Prithwijit24/music_recommendation',
+    tags: ['Recommender','Embeddings','Collaborative Filtering','Python'] }
 ];
 
 export const ACHIEVEMENTS_DATA = [
