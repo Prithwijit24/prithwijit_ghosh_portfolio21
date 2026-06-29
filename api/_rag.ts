@@ -10,6 +10,8 @@
 //   GROQ_API_KEY / GROQ_API_KEYS          (free: https://console.groq.com)
 //   OPENROUTER_API_KEY / OPENROUTER_API_KEYS  (free: https://openrouter.ai)
 
+import { HR_QA } from './_hr';
+
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 const EMB_MODEL = 'gemini-embedding-001';
 // Each Gemini model carries its own quota — failing over across them multiplies
@@ -74,7 +76,10 @@ const KB: string[] = [
 
   `Hobbies & interests: Travel, painting, and reading mathematics / books. Outside data pipelines, Prithwijit explores AI agents, contributes to open-source ML projects, and follows the latest in MLOps and LLM research.`,
 
-  `Contact: email ghoshprithwijit39@gmail.com, phone +91-7595986858 / +91-9230358950, GitHub github.com/Prithwijit24, LinkedIn linkedin.com/in/prithwijit-ghosh-datascience. Open to data science roles, collaborations, forecasting systems, MLOps and analytics problems.`
+  `Contact: email ghoshprithwijit39@gmail.com, phone +91-7595986858 / +91-9230358950, GitHub github.com/Prithwijit24, LinkedIn linkedin.com/in/prithwijit-ghosh-datascience. Open to data science roles, collaborations, forecasting systems, MLOps and analytics problems.`,
+
+  // HR / behavioral interview Q&A so the bot answers common HR questions consistently.
+  ...HR_QA
 ];
 
 let kbVectors: number[][] | null = null;
@@ -103,6 +108,16 @@ async function embedOne(text: string, taskType: 'RETRIEVAL_DOCUMENT' | 'RETRIEVA
 
 const embed = (texts: string[], taskType: 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY') =>
   Promise.all(texts.map((t) => embedOne(t, taskType)));
+
+// Embed the KB in sequential batches so a large knowledge base doesn't fire
+// 100+ concurrent embedding calls on cold start (which can trip rate limits).
+async function embedDocs(texts: string[], batchSize = 16): Promise<number[][]> {
+  const out: number[][] = [];
+  for (let i = 0; i < texts.length; i += batchSize) {
+    out.push(...await embed(texts.slice(i, i + batchSize), 'RETRIEVAL_DOCUMENT'));
+  }
+  return out;
+}
 
 // Lexical fallback when embeddings are unavailable (e.g. all Gemini keys rate-limited).
 const keywordRetrieve = (query: string, k: number): string[] => {
@@ -186,7 +201,7 @@ export async function ragAnswer(query: string, debug = false): Promise<{ answer?
   // retrieve context — semantic embeddings, with a lexical fallback if those are rate-limited
   let context: string;
   try {
-    if (!kbVectors) kbVectors = await embed(KB, 'RETRIEVAL_DOCUMENT');
+    if (!kbVectors) kbVectors = await embedDocs(KB);
     const [qv] = await embed([q], 'RETRIEVAL_QUERY');
     context = KB.map((text, i) => ({ text, score: cosine(qv, kbVectors![i]) }))
       .sort((a, b) => b.score - a.score).slice(0, 5).map((r) => r.text).join('\n\n---\n\n');
