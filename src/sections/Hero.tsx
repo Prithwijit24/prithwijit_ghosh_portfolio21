@@ -6,7 +6,7 @@ import { HeroScene } from '../components/scenes/HeroScene';
 import { DownloadIcon } from '../components/Icons';
 
 export const Hero = () => {
-  const [storyOpen, setStoryOpen] = useState(true);
+  const [storyOpen, setStoryOpen] = useState(false);
   return (
     <section id="home" className="hero-section px-6 scroll-section">
       <DataNetworkCanvas />

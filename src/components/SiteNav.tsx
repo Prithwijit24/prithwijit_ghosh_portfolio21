@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { NAV_SECTIONS, NAV_CENTER_SECTIONS, PROFILE_LINKS } from '../data';
 import { GitHubIcon, LinkedInIcon, DownloadIcon, MenuIcon, CloseIcon } from './Icons';
 import { InterviewChatModal } from './InterviewChatModal';
@@ -66,7 +67,6 @@ export const SiteNav = () => {
           </ul>
         </div>
         <div className="site-nav-right">
-          <button type="button" className="site-nav-action" onClick={() => setIsChatOpen(true)}>Interview Me</button>
           <a href="#contact"
             className={`site-nav-action${activeId === 'contact' ? ' site-nav-action--active' : ''}`}
             onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
@@ -104,9 +104,6 @@ export const SiteNav = () => {
           ))}
         </ul>
         <div className="site-nav-mobile-social">
-          <button type="button" className="site-nav-action" onClick={() => { setIsChatOpen(true); setIsMenuOpen(false); }}>
-            Interview Me
-          </button>
           <a href={PROFILE_LINKS.resume} target="_blank" rel="noopener noreferrer" className="site-nav-action">
             <DownloadIcon className="site-nav-action-icon" />
             <span>Resume</span>
@@ -119,6 +116,13 @@ export const SiteNav = () => {
           </a>
         </div>
       </div>
+      {!isChatOpen && createPortal(
+        <button type="button" className="interview-fab" onClick={() => setIsChatOpen(true)} aria-label="Interview me — open AI chat">
+          <span className="interview-fab-icon" aria-hidden="true">🤖</span>
+          <span className="interview-fab-label">Interview Me</span>
+        </button>,
+        document.body
+      )}
       <InterviewChatModal isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </header>
   );

@@ -39,12 +39,11 @@ export const SceneFx = ({ variant, accent }: { variant: FxVariant; accent: numbe
     const lattice: number[][] = [];
     if (variant === 'lattice') for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++) for (let k = -1; k <= 1; k++) lattice.push([i, j, k]);
     const flow: { x: number; y: number }[] = [];
-    if (variant === 'flow') for (let i = 0; i < 130; i++) flow.push({ x: Math.random() * w, y: Math.random() * h });
+    if (variant === 'flow') for (let i = 0; i < 70; i++) flow.push({ x: Math.random() * w, y: Math.random() * h });
 
+    // cheap dot — solid arc with alpha (no per-frame gradient allocation)
     const dot = (x: number, y: number, r: number, a: number) => {
-      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
-      g.addColorStop(0, col(a)); g.addColorStop(1, col(0));
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
+      ctx.fillStyle = col(a); ctx.beginPath(); ctx.arc(x, y, r, 0, 7); ctx.fill();
     };
 
     let t = 0, raf = 0, running = false;

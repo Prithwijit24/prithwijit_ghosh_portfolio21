@@ -1,4 +1,5 @@
 import { type FormEvent, type KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { CloseIcon, LoaderIcon, SendIcon, SparklesIcon } from './Icons';
 
 type InterviewChatModalProps = {
@@ -39,10 +40,16 @@ export const InterviewChatModal = ({ isOpen, onClose }: InterviewChatModalProps)
     setError('');
     setResponse('');
     try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      setResponse('As a Data Scientist from IIT Kanpur with 3 years at Accenture, I specialize in forecasting systems, risk scoring, ML pipelines, Spark/AWS deployment, and NLP-enabled analytics. Ask about a project, model choice, or production workflow.');
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      });
+      const data: { answer?: string; error?: string } = await res.json();
+      if (data.error) setError(data.error);
+      else setResponse(data.answer ?? 'Sorry, I had no answer for that.');
     } catch {
-      setError('My AI clone is currently sleeping.');
+      setError('My AI clone is currently unreachable. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -66,7 +73,7 @@ export const InterviewChatModal = ({ isOpen, onClose }: InterviewChatModalProps)
     }
   };
 
-  return (
+  return createPortal(
     <div className="interview-modal" role="presentation" onMouseDown={onClose}>
       <div
         ref={panelRef}
@@ -86,7 +93,7 @@ export const InterviewChatModal = ({ isOpen, onClose }: InterviewChatModalProps)
             Interview My AI Clone
           </h4>
           <p className="text-spring-muted text-sm mb-2">Ask my digital twin about my background.</p>
-          <p className="chat-demo-note">Demo preview: replies are scripted for now, not a live AI connection.</p>
+          <p className="chat-demo-note">Powered by Gemini with RAG over my résumé &amp; portfolio — answers are grounded in real facts.</p>
           <form onSubmit={handleSubmit} className="chat-form">
             <label className="sr-only" htmlFor="interview-query">Ask a question</label>
             <input
@@ -108,6 +115,7 @@ export const InterviewChatModal = ({ isOpen, onClose }: InterviewChatModalProps)
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

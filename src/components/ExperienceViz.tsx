@@ -18,43 +18,46 @@ const INPUTS = [
   { icon: '⚙️', label: 'Operations', x: 122, y: 82 },
 ];
 
+// modelling bubbles (top) flow into an MLOps / deployment sub-cluster (bottom)
 const BUBBLES = [
-  { t: 'Ensemble', x: 78, y: 265, r: 30, g: 'mint' },
-  { t: 'Embeddings', x: 170, y: 265, r: 25, g: 'sky' },
-  { t: 'Features', x: 48, y: 330, r: 29, g: 'violet' },
-  { t: 'XGBoost', x: 128, y: 330, r: 24, g: 'sky' },
-  { t: 'Bayesian', x: 200, y: 330, r: 22, g: 'rose' },
-  { t: 'MLOps', x: 82, y: 400, r: 23, g: 'amber' },
-  { t: 'Time-Series', x: 172, y: 400, r: 28, g: 'violet' },
-  { t: 'Tuning', x: 52, y: 465, r: 24, g: 'amber' },
-  { t: 'Backtest', x: 128, y: 465, r: 27, g: 'mint' },
-  { t: 'Drift', x: 200, y: 465, r: 21, g: 'rose' },
-  { t: 'Calibrate', x: 122, y: 530, r: 26, g: 'amber' },
+  { t: 'Ensemble', x: 72, y: 262, r: 28, g: 'mint' },
+  { t: 'Embeddings', x: 160, y: 258, r: 24, g: 'sky' },
+  { t: 'Features', x: 44, y: 322, r: 26, g: 'violet' },
+  { t: 'XGBoost', x: 116, y: 325, r: 23, g: 'sky' },
+  { t: 'Bayesian', x: 188, y: 318, r: 22, g: 'rose' },
+  { t: 'Time-Series', x: 78, y: 384, r: 27, g: 'violet' },
+  { t: 'Tuning', x: 158, y: 380, r: 23, g: 'amber' },
+  { t: 'Backtest', x: 48, y: 444, r: 25, g: 'mint' },
+  { t: 'Drift', x: 116, y: 440, r: 20, g: 'rose' },
+  { t: 'Calibrate', x: 184, y: 438, r: 24, g: 'amber' },
+  { t: 'MLOps', x: 74, y: 502, r: 24, g: 'amber' },
+  { t: 'CI/CD', x: 150, y: 500, r: 23, g: 'sky' },
+  { t: 'Docker', x: 58, y: 556, r: 22, g: 'sky' },
+  { t: 'Airflow', x: 128, y: 556, r: 24, g: 'violet' },
+  { t: 'K8s', x: 196, y: 550, r: 19, g: 'rose' },
 ];
 
 const OUTPUTS = [
-  { icon: '📉', label: 'Late-payment', y: 740 },
-  { icon: '📈', label: 'Forecasting', y: 780 },
-  { icon: '🚨', label: 'Anomaly detection', y: 820 },
-  { icon: '⚠️', label: 'Risk scoring', y: 860 },
-  { icon: '🔁', label: 'Churn prediction', y: 900 },
-  { icon: '📦', label: 'Demand planning', y: 940 },
+  { icon: '📉', label: 'Late-payment', y: 772 },
+  { icon: '📈', label: 'Forecasting', y: 812 },
+  { icon: '🚨', label: 'Anomaly detection', y: 852 },
+  { icon: '⚠️', label: 'Risk scoring', y: 892 },
 ];
 
 const CX = 120;
-const GY = 640; // gate centre
+const GY = 672; // gate centre
 
 export const ExperienceViz = () => (
   <div className="experience-flow">
-    <svg viewBox="0 0 240 1010" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Data inputs feed a proprietary modelling layer that branches into predictions such as late-payment, forecasting and anomaly detection">
+    <svg viewBox="0 0 240 945" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Data inputs feed a proprietary modelling and MLOps layer that branches into predictions such as late-payment, forecasting and anomaly detection">
       <defs>
         <marker id="efah" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#94a3b8" /></marker>
         <filter id="efShadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#1e293b" floodOpacity="0.18" /></filter>
         {Object.entries(PAL).map(([k, [c1, c2]]) => (
           <radialGradient key={k} id={`gl-${k}`} cx="34%" cy="26%" r="82%">
-            <stop offset="0" stopColor="#ffffff" stopOpacity="0.85" />
-            <stop offset="46%" stopColor={c1} stopOpacity="0.4" />
-            <stop offset="100%" stopColor={c2} stopOpacity="0.6" />
+            <stop offset="0" stopColor="#ffffff" stopOpacity="0.82" />
+            <stop offset="48%" stopColor={c1} stopOpacity="0.42" />
+            <stop offset="100%" stopColor={c2} stopOpacity="0.55" />
           </radialGradient>
         ))}
       </defs>
@@ -63,7 +66,7 @@ export const ExperienceViz = () => (
       <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="800" letterSpacing="1.5" fill="#647488" fontSize="12" textAnchor="middle">
         <text x={CX} y="20">DATA IN</text>
         <text x={CX} y="210">DATA SCIENCE</text>
-        <text x={CX} y="715">PREDICTIONS</text>
+        <text x={CX} y="748">PREDICTIONS</text>
       </g>
 
       {/* inputs */}
@@ -90,9 +93,9 @@ export const ExperienceViz = () => (
 
       {/* flows: cloud -> gate */}
       <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line" markerEnd="url(#efah)">
-        <path d={`M82 488 C82 545 ${CX} 540 ${CX} ${GY - 42}`} />
-        <path d={`M172 488 C172 545 ${CX} 540 ${CX} ${GY - 42}`} />
-        <path d={`M${CX} 556 L${CX} ${GY - 42}`} />
+        <path d={`M58 578 C58 606 ${CX} 606 ${CX} ${GY - 42}`} />
+        <path d={`M196 569 C196 606 ${CX} 606 ${CX} ${GY - 42}`} />
+        <path d={`M128 580 L${CX} ${GY - 42}`} />
       </g>
 
       {/* glossy bubbles */}
@@ -114,8 +117,8 @@ export const ExperienceViz = () => (
 
       {/* flows: gate -> distribution bus -> outputs */}
       <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line">
-        <path d={`M${CX} ${GY + 42} C${CX} 710 10 705 10 740`} />
-        <path d="M10 740 L10 957" />
+        <path d={`M${CX} ${GY + 42} C${CX} 745 10 740 10 772`} />
+        <path d="M10 772 L10 909" />
       </g>
       <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line" markerEnd="url(#efah)">
         {OUTPUTS.map((o) => <path key={o.label} d={`M10 ${o.y + 17} L15 ${o.y + 17}`} />)}

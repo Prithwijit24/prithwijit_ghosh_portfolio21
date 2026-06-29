@@ -1,17 +1,19 @@
-export type SpringAccent = 'blossom' | 'sunshine' | 'mint' | 'sky';
+export type SpringAccent = 'blossom' | 'sunshine' | 'mint' | 'sky' | 'violet';
 
 export const ACCENT_HEX: Record<SpringAccent, string> = {
   blossom: '#fb7185',
   sunshine: '#fbbf24',
   mint: '#34d399',
-  sky: '#38bdf8'
+  sky: '#38bdf8',
+  violet: '#a78bfa'
 };
 
 export const ACCENT_HEX_SOFT: Record<SpringAccent, string> = {
   blossom: '#fecdd3',
   sunshine: '#fde68a',
   mint: '#a7f3d0',
-  sky: '#bae6fd'
+  sky: '#bae6fd',
+  violet: '#ddd6fe'
 };
 
 /**

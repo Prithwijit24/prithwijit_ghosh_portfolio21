@@ -11,6 +11,8 @@ export const DataNetworkCanvas = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
     let w = 0, h = 0;
     const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
     resize();
@@ -25,7 +27,7 @@ export const DataNetworkCanvas = () => {
     ];
     type P = { x: number; y: number; z: number; vx: number; vy: number; r: number; c: number[]; sx: number; sy: number };
     const particles: P[] = [];
-    const COUNT = 78;
+    const COUNT = 44;
     for (let i = 0; i < COUNT; i++) {
       particles.push({
         x: Math.random() * w, y: Math.random() * h,
@@ -38,10 +40,11 @@ export const DataNetworkCanvas = () => {
       });
     }
 
-    const DIST = 150;
+    const DIST = 140;
     const cam = { x: 0, y: 0 };
     let t = 0;
-    let animId: number;
+    let animId = 0;
+    let running = false;
     const draw = () => {
       t += 1;
       ctx!.clearRect(0, 0, w, h);
@@ -96,9 +99,16 @@ export const DataNetworkCanvas = () => {
         ctx!.fill();
       }
 
-      animId = requestAnimationFrame(draw);
+      if (running) animId = requestAnimationFrame(draw);
     };
-    animId = requestAnimationFrame(draw);
+
+    // only animate while the hero is actually on-screen
+    const io = new IntersectionObserver((entries) => {
+      const vis = entries[0].isIntersecting;
+      if (vis && !running) { running = true; animId = requestAnimationFrame(draw); }
+      else if (!vis && running) { running = false; cancelAnimationFrame(animId); }
+    }, { threshold: 0 });
+    io.observe(canvas);
 
     const onMouse = (e: MouseEvent) => { mouse.current.x = e.clientX; mouse.current.y = e.clientY; };
     const onLeave = () => { mouse.current.x = -9999; mouse.current.y = -9999; };
@@ -106,7 +116,9 @@ export const DataNetworkCanvas = () => {
     window.addEventListener('mouseleave', onLeave);
 
     return () => {
+      running = false;
       cancelAnimationFrame(animId);
+      io.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMouse);
       window.removeEventListener('mouseleave', onLeave);
@@ -125,6 +137,7 @@ const SECTION_CORNERS: Record<string, CornerIcons> = {
   msc: { bottomLeft: '📐', bottomRight: '📊' },
   projects: { bottomLeft: '🧪', bottomRight: '🔬' },
   education: { bottomLeft: '🎓', bottomRight: '📜' },
+  hobbies: { bottomLeft: '📸', bottomRight: '🎨' },
   certifications: { bottomLeft: '📜', bottomRight: '🏅' },
   contact: { bottomLeft: '✉️', bottomRight: '📡' }
 };
@@ -142,51 +155,48 @@ export const SectionCorners = ({ section }: { section: string }) => {
 
 export const CursorGlow = () => {
   const glowRef = useRef<HTMLDivElement>(null);
-  const trailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const trail: { x: number; y: number }[] = [];
-    const MAX_TRAIL = 12;
+    // skip the cursor effect on touch devices and reduced-motion
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.matchMedia?.('(hover: hover) and (pointer: fine)').matches) return;
 
-    const onMove = (e: MouseEvent) => {
-      if (glowRef.current) {
-        glowRef.current.style.transform = `translate(${e.clientX - 50}px, ${e.clientY - 50}px)`;
-      }
-      trail.push({ x: e.clientX, y: e.clientY });
-      if (trail.length > MAX_TRAIL) trail.shift();
-      if (trailRef.current) {
-        const dots = trail.map((p, i) =>
-          `<span class="trail-dot" style="left:${p.x}px;top:${p.y}px;opacity:${(i + 1) / MAX_TRAIL};transform:scale(${(i + 1) / MAX_TRAIL})" />`
-        ).join('');
-        trailRef.current.innerHTML = dots;
-      }
+    const pos = { x: -9999, y: -9999 };
+    let raf = 0, dirty = false;
+    const render = () => {
+      dirty = false;
+      if (glowRef.current) glowRef.current.style.transform = `translate(${pos.x - 50}px, ${pos.y - 50}px)`;
     };
-    window.addEventListener('mousemove', onMove);
-    return () => window.removeEventListener('mousemove', onMove);
+    // coalesce all mousemove events into a single update per animation frame
+    const onMove = (e: MouseEvent) => {
+      pos.x = e.clientX; pos.y = e.clientY;
+      if (!dirty) { dirty = true; raf = requestAnimationFrame(render); }
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf); };
   }, []);
 
-  return (
-    <>
-      <div ref={glowRef} className="cursor-glow" aria-hidden="true" />
-      <div ref={trailRef} className="cursor-trail" aria-hidden="true" />
-    </>
-  );
+  return <div ref={glowRef} className="cursor-glow" aria-hidden="true" />;
 };
 
 export const ScrollProgress = () => {
-  const [progress, setProgress] = useState(0);
+  const fillRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const onScroll = () => {
-      const scrollTop = window.scrollY;
+    let raf = 0, ticking = false;
+    const update = () => {
+      ticking = false;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+      const p = docHeight > 0 ? window.scrollY / docHeight : 0;
+      if (fillRef.current) fillRef.current.style.transform = `scaleX(${p})`;
     };
+    const onScroll = () => { if (!ticking) { ticking = true; raf = requestAnimationFrame(update); } };
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    update();
+    return () => { window.removeEventListener('scroll', onScroll); cancelAnimationFrame(raf); };
   }, []);
   return (
     <div className="scroll-progress-bar" aria-hidden="true">
-      <div className="scroll-progress-fill" style={{ width: `${progress}%` }} />
+      <div ref={fillRef} className="scroll-progress-fill" />
     </div>
   );
 };

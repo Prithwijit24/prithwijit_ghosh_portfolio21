@@ -8,6 +8,7 @@ const PAL: Record<string, [string, string]> = {
   violet: ['#a78bfa', '#7c3aed'],
   rose: ['#fb7185', '#e11d48'],
   amber: ['#fbbf24', '#d97706'],
+  slate: ['#cbd5e1', '#94a3b8'],
 };
 
 const Defs = ({ p }: { p: string }) => (
@@ -25,19 +26,14 @@ const Defs = ({ p }: { p: string }) => (
 );
 
 type NodeT = { p: string; x: number; y: number; w: number; h: number; g: string; label: string; icon?: string; fs?: number; delay?: number };
-const Node = ({ p, x, y, w, h, g, label, icon, fs = 10.5, delay = 0 }: NodeT) => {
+const Node = ({ p, x, y, w, h, g, label, fs = 10.5, delay = 0 }: NodeT) => {
   const rx = Math.min(13, h / 2.4);
   const cx = x + w / 2;
   return (
     <g className="parch-node" style={{ animationDelay: `${delay}s` }}>
       <rect x={x} y={y} width={w} height={h} rx={rx} fill={`url(#${p}-${g})`} stroke="rgba(255,255,255,.6)" strokeWidth="1.1" filter={`url(#${p}sh)`} />
       <ellipse cx={cx} cy={y + h * 0.27} rx={w * 0.4} ry={h * 0.15} fill="rgba(255,255,255,.4)" />
-      {icon
-        ? <>
-            <text x={x + 9} y={y + h / 2 + 5} fontSize={fs + 3}>{icon}</text>
-            <text x={x + 26} y={y + h / 2 + 3.5} fontSize={fs} fontWeight="700" fill="#0f172a" fontFamily="ui-sans-serif,system-ui,sans-serif">{label}</text>
-          </>
-        : <text x={cx} y={y + h / 2 + 3.5} textAnchor="middle" fontSize={fs} fontWeight="700" fill="#0f172a" fontFamily="ui-sans-serif,system-ui,sans-serif">{label}</text>}
+      <text x={cx} y={y + h / 2 + 3.5} textAnchor="middle" fontSize={fs} fontWeight="700" fill="#0f172a" fontFamily="ui-sans-serif,system-ui,sans-serif">{label}</text>
     </g>
   );
 };
@@ -74,16 +70,16 @@ const Recommender = () => {
         <E p={p} d="M292 124 C292 150 294 152 296 176" />
         <E p={p} d="M308 176 C318 150 318 140 308 124" />
         <E p={p} d="M352 101 L372 101" />
-        <Node p={p} x={6} y={28} w={94} h={32} g="mint" icon="📷" label="User Image" delay={0} />
-        <Node p={p} x={6} y={78} w={94} h={32} g="sky" icon="🙂" label="Face Crop" delay={0.2} />
-        <Node p={p} x={6} y={128} w={94} h={32} g="violet" icon="🧬" label="Embed · PCA" delay={0.4} />
-        <Node p={p} x={124} y={34} w={86} h={30} g="amber" label="Age" delay={0.6} />
-        <Node p={p} x={124} y={84} w={86} h={30} g="rose" label="Gender" delay={0.7} />
-        <Node p={p} x={124} y={134} w={86} h={30} g="sky" label="Race" delay={0.8} />
-        <Node p={p} x={124} y={206} w={114} h={32} g="amber" icon="🎛️" label="Preferences" delay={1} />
-        <Node p={p} x={244} y={78} w={108} h={46} g="violet" icon="🤖" label="LangChain Agent" delay={0.9} />
-        <Node p={p} x={250} y={176} w={104} h={30} g="sky" icon="🔎" label="Tavily Search" delay={1.1} />
-        <Node p={p} x={372} y={82} w={102} h={38} g="rose" icon="🛍️" label="Product Picks" delay={1.2} />
+        <Node p={p} x={6} y={28} w={94} h={32} g="slate" label="User Image" delay={0} />
+        <Node p={p} x={6} y={78} w={94} h={32} g="slate" label="Face Crop" delay={0.2} />
+        <Node p={p} x={6} y={128} w={94} h={32} g="mint" label="Embed · PCA" delay={0.4} />
+        <Node p={p} x={124} y={34} w={86} h={30} g="slate" label="Age" delay={0.6} />
+        <Node p={p} x={124} y={84} w={86} h={30} g="slate" label="Gender" delay={0.7} />
+        <Node p={p} x={124} y={134} w={86} h={30} g="slate" label="Race" delay={0.8} />
+        <Node p={p} x={124} y={206} w={114} h={32} g="slate" label="Preferences" delay={1} />
+        <Node p={p} x={244} y={78} w={108} h={46} g="violet" label="LangChain Agent" delay={0.9} />
+        <Node p={p} x={250} y={176} w={104} h={30} g="sky" label="Tavily Search" delay={1.1} />
+        <Node p={p} x={372} y={82} w={102} h={38} g="slate" label="Product Picks" delay={1.2} />
       </svg>
       <figcaption className="arch-caption">Facial demographics feed an LLM agent that web-searches and recommends products.</figcaption>
     </div>
@@ -119,18 +115,18 @@ const Fraud = () => {
         <text x="362" y="184" fontSize="8" fontWeight="700" fill="#047857" fontFamily="ui-sans-serif,system-ui">promote</text>
         <Gate p={p} cx={330} cy={35} label="risk?" />
         <Gate p={p} cx={392} cy={225} label="gate" />
-        <Node p={p} x={6} y={20} w={74} h={30} g="mint" icon="💳" label="Producer" fs={9.5} />
-        <Node p={p} x={92} y={20} w={68} h={30} g="sky" icon="📨" label="Kafka" fs={9.5} delay={0.2} />
-        <Node p={p} x={172} y={20} w={92} h={30} g="violet" icon="🌊" label="Scorer" fs={9.5} delay={0.4} />
-        <Node p={p} x={392} y={6} w={102} h={28} g="rose" icon="🚨" label="Alert Sink" fs={9.5} delay={0.6} />
-        <Node p={p} x={392} y={48} w={102} h={28} g="mint" icon="📈" label="Scored Sink" fs={9.5} delay={0.7} />
-        <Node p={p} x={176} y={128} w={96} h={30} g="amber" icon="🗃️" label="DuckDB" fs={9.5} delay={0.5} />
-        <Node p={p} x={300} y={128} w={104} h={30} g="violet" icon="🧠" label="model.joblib" fs={9} delay={0.6} />
-        <Node p={p} x={6} y={210} w={78} h={30} g="sky" icon="🗄️" label="Historical" fs={9.5} delay={0.3} />
-        <Node p={p} x={96} y={210} w={74} h={30} g="mint" icon="✅" label="Validate" fs={9.5} delay={0.4} />
-        <Node p={p} x={182} y={210} w={74} h={30} g="violet" icon="🧬" label="Features" fs={9.5} delay={0.5} />
-        <Node p={p} x={268} y={210} w={78} h={30} g="amber" icon="📊" label="CV" fs={9.5} delay={0.6} />
-        <Node p={p} x={452} y={248} w={44} h={26} g="rose" label="Abort" fs={9} delay={0.8} />
+        <Node p={p} x={6} y={20} w={74} h={30} g="slate" label="Producer" fs={9.5} />
+        <Node p={p} x={92} y={20} w={68} h={30} g="amber" label="Kafka" fs={9.5} delay={0.2} />
+        <Node p={p} x={172} y={20} w={92} h={30} g="violet" label="Scorer" fs={9.5} delay={0.4} />
+        <Node p={p} x={392} y={6} w={102} h={28} g="slate" label="Alert Sink" fs={9.5} delay={0.6} />
+        <Node p={p} x={392} y={48} w={102} h={28} g="slate" label="Scored Sink" fs={9.5} delay={0.7} />
+        <Node p={p} x={176} y={128} w={96} h={30} g="amber" label="DuckDB" fs={9.5} delay={0.5} />
+        <Node p={p} x={300} y={128} w={104} h={30} g="mint" label="model.joblib" fs={9} delay={0.6} />
+        <Node p={p} x={6} y={210} w={78} h={30} g="slate" label="Historical" fs={9.5} delay={0.3} />
+        <Node p={p} x={96} y={210} w={74} h={30} g="slate" label="Validate" fs={9.5} delay={0.4} />
+        <Node p={p} x={182} y={210} w={74} h={30} g="slate" label="Features" fs={9.5} delay={0.5} />
+        <Node p={p} x={268} y={210} w={78} h={30} g="slate" label="CV" fs={9.5} delay={0.6} />
+        <Node p={p} x={452} y={248} w={44} h={26} g="slate" label="Abort" fs={9} delay={0.8} />
       </svg>
       <figcaption className="arch-caption">Kafka stream-scoring and a training pipeline share one feature store and model.</figcaption>
     </div>
@@ -155,16 +151,16 @@ const Travel = () => {
         <E p={p} d="M362 250 C374 250 374 239 384 239" />
         <E p={p} d="M384 247 C366 258 326 258 312 254" />
         <E p={p} d="M242 252 C196 252 196 150 242 150" />
-        <Node p={p} x={6} y={132} w={58} h={30} g="mint" icon="👤" label="User" fs={9.5} />
-        <Node p={p} x={74} y={132} w={74} h={30} g="sky" icon="🖥️" label="UI / CLI" fs={9.5} delay={0.2} />
-        <Node p={p} x={158} y={132} w={74} h={30} g="violet" icon="⚡" label="FastAPI" fs={9.5} delay={0.4} />
-        <Node p={p} x={242} y={118} w={94} h={46} g="rose" icon="🧭" label="LangGraph" fs={10} delay={0.6} />
-        <Node p={p} x={360} y={40} w={114} h={26} g="amber" icon="🗺️" label="Route worker" fs={9.5} delay={0.8} />
-        <Node p={p} x={360} y={80} w={114} h={26} g="mint" icon="💰" label="Budget worker" fs={9.5} delay={0.9} />
-        <Node p={p} x={360} y={120} w={114} h={26} g="sky" icon="⏱️" label="Timing worker" fs={9.5} delay={1} />
-        <Node p={p} x={242} y={200} w={120} h={28} g="violet" icon="🔎" label="Web · Weather" fs={9} delay={0.7} />
-        <Node p={p} x={242} y={238} w={120} h={28} g="amber" icon="📚" label="Retrieve · Rerank" fs={8.5} delay={0.8} />
-        <Node p={p} x={384} y={224} w={90} h={30} g="mint" icon="🧠" label="Chroma KB" fs={9} delay={0.9} />
+        <Node p={p} x={6} y={132} w={58} h={30} g="slate" label="User" fs={9.5} />
+        <Node p={p} x={74} y={132} w={74} h={30} g="slate" label="UI / CLI" fs={9.5} delay={0.2} />
+        <Node p={p} x={158} y={132} w={74} h={30} g="sky" label="FastAPI" fs={9.5} delay={0.4} />
+        <Node p={p} x={242} y={118} w={94} h={46} g="mint" label="LangGraph" fs={10} delay={0.6} />
+        <Node p={p} x={360} y={40} w={114} h={26} g="slate" label="Route worker" fs={9.5} delay={0.8} />
+        <Node p={p} x={360} y={80} w={114} h={26} g="slate" label="Budget worker" fs={9.5} delay={0.9} />
+        <Node p={p} x={360} y={120} w={114} h={26} g="slate" label="Timing worker" fs={9.5} delay={1} />
+        <Node p={p} x={242} y={200} w={120} h={28} g="slate" label="Web · Weather" fs={9} delay={0.7} />
+        <Node p={p} x={242} y={238} w={120} h={28} g="violet" label="Retrieve · Rerank" fs={8.5} delay={0.8} />
+        <Node p={p} x={384} y={224} w={90} h={30} g="mint" label="Chroma KB" fs={9} delay={0.9} />
       </svg>
       <figcaption className="arch-caption">A LangGraph hub delegates to route, budget &amp; timing workers over a retrieval base.</figcaption>
     </div>
@@ -188,14 +184,14 @@ const Music = () => {
         <E p={p} d="M334 163 C344 163 346 120 352 120" />
         <E p={p} d="M334 205 C344 205 346 126 352 126" />
         <E p={p} d="M412 136 L412 150" />
-        <Node p={p} x={6} y={104} w={96} h={32} g="mint" icon="🎵" label="Song DS" fs={9.5} />
-        <Node p={p} x={116} y={104} w={84} h={32} g="sky" icon="🧹" label="Features" fs={9.5} delay={0.2} />
-        <Node p={p} x={214} y={20} w={120} h={26} g="violet" icon="🎼" label="Content-based" fs={9.5} delay={0.4} />
-        <Node p={p} x={214} y={62} w={120} h={26} g="amber" icon="🤝" label="Collaborative" fs={9.5} delay={0.5} />
-        <Node p={p} x={214} y={150} w={120} h={26} g="rose" icon="🌌" label="Deep Learning" fs={9.5} delay={0.6} />
-        <Node p={p} x={214} y={192} w={120} h={26} g="sky" icon="📊" label="Classical ML" fs={9.5} delay={0.7} />
-        <Node p={p} x={352} y={92} w={120} h={44} g="violet" icon="🧠" label="Hybrid Rank" fs={10} delay={0.8} />
-        <Node p={p} x={352} y={150} w={120} h={28} g="mint" icon="🎧" label="Streamlit UI" fs={9.5} delay={1} />
+        <Node p={p} x={6} y={104} w={96} h={32} g="slate" label="Song DS" fs={9.5} />
+        <Node p={p} x={116} y={104} w={84} h={32} g="slate" label="Features" fs={9.5} delay={0.2} />
+        <Node p={p} x={214} y={20} w={120} h={26} g="violet" label="Content-based" fs={9.5} delay={0.4} />
+        <Node p={p} x={214} y={62} w={120} h={26} g="violet" label="Collaborative" fs={9.5} delay={0.5} />
+        <Node p={p} x={214} y={150} w={120} h={26} g="mint" label="Deep Learning" fs={9.5} delay={0.6} />
+        <Node p={p} x={214} y={192} w={120} h={26} g="mint" label="Classical ML" fs={9.5} delay={0.7} />
+        <Node p={p} x={352} y={92} w={120} h={44} g="violet" label="Hybrid Rank" fs={10} delay={0.8} />
+        <Node p={p} x={352} y={150} w={120} h={28} g="sky" label="Streamlit UI" fs={9.5} delay={1} />
       </svg>
       <figcaption className="arch-caption">Content, collaborative &amp; deep models converge into a hybrid ranker.</figcaption>
     </div>

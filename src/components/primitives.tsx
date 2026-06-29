@@ -29,7 +29,7 @@ export const FadeIn = ({ children, delay = 0, direction = 'up' }: FadeInProps) =
     return () => observer.disconnect();
   }, []);
   return (
-    <div ref={domRef} className={`fade-in fade-in--${direction} ${isVisible ? 'fade-in--visible' : ''}`} style={{ transitionDelay: `${delay}ms` }}>
+    <div ref={domRef} className={`fade-in fade-in--${direction} ${isVisible ? 'fade-in--visible' : ''}`} style={{ transitionDelay: `${delay * 0.18}ms` }}>
       {children}
     </div>
   );
