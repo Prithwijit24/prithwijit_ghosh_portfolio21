@@ -1,5 +1,5 @@
 // Vercel serverless function: POST /api/chat  { query: string } -> { answer | error }
-import { ragAnswer } from './_rag';
+import { ragAnswer } from './_rag.js';
 
 export default async function handler(req: { method?: string; body?: unknown }, res: {
   status: (n: number) => { json: (b: unknown) => void };

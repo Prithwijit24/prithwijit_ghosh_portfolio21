@@ -11,7 +11,9 @@
 //   GROQ_API_KEY / GROQ_API_KEYS          (free: https://console.groq.com)
 //   OPENROUTER_API_KEY / OPENROUTER_API_KEYS  (free: https://openrouter.ai)
 
-import { HR_QA } from './_hr';
+import { HR_QA } from './_hr.js';
+
+declare const process: { env: Record<string, string | undefined> };
 
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
 // Each Gemini model carries its own quota — failing over across them multiplies
