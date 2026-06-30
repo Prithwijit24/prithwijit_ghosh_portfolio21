@@ -47,8 +47,8 @@ jobs:
   deploy:
     name: Deploy to Vercel
     needs: ci
-    # Only deploy on a push to main — never on pull requests.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Only deploy on a push to main or manual trigger — never on pull requests.
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment:
       name: production
