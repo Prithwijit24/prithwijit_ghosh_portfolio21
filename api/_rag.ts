@@ -1,10 +1,11 @@
-// RAG core for the "Interview Me" chatbot.
-// Knowledge base = Prithwijit Ghosh's résumé + portfolio, chunked.
+// Chatbot for the "Interview Me" feature.
+// Knowledge base = Prithwijit Ghosh's résumé + portfolio + HR Q&A, chunked.
 //
-// To rarely hit rate limits, generation fails over (round-robin) across a pool
-// of: every Gemini key × every Gemini model (each model has its OWN free quota),
-// then optional Groq keys, then optional OpenRouter keys. Embeddings rotate
-// across Gemini keys, with a keyword-retrieval fallback if all are exhausted.
+// Retrieval: lexical (keyword) search — instant, zero API calls, no cold-start
+// timeout on Vercel. For a focused 120-chunk KB this is plenty accurate.
+//
+// Generation fails over (round-robin) across providers:
+//   Gemini (5 models × N keys) → Groq → llm7.io → OpenRouter
 // Configure via env (any subset; comma-separate for multiple keys):
 //   GEMINI_API_KEY / GEMINI_API_KEYS / GEMINI_API_KEY_2 / GEMINI_API_KEY_3
 //   GROQ_API_KEY / GROQ_API_KEYS          (free: https://console.groq.com)
@@ -13,7 +14,6 @@
 import { HR_QA } from './_hr';
 
 const BASE = 'https://generativelanguage.googleapis.com/v1beta';
-const EMB_MODEL = 'gemini-embedding-001';
 // Each Gemini model carries its own quota — failing over across them multiplies
 // the capacity of even a single key.
 const GEMINI_MODELS = ['gemini-2.5-flash-lite', 'gemini-2.0-flash-lite', 'gemini-flash-lite-latest', 'gemini-2.5-flash', 'gemini-2.0-flash'];
@@ -82,57 +82,15 @@ const KB: string[] = [
   ...HR_QA
 ];
 
-let kbVectors: number[][] | null = null;
-
-let embTurn = 0;
-async function embedOne(text: string, taskType: 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY'): Promise<number[]> {
-  const ks = geminiKeys();
-  if (!ks.length) throw new Error('no-embed-key');
-  const start = embTurn++ % ks.length;
-  let lastErr: unknown;
-  for (let i = 0; i < ks.length; i++) {
-    const key = ks[(start + i) % ks.length];
-    try {
-      const res = await fetch(`${BASE}/models/${EMB_MODEL}:embedContent?key=${key}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: `models/${EMB_MODEL}`, content: { parts: [{ text }] }, taskType })
-      });
-      if (!res.ok) throw new Error(`embed ${res.status}`);
-      const data = await res.json();
-      return data.embedding.values as number[];
-    } catch (e) { lastErr = e; }
-  }
-  throw lastErr ?? new Error('embed-failed');
-}
-
-const embed = (texts: string[], taskType: 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY') =>
-  Promise.all(texts.map((t) => embedOne(t, taskType)));
-
-// Embed the KB in sequential batches so a large knowledge base doesn't fire
-// 100+ concurrent embedding calls on cold start (which can trip rate limits).
-async function embedDocs(texts: string[], batchSize = 16): Promise<number[][]> {
-  const out: number[][] = [];
-  for (let i = 0; i < texts.length; i += batchSize) {
-    out.push(...await embed(texts.slice(i, i + batchSize), 'RETRIEVAL_DOCUMENT'));
-  }
-  return out;
-}
-
-// Lexical fallback when embeddings are unavailable (e.g. all Gemini keys rate-limited).
-const keywordRetrieve = (query: string, k: number): string[] => {
+// Lexical retrieval over the knowledge base.
+// Fast, no API calls — avoids cold-start timeout on Vercel (10 s Hobby limit).
+const retrieve = (query: string, k: number): string[] => {
   const terms = [...new Set(query.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length > 2))];
   return KB
     .map((text) => { const lt = text.toLowerCase(); return { text, score: terms.reduce((s, t) => s + (lt.includes(t) ? 1 : 0), 0) }; })
     .sort((a, b) => b.score - a.score)
     .slice(0, k)
     .map((r) => r.text);
-};
-
-const cosine = (a: number[], b: number[]) => {
-  let dot = 0, na = 0, nb = 0;
-  for (let i = 0; i < a.length; i++) { dot += a[i] * b[i]; na += a[i] * a[i]; nb += b[i] * b[i]; }
-  return dot / (Math.sqrt(na) * Math.sqrt(nb) + 1e-8);
 };
 
 const SYSTEM = `You are the AI clone of Prithwijit Ghosh, a data scientist. You answer questions from someone interviewing or curious about Prithwijit.
@@ -198,16 +156,8 @@ export async function ragAnswer(query: string, debug = false): Promise<{ answer?
   if (!q) return { error: 'Please type a question first.' };
   if (!hasAnyKey()) return { error: 'The chatbot is not configured yet (no API keys set).' };
 
-  // retrieve context — semantic embeddings, with a lexical fallback if those are rate-limited
-  let context: string;
-  try {
-    if (!kbVectors) kbVectors = await embedDocs(KB);
-    const [qv] = await embed([q], 'RETRIEVAL_QUERY');
-    context = KB.map((text, i) => ({ text, score: cosine(qv, kbVectors![i]) }))
-      .sort((a, b) => b.score - a.score).slice(0, 5).map((r) => r.text).join('\n\n---\n\n');
-  } catch {
-    context = keywordRetrieve(q, 6).join('\n\n---\n\n');
-  }
+  // retrieve context via lexical search (instant, no API calls — avoids Vercel timeout)
+  const context = retrieve(q, 6).join('\n\n---\n\n');
 
   try {
     const { text, via } = await generate(SYSTEM, `CONTEXT:\n${context}\n\nQUESTION: ${q}`);
