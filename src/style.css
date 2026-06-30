@@ -7,6 +7,7 @@
 
 html {
   font-size: calc(0.375rem + 0.75vw);
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 12% 8%, rgba(253, 224, 71, .35), transparent 28%),
     radial-gradient(circle at 88% 14%, rgba(244, 114, 182, .28), transparent 32%),
@@ -18,7 +19,7 @@ html {
   scroll-padding-top: calc(var(--nav-height) + .75rem);
 }
 
-.scroll-section { scroll-margin-top: calc(var(--nav-height) + .75rem); }
+.scroll-section { scroll-margin-top: calc(var(--nav-height) + .75rem); overflow: hidden; }
 body { margin: 0; }
 button, input { font: inherit; }
 button { border: 0; cursor: pointer; }
@@ -76,7 +77,7 @@ button { border: 0; cursor: pointer; }
 .p-2 { padding: .5rem; }
 .p-5 { padding: 1.25rem; }
 .p-8 { padding: 2rem; }
-.px-6 { padding-left: 6rem; padding-right: 6rem; }
+.px-6 { padding-left: clamp(1.5rem, 4vw, 6rem); padding-right: clamp(1.5rem, 4vw, 6rem); }
 .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
 .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
 .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
@@ -126,7 +127,7 @@ button { border: 0; cursor: pointer; }
 
 /* ────── Interview Me — floating chatbot launcher ────── */
 .interview-fab {
-  position: fixed; bottom: 5.6rem; right: 2rem; z-index: 600;
+  position: fixed; bottom: 7rem; right: 2rem; z-index: 600;
   display: inline-flex; align-items: center; height: 3.7rem; padding: 0;
   border-radius: 999px; border: 1px solid rgba(129,140,248,.3); cursor: pointer; overflow: hidden;
   background: linear-gradient(150deg, #25408f 0%, #0c1736 100%);
@@ -676,10 +677,14 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 
 /* ────── Skills ────── */
-.skills-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; align-items: stretch; }
+.skills-grid { display: grid; grid-template-columns: repeat(6, minmax(0,1fr)); gap: 1rem; align-items: stretch; }
 .skills-grid > div { height: 100%; }
-.skills-grid > div:last-child { grid-column: 1 / -1; display: flex; justify-content: center; }
-.skills-grid > div:last-child .skill-card { width: calc(50% - .5rem); }
+.skills-grid > div:nth-child(1) { grid-column: span 3; }
+.skills-grid > div:nth-child(2) { grid-column: span 3; }
+.skills-grid > div:nth-child(3) { grid-column: span 3; }
+.skills-grid > div:nth-child(4) { grid-column: span 3; }
+.skills-grid > div:nth-child(5) { grid-column: span 6; display: flex; justify-content: center; }
+.skills-grid > div:last-child .skill-card { width: calc(50% - 2.5rem); }
 
 .skill-card {
   height: 100%; box-sizing: border-box;
@@ -810,7 +815,7 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 
 /* two cards side by side: travel collage + painting/books mosaic */
-.hobbies-row { display: flex; gap: 1rem; justify-content: center; align-items: flex-start; }
+.hobbies-row { display: flex; gap: 1rem; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
 .hobbies-row .hobbies-frame { flex: 0 1 auto; margin: 0; }
 .hobbies-stack { flex: 0 1 auto; width: min(30rem, 100%); display: flex; flex-direction: column; gap: 1rem; }
 .mosaic-card {
@@ -877,14 +882,14 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   box-shadow: 0 16px 40px rgba(190,120,90,.15); will-change: transform; width: 100%; max-width: 100%;
 }
 /* two-column rail + cards */
-.experience-layout { display: flex; gap: 2rem; align-items: stretch; }
-.experience-layout > .fade-in { flex: 0 0 clamp(14rem, 23%, 18rem); }
+.experience-layout { display: flex; gap: 2rem; align-items: stretch; flex-wrap: wrap; }
+.experience-layout > .fade-in { flex: 0 0 clamp(6rem, 23%, 18rem); }
 .experience-rail { height: 100%; }
+.experience-flow { width: 100%; margin: 0; }
+.experience-flow svg { width: 100%; height: auto; display: block; max-height: 80vh; }
 .experience-list { flex: 1; min-width: 0; display: grid; gap: 1.25rem; align-content: start; }
 .experience-list p { text-align: justify; }
 .experience-row { position: relative; display: flex; justify-content: flex-end; }
-.experience-flow { width: 100%; height: 100%; margin: 0; }
-.experience-flow svg { width: 100%; height: 100%; display: block; }
 .eflow-bub { animation: eflow-bob 6s ease-in-out infinite; will-change: transform; }
 @keyframes eflow-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 .eflow-line, .eflow-line path { stroke-dasharray: 6 6; animation: eflow-dash .7s linear infinite; }
@@ -961,9 +966,9 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 .project-grid { display: grid; gap: 1.25rem; }
 /* each project: card (left) + its architecture diagram (right) */
 .project-list { display: grid; gap: 1.5rem; }
-.project-row { display: flex; gap: 1.5rem; align-items: stretch; }
+.project-row { display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap; }
 .project-row .experience-card { flex: 1 1 0; min-width: 0; }
-.project-arch-cell { flex: 0 0 clamp(20rem, 42%, 30rem); min-height: 15rem; display: flex; }
+.project-arch-cell { flex: 0 0 clamp(10rem, 42%, 30rem); min-height: 15rem; display: flex; }
 .project-arch-cell .experience-flow { width: 100%; height: 100%; margin: 0; display: flex; flex-direction: column; }
 .project-arch-cell svg { width: 100%; flex: 1 1 auto; min-height: 0; display: block; }
 .arch-caption { margin: .4rem 0 0; text-align: center; font-size: .78rem; line-height: 1.35; font-weight: 600; color: #647488; }
@@ -1233,6 +1238,7 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 /* Keep the old class working for any section not yet migrated */
 .blend-section { margin-top: -12vh; padding-top: 16vh; position: relative; z-index: 1; background: linear-gradient(to bottom, transparent 0%, rgba(236,253,245,.9) 8vh, rgba(254,243,199,.95) 100%); }
 .content-section { min-height: 100vh; display: flex; align-items: center; padding-bottom: 14rem; position: relative; }
+.achievements-section { overflow: hidden; }
 .hero-section, .content-section, .achievements-section, .edu-section, .contact-page-section, #chat { text-align: center; }
 .hero-panel, .timeline-node, .detail-list { text-align: left; }
 
@@ -1264,10 +1270,68 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
 .md\:text-xl { font-size: 1.25rem; line-height: 1.6; }
 
-.skills-grid { grid-template-columns: repeat(6, minmax(0,1fr)); }
-.skills-grid > div:nth-child(1) { grid-column: span 3; }
-.skills-grid > div:nth-child(2) { grid-column: span 3; }
-.skills-grid > div:nth-child(3) { grid-column: span 3; }
-.skills-grid > div:nth-child(4) { grid-column: span 3; }
-.skills-grid > div:nth-child(5) { grid-column: span 6; }
-.skills-grid > div:last-child .skill-card { width: calc(50% - 2.5rem); }
+/* ────── Responsive breakpoints ────── */
+
+/* Tablet & below (≤768px) */
+@media (max-width: 768px) {
+  .hero-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .hero-section {
+    min-height: auto;
+    padding-bottom: 6vh;
+  }
+  .hero-timeline { margin: .8rem auto 0; }
+
+  .experience-layout { flex-direction: column; }
+  .experience-layout > .fade-in { flex: 0 0 auto; align-self: center; width: min(18rem, 100%); }
+  .experience-flow svg { height: auto; max-height: min(28rem, 60vh); }
+
+  .hobbies-row { flex-direction: column; align-items: center; }
+  .hobbies-row .hobbies-frame,
+  .hobbies-row .hobbies-stack { width: 100%; }
+
+  .msc-compare { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .msc-arrow { flex-direction: row; gap: .5rem; }
+  .msc-kpi { gap: 1.5rem; }
+
+  .achievement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .education-grid { grid-template-columns: minmax(0, 1fr); }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .content-section { min-height: auto; padding-bottom: 6rem; }
+  .contact-page-section { min-height: auto; padding-bottom: 6rem; }
+}
+
+/* Phone (≤480px) */
+@media (max-width: 480px) {
+  .site-nav-inner { grid-template-columns: auto 1fr auto; gap: .25rem; }
+  .site-nav-links { gap: .15rem; }
+  .site-nav-link { padding: .3rem .4rem; font-size: .75rem; }
+  .site-nav-link-emoji { display: none; }
+  .site-nav-brand { font-size: .9rem; }
+  .site-nav-action { padding: .35rem .5rem; font-size: .75rem; min-height: 1.8rem; }
+  .site-nav-action--icon { width: 1.8rem; }
+
+  .achievement-grid { grid-template-columns: minmax(0, 1fr); }
+  .cert-list { grid-template-columns: minmax(0, 1fr); }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi-card { padding: .75rem .5rem; }
+  .kpi-value { font-size: clamp(1.25rem, 5vw, 1.75rem); }
+  .kpi-icon { font-size: 1.2rem; }
+
+  .project-arch-cell { flex: 0 0 100%; min-height: 10rem; }
+  .hobbies-frame { width: 100%; }
+  .hobbies-stack { width: 100%; }
+
+  .hero-kicker { font-size: .65rem; padding: .4rem .75rem; }
+  .hero-timeline-role { font-size: .82rem; }
+  .hero-timeline-org { font-size: .78rem; }
+
+  .badge-medal { width: 7rem; }
+  .badge-disc { width: 7rem; height: 7rem; }
+  .badge-name { font-size: .7rem; }
+}
+
+
