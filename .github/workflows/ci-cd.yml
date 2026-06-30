@@ -37,6 +37,13 @@ jobs:
       - name: Typecheck & build
         run: npm run build
 
+      - name: Test chat API
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: npx tsx scripts/test-api.ts
+
   deploy:
     name: Deploy to Vercel
     needs: ci
