@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { NAV_SECTIONS, NAV_CENTER_SECTIONS, PROFILE_LINKS } from '../data';
-import { GitHubIcon, LinkedInIcon, DownloadIcon, MenuIcon, CloseIcon } from './Icons';
+import { GitHubIcon, LinkedInIcon } from './Icons';
 import { InterviewChatModal } from './InterviewChatModal';
 
 export const SiteNav = () => {
   const [activeId, setActiveId] = useState<string>(NAV_SECTIONS[0].id);
   const [scrolled, setScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   useEffect(() => {
@@ -30,17 +29,9 @@ export const SiteNav = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Close the mobile menu automatically if the viewport grows back past the breakpoint
-  useEffect(() => {
-    const handleResize = () => { if (window.innerWidth > 860) setIsMenuOpen(false); };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setActiveId(id);
-    setIsMenuOpen(false);
   };
 
   return (
@@ -76,46 +67,8 @@ export const SiteNav = () => {
           <a href={PROFILE_LINKS.linkedin} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
             <LinkedInIcon className="site-nav-action-icon" />
           </a>
-          <button
-            type="button"
-            className="site-nav-toggle"
-            aria-expanded={isMenuOpen}
-            aria-controls="site-nav-mobile-menu"
-            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            onClick={() => setIsMenuOpen((open) => !open)}
-          >
-            {isMenuOpen ? <CloseIcon className="site-nav-toggle-icon" /> : <MenuIcon className="site-nav-toggle-icon" />}
-          </button>
         </div>
       </nav>
-
-      <div id="site-nav-mobile-menu" className={`site-nav-mobile-menu${isMenuOpen ? ' site-nav-mobile-menu--open' : ''}`}>
-        <ul className="site-nav-mobile-links">
-          {NAV_SECTIONS.map(({ id, label, emoji }) => (
-            <li key={id}>
-              <a href={`#${id}`}
-                className={`site-nav-link${activeId === id ? ' site-nav-link--active' : ''}`}
-                aria-current={activeId === id ? 'true' : undefined}
-                onClick={(e) => { e.preventDefault(); scrollToSection(id); }}>
-                <span className="site-nav-link-emoji" aria-hidden="true">{emoji}</span>
-                <span>{label}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="site-nav-mobile-social">
-          <a href={PROFILE_LINKS.resume} target="_blank" rel="noopener noreferrer" className="site-nav-action">
-            <DownloadIcon className="site-nav-action-icon" />
-            <span>Resume</span>
-          </a>
-          <a href={PROFILE_LINKS.github} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
-            <GitHubIcon className="site-nav-action-icon" />
-          </a>
-          <a href={PROFILE_LINKS.linkedin} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
-            <LinkedInIcon className="site-nav-action-icon" />
-          </a>
-        </div>
-      </div>
       {!isChatOpen && createPortal(
         <button type="button" className="interview-fab" onClick={() => setIsChatOpen(true)} aria-label="Interview me — open AI chat">
           <span className="interview-fab-icon" aria-hidden="true">🤖</span>
