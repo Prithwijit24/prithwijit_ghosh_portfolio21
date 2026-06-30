@@ -18,6 +18,8 @@ async function main() {
       process.exit(1);
     }
     console.log(`PASS: "${q}"`);
+    console.log(`  → ${result.answer}`);
+    if (result.via) console.log(`  (via ${result.via})`);
     passed++;
   }
 
