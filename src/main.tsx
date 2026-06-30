@@ -477,7 +477,7 @@ const HobbiesSection = () => {
               </div>
               <figcaption className="card-quote card-quote--lg">
                 <span className="card-quote-emoji" aria-hidden="true">{travel.emoji}</span>
-                <span>{travel.quote}</span>
+                <span className="card-quote-text">{travel.quote}</span>
               </figcaption>
             </div>
 
@@ -494,7 +494,7 @@ const HobbiesSection = () => {
                     ))}
                     <figcaption className="card-quote card-quote--sm">
                       <span className="card-quote-emoji" aria-hidden="true">{grp.emoji}</span>
-                      <span>{grp.quote}</span>
+                      <span className="card-quote-text">{grp.quote}</span>
                     </figcaption>
                   </div>
                 </div>
@@ -568,13 +568,13 @@ export default function App() {
             </p>
           </FadeIn>
           <div className="contact-links">
-            <a href={PROFILE_LINKS.email} className="contact-card"><GmailIcon className="contact-card-icon" /><span>Mail me</span></a>
-            <a href={PROFILE_LINKS.phone} className="contact-card"><span aria-hidden="true">📞</span><span>Call me</span></a>
+            <a href={PROFILE_LINKS.email} className="contact-card"><GmailIcon className="contact-card-icon" /><span>Mail me</span><small className="contact-detail">ghoshprithwijit39@gmail.com</small></a>
+            <a href={PROFILE_LINKS.phone} className="contact-card"><span aria-hidden="true">📞</span><span>Call me</span><small className="contact-detail">+91-7595986858</small></a>
             <a href={PROFILE_LINKS.github} className="contact-card" target="_blank" rel="noopener noreferrer">
-              <GitHubIcon className="contact-card-icon" /><span>GitHub</span>
+              <GitHubIcon className="contact-card-icon" /><span>GitHub</span><small className="contact-detail">github.com/Prithwijit24</small>
             </a>
             <a href={PROFILE_LINKS.linkedin} className="contact-card" target="_blank" rel="noopener noreferrer">
-              <LinkedInIcon className="contact-card-icon" /><span>LinkedIn</span>
+              <LinkedInIcon className="contact-card-icon" /><span>LinkedIn</span><small className="contact-detail">linkedin.com/in/prithwijit-ghosh-datascience</small>
             </a>
             <a href={PROFILE_LINKS.resume} className="contact-card" target="_blank" rel="noopener noreferrer">
               <DownloadIcon className="contact-card-icon" /><span>Resume</span>

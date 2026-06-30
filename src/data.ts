@@ -191,7 +191,7 @@ export const BADGES: Badge[] = [
 export type HobbyColumn = { title: string; emoji: string; accent: SpringAccent; quote: string; photos: string[] };
 
 export const HOBBIES: HobbyColumn[] = [
-  { title: 'Travel', emoji: '✈️', accent: 'sky', quote: 'Collected horizons — one journey, one frame at a time.',
+  { title: 'Travel', emoji: '✈️', accent: 'sky', quote: 'Lost in the right direction.',
     photos: ['/hobbies/travel-1.jpg', '/hobbies/travel-2.jpg', '/hobbies/travel-3.jpg', '/hobbies/travel-4.mp4', '/hobbies/travel-5.jpg', '/hobbies/travel-6.jpg', '/hobbies/travel-7.jpg'] },
   { title: 'Painting', emoji: '🎨', accent: 'blossom', quote: 'Where words fail, colour speaks.',
     photos: ['/hobbies/painting-1.jpg', '/hobbies/painting-2.jpg', '/hobbies/painting-3.jpg', '/hobbies/painting-4.jpg'] },

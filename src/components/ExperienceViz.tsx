@@ -121,16 +121,16 @@ export const ExperienceViz = () => (
         <path d="M10 772 L10 909" />
       </g>
       <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line" markerEnd="url(#efah)">
-        {OUTPUTS.map((o) => <path key={o.label} d={`M10 ${o.y + 17} L15 ${o.y + 17}`} />)}
+        {OUTPUTS.map((o) => <path key={o.label} d={`M10 ${o.y + 17} L40 ${o.y + 17}`} />)}
       </g>
 
       {/* outputs */}
       <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="700">
         {OUTPUTS.map((o) => (
           <g key={o.label}>
-            <rect x="15" y={o.y} width="210" height="34" rx="8" fill="#fff" stroke="#86efac" strokeWidth="1.6" />
-            <text x="27" y={o.y + 22} fontSize="13">{o.icon}</text>
-            <text x="49" y={o.y + 21} fontSize="10.5" fill="#0f172a">{o.label}</text>
+            <rect x="40" y={o.y} width="195" height="34" rx="8" fill="#fff" stroke="#86efac" strokeWidth="1.6" />
+            <text x="52" y={o.y + 22} fontSize="13">{o.icon}</text>
+            <text x="74" y={o.y + 21} fontSize="10.5" fill="#0f172a">{o.label}</text>
           </g>
         ))}
       </g>

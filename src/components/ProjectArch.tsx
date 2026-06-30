@@ -111,8 +111,8 @@ const Fraud = () => {
         <E p={p} d="M219 210 C219 180 224 168 224 158" />
         <E p={p} d="M392 200 C392 172 352 170 352 158" />
         <E p={p} d="M404 240 C428 254 446 258 452 260" />
-        <text x="372" y="14" fontSize="8" fontWeight="700" fill="#e11d48" fontFamily="ui-sans-serif,system-ui">high risk</text>
-        <text x="362" y="184" fontSize="8" fontWeight="700" fill="#047857" fontFamily="ui-sans-serif,system-ui">promote</text>
+        <text x="343" y="11" fontSize="8" fontWeight="700" fill="#e11d48" fontFamily="ui-sans-serif,system-ui">high risk</text>
+        <text x="368" y="180" fontSize="8" fontWeight="700" fill="#047857" fontFamily="ui-sans-serif,system-ui">promote</text>
         <Gate p={p} cx={330} cy={35} label="risk?" />
         <Gate p={p} cx={392} cy={225} label="gate" />
         <Node p={p} x={6} y={20} w={74} h={30} g="slate" label="Producer" fs={9.5} />
