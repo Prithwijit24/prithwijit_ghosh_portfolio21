@@ -83,7 +83,7 @@ const KB: string[] = [
 ];
 
 // Lexical retrieval over the knowledge base.
-// Fast, no API calls — avoids cold-start timeout on Vercel (10 s Hobby limit).
+// Fast, no API calls — avoids cold-start timeout on Vercel (10s Hobby limit).
 const retrieve = (query: string, k: number): string[] => {
   const terms = [...new Set(query.toLowerCase().split(/[^a-z0-9]+/).filter((t) => t.length > 2))];
   return KB
