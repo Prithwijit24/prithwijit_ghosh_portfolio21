@@ -1,6 +1,20 @@
 import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from 'vite'
 import react from '@vitejs/plugin-react'
 
+// Replaces %VITE_SITE_URL% in index.html with the env value at build time.
+const htmlEnv = (): Plugin => ({
+  name: 'html-env',
+  transformIndexHtml: {
+    order: 'pre',
+    handler(html: string, ctx) {
+      const siteUrl = ctx.server
+        ? process.env.VITE_SITE_URL || 'http://localhost:4173'
+        : process.env.VITE_SITE_URL || 'https://prithwijit-ghosh.vercel.app';
+      return html.replace(/%VITE_SITE_URL%/g, siteUrl);
+    },
+  },
+});
+
 // Serves POST /api/chat during `vite dev` (mirrors the Vercel function in prod)
 // by loading the shared RAG module through Vite's SSR loader.
 const devChatApi = (): Plugin => ({
@@ -40,6 +54,6 @@ export default defineConfig(({ mode }) => {
     if (env[k]) process.env[k] = env[k]
   }
   return {
-    plugins: [react(), devChatApi()],
+    plugins: [react(), devChatApi(), htmlEnv()],
   }
 })

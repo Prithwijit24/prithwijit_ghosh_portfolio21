@@ -25,8 +25,8 @@ for (let a = 0; a < 16; a++) for (let b = a + 1; b < 16; b++) {
   if (diff === 1) TES_E.push([a, b]);
 }
 // data points at random 4-D positions, two classes alternating → intermixed
-const TES_PTS = Array.from({ length: 42 }, (_, i) => ({
-  p: [0, 1, 2, 3].map((j) => rnd(i * 4 + j + 1) * 1.7 - 0.85),
+const TES_PTS = Array.from({ length: 120 }, (_, i) => ({
+  p: [0, 1, 2, 3].map((j) => rnd(i * 4 + j + 1) * 1.9 - 0.95),
   cls: (i % 2) as 0 | 1,
 }));
 
@@ -93,7 +93,7 @@ export const HyperCubeViz = () => {
         .sort((m, n) => m.k - n.k);
       for (const pt of pts) {
         const px = cx + pt.x * S, py = cy + pt.y * S;
-        const r = 3 + (pt.k - 0.27) / 0.12 * 3.6;
+        const r = 1.5 + (pt.k - 0.27) / 0.12 * 1.6;
         const col = pt.cls === 0 ? RED : BLUE;
         const g = ctx.createRadialGradient(px - r * 0.35, py - r * 0.4, r * 0.15, px, py, r);
         g.addColorStop(0, col.lo); g.addColorStop(0.42, col.mid); g.addColorStop(1, col.hi);
@@ -148,7 +148,7 @@ for (let k = 0; k < M; k++) {
 
 const GlossyDot = ({ x, y, grad, r = 5 }: { x: number; y: number; grad: string; r?: number }) => (
   <g filter="url(#ddDrop)">
-    <circle cx={x} cy={y} r={r} fill={`url(#${grad})`} />
+    <circle cx={x} cy={y} r={r} fill={`url(#${grad})`} className="dd-dot" />
     <ellipse cx={x - r * 0.32} cy={y - r * 0.38} rx={r * 0.42} ry={r * 0.26} fill="#fff" opacity="0.75" />
   </g>
 );
