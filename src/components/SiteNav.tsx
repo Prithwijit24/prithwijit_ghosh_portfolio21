@@ -71,7 +71,7 @@ export const SiteNav = () => {
       </nav>
       {!isChatOpen && createPortal(
         <button type="button" className="interview-fab" onClick={() => setIsChatOpen(true)} aria-label="Interview me — open AI chat">
-          <span className="interview-fab-icon" aria-hidden="true">🤖</span>
+          <span className="interview-fab-icon" aria-hidden="true"><img src="/moxie_robot.png" alt="" className="interview-fab-img" /></span>
           <span className="interview-fab-label">Interview Me</span>
         </button>,
         document.body

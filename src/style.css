@@ -139,6 +139,7 @@ button { border: 0; cursor: pointer; }
   width: 3.7rem; height: 3.7rem; flex-shrink: 0;
   display: grid; place-items: center; font-size: 1.75rem; line-height: 1;
 }
+.interview-fab-img { width: 100%; height: 100%; object-fit: cover; border-radius: 999px; border: 2px solid #000; }
 .interview-fab-label {
   max-width: 0; opacity: 0; white-space: nowrap; overflow: hidden;
   transition: max-width .32s ease, opacity .25s ease, padding .32s ease;
