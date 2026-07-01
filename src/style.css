@@ -1310,7 +1310,7 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   }
   .hero-section {
     min-height: auto;
-    padding-bottom: 6vh;
+    padding-bottom: 12vh;
   }
   .hero-timeline { margin: .8rem auto 0; }
 
@@ -1327,8 +1327,8 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
 
-  .content-section { min-height: auto; padding-bottom: 6rem; }
-  .contact-page-section { min-height: auto; padding-bottom: 6rem; }
+  .content-section { min-height: auto; padding-bottom: 12rem; }
+  .contact-page-section { min-height: auto; padding-bottom: 12rem; }
 }
 
 /* Phone (≤480px) */
