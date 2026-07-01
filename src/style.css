@@ -742,13 +742,14 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 /* ────── Achievement cards ────── */
 .achievement-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem; }
+.achievement-grid > * { min-width: 0; }
 .achievement-card {
-  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem;
   padding: 1.5rem 1.25rem; border-radius: 1rem;
   border: 2px solid rgba(255,255,255,.68);
   background: linear-gradient(145deg, rgba(255,255,255,.93), rgba(236,253,245,.82));
   box-shadow: 0 8px 20px rgba(190,120,90,.1);
-  will-change: transform; min-height: 5.5rem; text-align: center;
+  will-change: transform; height: 13rem; text-align: center;
 }
 .achievement-card-emoji { font-size: 2.2rem; flex-shrink: 0; }
 .achievement-card-chart { width: 4.6rem; height: 2.55rem; flex-shrink: 0; display: block; margin: 0 auto; }
@@ -1272,6 +1273,14 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 /* ────── Responsive breakpoints ────── */
 
+/* Desktop & tablet landscape (≥769px) — experience rail fills card height */
+@media (min-width: 769px) {
+  .experience-layout > .fade-in { display: flex; flex-direction: column; }
+  .experience-rail { height: auto; flex: 1; display: flex; flex-direction: column; }
+  .experience-flow { flex: 1; }
+  .experience-flow svg { height: 100%; max-height: none; }
+}
+
 /* Tablet & below (≤768px) */
 @media (max-width: 768px) {
   .hero-content {
@@ -1285,19 +1294,18 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   .hero-timeline { margin: .8rem auto 0; }
 
   .experience-layout { flex-direction: column; }
-  .experience-layout > .fade-in { flex: 0 0 auto; align-self: center; width: min(18rem, 100%); }
-  .experience-flow svg { height: auto; max-height: min(28rem, 60vh); }
+  .experience-layout > .fade-in { width: 100%; align-self: stretch; }
+  .experience-flow svg { height: auto; max-height: none; }
 
   .hobbies-row { flex-direction: column; align-items: center; }
   .hobbies-row .hobbies-frame,
   .hobbies-row .hobbies-stack { width: 100%; }
 
   .msc-compare { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-  .msc-arrow { flex-direction: row; gap: .5rem; }
+  .msc-arrow { flex-direction: column; gap: .25rem; }
+  .msc-arrow-glyph { display: inline-block; transform: rotate(90deg); }
   .msc-kpi { gap: 1.5rem; }
 
-  .achievement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .education-grid { grid-template-columns: minmax(0, 1fr); }
   .kpi-grid { grid-template-columns: repeat(2, 1fr); }
 
   .content-section { min-height: auto; padding-bottom: 6rem; }
@@ -1314,9 +1322,6 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   .site-nav-action { padding: .35rem .5rem; font-size: .75rem; min-height: 1.8rem; }
   .site-nav-action--icon { width: 1.8rem; }
 
-  .achievement-grid { grid-template-columns: minmax(0, 1fr); }
-  .cert-list { grid-template-columns: minmax(0, 1fr); }
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .kpi-card { padding: .75rem .5rem; }
   .kpi-value { font-size: clamp(1.25rem, 5vw, 1.75rem); }
   .kpi-icon { font-size: 1.2rem; }
