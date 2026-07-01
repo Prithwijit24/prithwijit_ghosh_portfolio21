@@ -9,7 +9,7 @@ const htmlEnv = (): Plugin => ({
     handler(html: string, ctx) {
       const siteUrl = ctx.server
         ? process.env.VITE_SITE_URL || 'http://localhost:4173'
-        : process.env.VITE_SITE_URL || 'https://prithwijit-ghosh.vercel.app';
+        : process.env.VITE_SITE_URL || 'https://prithwijitghoshportfolio21.vercel.app';
       return html.replace(/%VITE_SITE_URL%/g, siteUrl);
     },
   },
