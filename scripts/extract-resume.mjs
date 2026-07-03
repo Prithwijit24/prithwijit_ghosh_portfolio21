@@ -39,7 +39,14 @@ console.log(`Latest resume: ${latest.file} (${latest.date})`);
 
 // ─── 2. Extract text ───
 
-const text = execSync(`pdftotext "${pdfPath}" -`, { encoding: 'utf-8' }).trim();
+let text;
+try {
+  execSync('which pdftotext', { stdio: 'ignore' });
+  text = execSync(`pdftotext "${pdfPath}" -`, { encoding: 'utf-8' }).trim();
+} catch {
+  console.warn('pdftotext not available — using existing generated files');
+  process.exit(0);
+}
 
 // ─── 3. Chunk into KB entries ───
 
