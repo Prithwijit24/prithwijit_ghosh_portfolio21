@@ -36,6 +36,21 @@ const BUBBLES = [
   { t: 'Docker', x: 58, y: 556, r: 22, g: 'sky' },
   { t: 'Airflow', x: 128, y: 556, r: 24, g: 'violet' },
   { t: 'K8s', x: 196, y: 550, r: 19, g: 'rose' },
+  { t: 'Enrichment', x: 70, y: 615, r: 26, g: 'mint' },
+  { t: 'Processing', x: 162, y: 610, r: 25, g: 'violet' },
+  { t: 'Validation', x: 46, y: 675, r: 23, g: 'sky' },
+  { t: 'Scaling', x: 118, y: 670, r: 22, g: 'rose' },
+  { t: 'Cleaning', x: 188, y: 672, r: 20, g: 'amber' },
+  { t: 'Pipelines', x: 74, y: 735, r: 26, g: 'violet' },
+  { t: 'Inference', x: 156, y: 730, r: 24, g: 'mint' },
+  { t: 'Monitoring', x: 50, y: 795, r: 22, g: 'rose' },
+  { t: 'Feature Store', x: 118, y: 792, r: 25, g: 'sky' },
+  { t: 'PyTorch', x: 186, y: 788, r: 21, g: 'violet' },
+  { t: 'Big Data', x: 76, y: 852, r: 24, g: 'amber' },
+  { t: 'Spark', x: 152, y: 850, r: 23, g: 'mint' },
+  { t: 'Logging', x: 54, y: 910, r: 20, g: 'sky' },
+  { t: 'Metrics', x: 120, y: 912, r: 24, g: 'violet' },
+  { t: 'A/B Testing', x: 188, y: 908, r: 22, g: 'rose' },
 ];
 
 const OUTPUTS = [
@@ -45,8 +60,13 @@ const OUTPUTS = [
   { icon: '⚠️', label: 'Risk scoring', y: 892 },
 ];
 
+const DESKTOP_OUTPUTS = OUTPUTS.map(o => ({
+  ...o,
+  y: o.y + 380,
+}));
+
 const CX = 120;
-const GY = 672;
+const DESKTOP_GY = 1040;
 
 const DESKTOP_INPUT_PATHS = [
   "M63 72 C63 130 120 120 120 170",
@@ -56,11 +76,11 @@ const DESKTOP_INPUT_PATHS = [
   "M120 170 L120 196",
 ];
 
-const DESKTOP_CLOUD_GATE = `M58 578 C58 606 ${CX} 606 ${CX} ${GY - 42}`;
-const DESKTOP_CLOUD_GATE2 = `M196 569 C196 606 ${CX} 606 ${CX} ${GY - 42}`;
-const DESKTOP_CLOUD_GATE3 = `M128 580 L${CX} ${GY - 42}`;
+const DESKTOP_CLOUD_GATE = `M54 930 C54 965 ${CX} 965 ${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE2 = `M188 930 C188 965 ${CX} 965 ${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE3 = `M120 936 L${CX} ${DESKTOP_GY - 42}`;
 
-const DESKTOP_GATE_OUTPUT = `M${CX} ${GY + 42} C${CX} 745 10 740 10 772`;
+const DESKTOP_GATE_OUTPUT = `M${CX} ${DESKTOP_GY + 42} C${CX} 1125 10 1120 10 1152`;
 
 const MOBILE_INPUTS = [
   { icon: '🗄️', label: 'Transactions', x: 24, y: 60 },
@@ -69,7 +89,7 @@ const MOBILE_INPUTS = [
   { icon: '⚙️', label: 'Operations', x: 24, y: 210 },
 ];
 
-const MOBILE_BUBBLES = BUBBLES.map((b, i) => ({
+const MOBILE_BUBBLES = BUBBLES.slice(0, 15).map((b, i) => ({
   ...b,
   x: [350, 420, 500, 575, 372, 455, 540, 345, 430, 515, 590, 388, 468, 545, 620][i],
   y: [70, 58, 76, 62, 122, 118, 126, 178, 174, 186, 174, 226, 222, 230, 218][i],
@@ -84,7 +104,7 @@ const MOBILE_OUTPUTS = [
 ];
 
 const DesktopSvg = () => (
-  <svg viewBox="0 0 240 945" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Data inputs feed a proprietary modelling and MLOps layer that branches into predictions such as late-payment, forecasting and anomaly detection">
+  <svg viewBox="0 0 240 1370" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Data inputs feed a proprietary modelling and MLOps layer that branches into predictions such as late-payment, forecasting and anomaly detection">
     <defs>
       <marker id="efah" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#94a3b8" /></marker>
       <filter id="efShadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#1e293b" floodOpacity="0.18" /></filter>
@@ -100,7 +120,7 @@ const DesktopSvg = () => (
     <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="800" letterSpacing="1.5" fill="#647488" fontSize="12" textAnchor="middle">
       <text x={CX} y="20">DATA IN</text>
       <text x={CX} y="210">DATA SCIENCE</text>
-      <text x={CX} y="748">PREDICTIONS</text>
+      <text x={CX} y="1008">PREDICTIONS</text>
     </g>
 
     <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="700">
@@ -137,20 +157,20 @@ const DesktopSvg = () => (
     </g>
 
     <g filter="url(#efShadow)">
-      <polygon points={`${CX},${GY - 42} ${CX + 42},${GY} ${CX},${GY + 42} ${CX - 42},${GY}`} fill="url(#gl-violet)" stroke="rgba(255,255,255,.7)" strokeWidth="1.4" />
+      <polygon points={`${CX},${DESKTOP_GY - 42} ${CX + 42},${DESKTOP_GY} ${CX},${DESKTOP_GY + 42} ${CX - 42},${DESKTOP_GY}`} fill="url(#gl-violet)" stroke="rgba(255,255,255,.7)" strokeWidth="1.4" />
     </g>
-    <text x={CX} y={GY + 4} textAnchor="middle" fontSize="11" fontWeight="800" fill="#0f172a" fontFamily="ui-sans-serif,system-ui,sans-serif">DECIDE</text>
+    <text x={CX} y={DESKTOP_GY + 4} textAnchor="middle" fontSize="11" fontWeight="800" fill="#0f172a" fontFamily="ui-sans-serif,system-ui,sans-serif">DECIDE</text>
 
     <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line">
       <path d={DESKTOP_GATE_OUTPUT} />
-      <path d="M10 772 L10 909" />
+      <path d="M10 1152 L10 1289" />
     </g>
     <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line" markerEnd="url(#efah)">
-      {OUTPUTS.map((o) => <path key={o.label} d={`M10 ${o.y + 17} L40 ${o.y + 17}`} />)}
+      {DESKTOP_OUTPUTS.map((o) => <path key={o.label} d={`M10 ${o.y + 17} L40 ${o.y + 17}`} />)}
     </g>
 
     <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="700">
-      {OUTPUTS.map((o) => (
+      {DESKTOP_OUTPUTS.map((o) => (
         <g key={o.label}>
           <rect x="40" y={o.y} width="195" height="34" rx="8" fill="#fff" stroke="#86efac" strokeWidth="1.6" />
           <text x="52" y={o.y + 22} fontSize="13">{o.icon}</text>

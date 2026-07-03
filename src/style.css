@@ -887,7 +887,7 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 .experience-layout { display: flex; gap: 2rem; align-items: stretch; flex-wrap: wrap; }
 .experience-layout > .fade-in { flex: 0 0 clamp(6rem, 23%, 18rem); }
 .experience-rail { height: 100%; }
-.experience-flow { width: 100%; margin: 0; }
+.experience-flow { width: 100%; margin: 0; overflow: hidden; }
 .experience-flow svg { width: 100%; height: auto; display: block; max-height: 80vh; }
 .experience-list { flex: 1; min-width: 0; display: grid; gap: 1.25rem; align-content: start; }
 .experience-list p { text-align: justify; }
@@ -1277,10 +1277,10 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 /* Desktop & tablet landscape (≥769px) — experience rail fills card height */
 @media (min-width: 769px) {
-  .experience-layout > .fade-in { display: flex; flex-direction: column; }
-  .experience-rail { height: auto; flex: 1; display: flex; flex-direction: column; }
-  .experience-flow { flex: 1; }
-  .experience-flow svg { height: 100%; max-height: none; }
+  .experience-layout > .fade-in { display: flex; flex-direction: column; align-self: flex-start; }
+  .experience-rail { }
+  .experience-flow { }
+  .experience-flow svg { width: 100%; height: auto; max-height: none; display: block; }
   .dd-dot { r: 2.5; }
 }
 
@@ -1295,7 +1295,6 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   .hero-section { min-height: 48rem; padding-bottom: 7rem; }
   .hero-section::after { height: 18rem; }
   .hero-content { gap: 3.5rem; }
-  .experience-flow svg { max-height: 45rem; }
   .interview-modal-panel { width: 42rem; max-height: 40rem; }
   .spring-page { padding-bottom: clamp(4rem, 4rem, 6rem); }
   .contact-page-section { padding-top: clamp(5rem, 8rem, 9rem); padding-bottom: clamp(10rem, 12rem, 14rem); min-height: 48rem; }

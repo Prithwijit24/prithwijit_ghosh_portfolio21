@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node scripts/extract-resume.mjs && vite",
+    "build": "node scripts/extract-resume.mjs && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "og-image": "npx tsx scripts/generate-og-image.ts"
+    "og-image": "npx tsx scripts/generate-og-image.ts",
+    "extract-resume": "node scripts/extract-resume.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",

@@ -11,7 +11,7 @@
 //   GROQ_API_KEY / GROQ_API_KEYS          (free: https://console.groq.com)
 //   OPENROUTER_API_KEY / OPENROUTER_API_KEYS  (free: https://openrouter.ai)
 
-import { HR_QA } from './_hr.js';
+import { RESUME_KB } from './_rag_resume.js';
 
 declare const process: { env: Record<string, string | undefined> };
 
@@ -39,49 +39,10 @@ const llm7Keys = () => keysFrom(['LLM7IO_API_KEY', 'LLM7IO_API_KEYS', 'LLM7IO_TO
 const hasAnyKey = () => geminiKeys().length > 0 || groqKeys().length > 0 || openrouterKeys().length > 0 || llm7Keys().length > 0;
 
 /* ───────── Knowledge base (one self-contained passage per chunk) ───────── */
+/* Source of truth: auto-extracted from the latest resume PDF in public/resumes/.
+   Regenerate with: npm run extract-resume (or npm run build / npm run dev).      */
 const KB: string[] = [
-  `Profile: Prithwijit Ghosh is a Data Scientist Specialist at Accenture Global Technology (Bengaluru, India) with 2.9+ years of experience and an M.Sc. in Statistics from IIT Kanpur. He builds and deploys production-grade forecasting, risk and analytics systems (accounts-receivable, cash flow, sales) in finance and payments-adjacent domains. He works in first person as "I".`,
-
-  `Experience — Multi-Country Sales & Guest-Count Forecasting (Accenture, Global QSR Brand, Jul 2023 – Present): Designed and productionized an ensemble forecasting system predicting sales and guest counts up to 48 months ahead using Prophet, Theta, MSTL, LightGBM and Naive models with macroeconomic indicators across 6 countries. Built a custom horizon-aware evaluation framework (trend & seasonal MAPE) over 450+ models, achieving 97–99% accuracy for 24-month and 95–96% for 48-month forecasts.`,
-
-  `Experience — Forecasting MLOps (Accenture QSR): Implemented a production MLOps pipeline using Docker and GitHub Actions for CI/CD with unit and integration testing plus security scanning (SonarQube, Snyk) before deploying artifacts to JFrog Artifactory. Automated monthly forecasting workflows run via Astronomer on Apache Airflow DAGs on AWS Fargate.`,
-
-  `Experience — Intelligent Collections 3.0 / Late-Payment Risk (Accenture, Water Treatment Brand, Jul 2023 – Present): Built customer-level late-payment prediction with XGBoost, selecting 50 of 1000+ engineered features, reaching 84% due-date AUC and 90% due-month AUC across a 10K+ monthly customer base. Developed calibrated risk scoring (quantile calibration), reducing overdue amounts by 38%, lowering open accounts receivable by 15%, and increasing collections by 12% over the next 2 years after go-live.`,
-
-  `Experience — AR Forecasting & dashboards (Accenture Water Treatment): Designed short-term accounts-receivable forecasting (1–6 month horizon) using statistical methods (SMA, EWMA, ARIMA, SARIMA, Theta, MSTL) and ML/DL models (XGBoost, LightGBM, CatBoost, TCN), achieving 95–98% accuracy across Not Yet Due, Current Due and Over Due categories, delivered through interactive Power BI dashboards for leadership and client reporting.`,
-
-  `Experience — Proof of Concepts (Accenture): Cash Flow Forecasting for a Power Utility — end-to-end B2C cash-flow forecasting over 6M+ customer records, improving Cash-In accuracy to 98% (from 70%) and Cash-Out to 93% (from 64%). Marketing Data Analysis for an internationally renowned liquor brand — customer behavior across subscription patterns, campaigns, conversion funnels, up-sell, cross-sell and churn propensity using RFM and advanced analytics.`,
-
-  `Skills — Programming Languages: Python, SQL, R, Git, GitHub Actions. Tools: MS Excel, MS PowerPoint, Power BI, Redis, Kafka, Prometheus.`,
-
-  `Skills — Cloud Tools: Docker, Kubernetes, FastAPI, Streamlit, Astronomer, Airflow, and AWS (Fargate, EMR/Hadoop, EC2, S3, CloudWatch). Libraries: Pandas, Scikit-learn, XGBoost, LightGBM, NLTK, spaCy, TensorFlow, Keras, LangChain, LangGraph, Ollama.`,
-
-  `Skills — Domains: Data Science, Data Analysis, Predictive Modelling, Classification, NLP, Statistics, Time Series, Business Intelligence (BI), LLMs, AI Agents, and Retrieval-Augmented Generation (RAG).`,
-
-  `Master's Research — "Robust DD-Classifier Under Cell-wise Contamination" (M.Sc. Statistics, IIT Kanpur, 2023; advisors Prof. Subhajit Dutta of IIT Kanpur and Prof. Abhik Ghosh of ISI Kolkata). Cell-wise outliers (corrupted individual entries, not whole rows) break LDA, QDA, KNN and SVM. The Depth–Depth (DD) classifier maps each point from R^d to a 2-D space using Mahalanobis depth w.r.t. each class; estimating location and scatter with cell-wise-robust methods (CellMCD, 2SGS, Detection–Imputation) gives a robust DD space where classes separate cleanly.`,
-
-  `Master's Research — results: Across 100 simulation runs over Normal and t5 populations, location / scale / location–scale shifts, and dimensions from 5 to 25, the robust DD classifiers consistently beat both non-robust and original-space classifiers under cell-wise contamination, with robust-DD misclassification under 1% versus ~52% in raw space in some settings. The 2SGS estimator was the most consistent. Built with R (cellWise, GSE, ggplot2) and Python (numpy, pandas, scikit-learn) bridged via reticulate. Repo: github.com/Prithwijit24/Robust-DD-Classifier-for-Cellwise-Contaminated-Data.`,
-
-  `Project — Agentic Product Recommender (Jun 2025 – Mar 2026): A facial-embedding recommendation engine. FaceNet 512-dim embeddings on 23K UTKFace images predict 98% gender (SVM), 94% race (KNN) and 5.8 age MAPE (LGBM); a bias-aware LangChain agent turns predicted demographics into tailored product recommendations, deployed as a containerized Streamlit app on Hugging Face. Repo: github.com/Prithwijit24/product_recommendation_with_agent.`,
-
-  `Project — Credit Card Fraud Detection (Jan 2026 – Mar 2026, ongoing): A scalable real-time fraud detection platform with streaming ML inference, explainable risk scoring and low-latency transaction monitoring, with production deployment using Docker, Kubernetes and FastAPI. Repo: github.com/Prithwijit24/credit_card_fraud_detection.`,
-
-  `Project — Agentic Travel Planner: An LLM agent that plans end-to-end trips (itineraries, budgets, routes) using external tools. A LangGraph hub delegates to route, budget and timing workers with retrieval-augmented (RAG) context. Repo: github.com/Prithwijit24/agentic_travel_planner.`,
-
-  `Project — Music Recommendation System: Personalized recommendations from listening patterns and audio/content features. A hybrid recommender blends collaborative filtering with content-based audio features and embedding-based similarity for next-track and playlist suggestions. Repo: github.com/Prithwijit24/music_recommendation.`,
-
-  `Education: M.Sc. in Statistics, Indian Institute of Technology (IIT) Kanpur, 2021–2023 — CGPA 8.9, JAM All India Rank 7, Department Rank 6. B.Sc. in Statistics, Bidhannagar College, Kolkata, 2018–2021 — CGPA 9.99, Department Rank 1.`,
-
-  `Certifications & badges: Machine Learning Specialization (Stanford), Data Analysis with R Programming (Google), Python for Data Science (IBM), Mathematics for Machine Learning: Linear Algebra (Imperial College London), ML to DL for Remote Sensing (ISRO), Data Visualization with Tableau (Great Learning). Credly badges: IBM Applied Data Science with Python — Level 2, IBM Data Analysis Using Python, Microsoft AI Skills Fest 2026.`,
-
-  `Key achievements: JAM Statistics All India Rank 7; 97–99% accuracy on 24-month multi-country forecasts; 90% due-month AUC on late-payment risk; worked across 7+ client projects plus Accenture internal projects; reduced overdue amounts by 38%; increased collections by 12% over two years after go-live.`,
-
-  `Hobbies & interests: Travel, painting, and reading mathematics / books. Outside data pipelines, Prithwijit explores AI agents, contributes to open-source ML projects, and follows the latest in MLOps and LLM research.`,
-
-  `Contact: email ghoshprithwijit39@gmail.com, phone +91-7595986858 / +91-9230358950, GitHub github.com/Prithwijit24, LinkedIn linkedin.com/in/prithwijit-ghosh-datascience. Open to data science roles, collaborations, forecasting systems, MLOps and analytics problems.`,
-
-  // HR / behavioral interview Q&A so the bot answers common HR questions consistently.
-  ...HR_QA
+  ...RESUME_KB
 ];
 
 // Lexical retrieval over the knowledge base.

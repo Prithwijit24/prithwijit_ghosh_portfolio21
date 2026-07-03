@@ -1,3 +1,6 @@
+import type { SpringAccent } from './theme';
+import { LATEST_RESUME_FILENAME } from './_resume';
+
 /* ───────── Navigation ───────── */
 export const NAV_SECTIONS = [
   { id: 'home', label: 'Home', emoji: '🏠' },
@@ -18,10 +21,8 @@ export const PROFILE_LINKS = {
   phone: 'tel:+917595986858',
   github: 'https://github.com/Prithwijit24',
   linkedin: 'https://www.linkedin.com/in/prithwijit-ghosh-datascience/',
-  resume: new URL('./Prithwijit_Ghosh_Resume_20260523.pdf', import.meta.url).href
+  resume: `/resumes/${LATEST_RESUME_FILENAME}`
 } as const;
-
-import type { SpringAccent } from './theme';
 
 /* ───────── Data types ───────── */
 export type SkillDomain = { title: string; emoji: string; accent: SpringAccent; description: string; skills: string[]; level: number };
