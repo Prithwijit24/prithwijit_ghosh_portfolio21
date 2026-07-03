@@ -21,36 +21,26 @@ const INPUTS = [
 ];
 
 const BUBBLES = [
-  { t: 'Ensemble', x: 72, y: 262, r: 28, g: 'mint' },
-  { t: 'Embeddings', x: 160, y: 258, r: 24, g: 'sky' },
-  { t: 'Features', x: 44, y: 322, r: 26, g: 'violet' },
-  { t: 'XGBoost', x: 116, y: 325, r: 23, g: 'sky' },
-  { t: 'Bayesian', x: 188, y: 318, r: 22, g: 'rose' },
-  { t: 'Time-Series', x: 78, y: 384, r: 27, g: 'violet' },
-  { t: 'Tuning', x: 158, y: 380, r: 23, g: 'amber' },
-  { t: 'Backtest', x: 48, y: 444, r: 25, g: 'mint' },
-  { t: 'Drift', x: 116, y: 440, r: 20, g: 'rose' },
-  { t: 'Calibrate', x: 184, y: 438, r: 24, g: 'amber' },
-  { t: 'MLOps', x: 74, y: 502, r: 24, g: 'amber' },
-  { t: 'CI/CD', x: 150, y: 500, r: 23, g: 'sky' },
-  { t: 'Docker', x: 58, y: 556, r: 22, g: 'sky' },
-  { t: 'Airflow', x: 128, y: 556, r: 24, g: 'violet' },
-  { t: 'K8s', x: 196, y: 550, r: 19, g: 'rose' },
-  { t: 'Enrichment', x: 70, y: 615, r: 26, g: 'mint' },
-  { t: 'Processing', x: 162, y: 610, r: 25, g: 'violet' },
-  { t: 'Validation', x: 46, y: 675, r: 23, g: 'sky' },
-  { t: 'Scaling', x: 118, y: 670, r: 22, g: 'rose' },
-  { t: 'Cleaning', x: 188, y: 672, r: 20, g: 'amber' },
-  { t: 'Pipelines', x: 74, y: 735, r: 26, g: 'violet' },
-  { t: 'Inference', x: 156, y: 730, r: 24, g: 'mint' },
-  { t: 'Monitoring', x: 50, y: 795, r: 22, g: 'rose' },
-  { t: 'Feature Store', x: 118, y: 792, r: 25, g: 'sky' },
-  { t: 'PyTorch', x: 186, y: 788, r: 21, g: 'violet' },
-  { t: 'Big Data', x: 76, y: 852, r: 24, g: 'amber' },
-  { t: 'Spark', x: 152, y: 850, r: 23, g: 'mint' },
-  { t: 'Logging', x: 54, y: 910, r: 20, g: 'sky' },
-  { t: 'Metrics', x: 120, y: 912, r: 24, g: 'violet' },
-  { t: 'A/B Testing', x: 188, y: 908, r: 22, g: 'rose' },
+  { t: 'Ensemble', x: 72, y: 230, r: 28, g: 'mint' },
+  { t: 'Features', x: 44, y: 266, r: 26, g: 'violet' },
+  { t: 'XGBoost', x: 116, y: 268, r: 23, g: 'sky' },
+  { t: 'Tuning', x: 158, y: 301, r: 23, g: 'amber' },
+  { t: 'Time-Series', x: 78, y: 303, r: 27, g: 'violet' },
+  { t: 'Drift', x: 116, y: 337, r: 20, g: 'rose' },
+  { t: 'CI/CD', x: 150, y: 373, r: 23, g: 'sky' },
+  { t: 'MLOps', x: 74, y: 374, r: 24, g: 'amber' },
+  { t: 'Airflow', x: 128, y: 406, r: 24, g: 'violet' },
+  { t: 'Processing', x: 162, y: 439, r: 25, g: 'violet' },
+  { t: 'Enrichment', x: 70, y: 442, r: 26, g: 'mint' },
+  { t: 'Scaling', x: 118, y: 475, r: 22, g: 'rose' },
+  { t: 'Cleaning', x: 188, y: 476, r: 20, g: 'amber' },
+  { t: 'Inference', x: 156, y: 511, r: 24, g: 'mint' },
+  { t: 'Pipelines', x: 74, y: 514, r: 26, g: 'violet' },
+  { t: 'PyTorch', x: 186, y: 546, r: 21, g: 'violet' },
+  { t: 'Feature Store', x: 118, y: 548, r: 25, g: 'sky' },
+  { t: 'Spark', x: 152, y: 583, r: 23, g: 'mint' },
+  { t: 'A/B Testing', x: 188, y: 618, r: 22, g: 'rose' },
+  { t: 'Metrics', x: 120, y: 620, r: 24, g: 'violet' },
 ];
 
 const OUTPUTS = [
@@ -62,11 +52,11 @@ const OUTPUTS = [
 
 const DESKTOP_OUTPUTS = OUTPUTS.map(o => ({
   ...o,
-  y: o.y + 380,
+  y: o.y + 90,
 }));
 
 const CX = 120;
-const DESKTOP_GY = 1040;
+const DESKTOP_GY = 750;
 
 const DESKTOP_INPUT_PATHS = [
   "M63 72 C63 130 120 120 120 170",
@@ -76,11 +66,12 @@ const DESKTOP_INPUT_PATHS = [
   "M120 170 L120 196",
 ];
 
-const DESKTOP_CLOUD_GATE = `M54 930 C54 965 ${CX} 965 ${CX} ${DESKTOP_GY - 42}`;
-const DESKTOP_CLOUD_GATE2 = `M188 930 C188 965 ${CX} 965 ${CX} ${DESKTOP_GY - 42}`;
-const DESKTOP_CLOUD_GATE3 = `M120 936 L${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE = `M54 640 C54 670 ${CX} 670 ${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE2 = `M188 640 C188 670 ${CX} 670 ${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE3 = `M120 646 L${CX} ${DESKTOP_GY - 42}`;
 
-const DESKTOP_GATE_OUTPUT = `M${CX} ${DESKTOP_GY + 42} C${CX} 1125 10 1120 10 1152`;
+const LAST_OUTPUT_Y = DESKTOP_OUTPUTS[DESKTOP_OUTPUTS.length - 1].y;
+const DESKTOP_GATE_OUTPUT = `M${CX} ${DESKTOP_GY + 42} C${CX} 855 10 850 10 ${DESKTOP_OUTPUTS[0].y}`;
 
 const MOBILE_INPUTS = [
   { icon: '🗄️', label: 'Transactions', x: 24, y: 60 },
@@ -104,7 +95,7 @@ const MOBILE_OUTPUTS = [
 ];
 
 const DesktopSvg = () => (
-  <svg viewBox="0 0 240 1370" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Data inputs feed a proprietary modelling and MLOps layer that branches into predictions such as late-payment, forecasting and anomaly detection">
+  <svg viewBox="0 0 240 1060" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Data inputs feed a proprietary modelling and MLOps layer that branches into predictions such as late-payment, forecasting and anomaly detection">
     <defs>
       <marker id="efah" markerWidth="8" markerHeight="8" refX="5" refY="3" orient="auto"><path d="M0 0L6 3L0 6Z" fill="#94a3b8" /></marker>
       <filter id="efShadow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="3" stdDeviation="4" floodColor="#1e293b" floodOpacity="0.18" /></filter>
@@ -120,7 +111,7 @@ const DesktopSvg = () => (
     <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="800" letterSpacing="1.5" fill="#647488" fontSize="12" textAnchor="middle">
       <text x={CX} y="20">DATA IN</text>
       <text x={CX} y="210">DATA SCIENCE</text>
-      <text x={CX} y="1008">PREDICTIONS</text>
+      <text x={CX} y="835">PREDICTIONS</text>
     </g>
 
     <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="700">
@@ -163,7 +154,7 @@ const DesktopSvg = () => (
 
     <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line">
       <path d={DESKTOP_GATE_OUTPUT} />
-      <path d="M10 1152 L10 1289" />
+      <path d={`M10 ${DESKTOP_OUTPUTS[0].y} L10 ${LAST_OUTPUT_Y + 34}`} />
     </g>
     <g fill="none" stroke="#94a3b8" strokeWidth="1.6" className="eflow-line" markerEnd="url(#efah)">
       {DESKTOP_OUTPUTS.map((o) => <path key={o.label} d={`M10 ${o.y + 17} L40 ${o.y + 17}`} />)}
