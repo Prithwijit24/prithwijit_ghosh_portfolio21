@@ -112,4 +112,4 @@ Push to `main` to trigger the CI/CD pipeline.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Apache 2.0 — see [LICENSE](LICENSE).
