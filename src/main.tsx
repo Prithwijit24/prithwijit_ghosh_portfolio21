@@ -183,7 +183,7 @@ const renderRich = (text: string) =>
 
 const MscProjectSection = () => (
   <section id="research" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
-    <div className="mx-auto" style={{ width: 'min(72rem,100%)' }}>
+      <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="🔬" title="Master's Research" /></FadeIn>
       <FadeIn delay={80}>
         <p className="experience-eyebrow msc-eyebrow">{MSC_PROJECT.eyebrow}</p>
@@ -457,7 +457,7 @@ const HobbiesSection = () => {
   return (
     <section id="hobbies" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
       <SceneFx variant="flow" accent={[251, 113, 133]} />
-      <div className="mx-auto" style={{ width: 'min(66rem,100%)' }}>
+      <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
         <FadeIn><SectionHeading emoji="📸" title="Hobbies" /></FadeIn>
         <FadeIn delay={60}><p className="hobbies-intro">Travel, painting &amp; books — collected one frame at a time.</p></FadeIn>
         <FadeIn delay={120}>

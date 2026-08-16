@@ -82,6 +82,8 @@ button { border: 0; cursor: pointer; }
 .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
 .py-24 { padding-top: 6rem; padding-bottom: 6rem; }
 .py-32 { padding-top: 8rem; padding-bottom: 8rem; }
+#skills { padding-top: calc(8rem + 3in); }
+.achievements-section { padding-top: calc(6rem + 3in); }
 .pl-4 { padding-left: 1rem; }
 .pr-16 { padding-right: 4rem; }
 .font-sans { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
@@ -315,7 +317,7 @@ button { border: 0; cursor: pointer; }
   position: relative; isolation: isolate; display: flex; align-items: center;
   overflow: hidden;
   min-height: 100vh; box-sizing: border-box;
-  padding-top: calc(var(--nav-height) + 0.6rem); padding-bottom: 13vh;
+  padding-top: calc(var(--nav-height) + 2in); padding-bottom: 13vh;
   background:
     radial-gradient(circle at 18% 22%, rgba(253,224,71,.45), transparent 26rem),
     radial-gradient(circle at 84% 18%, rgba(244,114,182,.38), transparent 28rem),
@@ -920,10 +922,10 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 /* ────── MSc research project (raw → robust DD transform) ────── */
 .msc-eyebrow { text-align: center; color: #7c3aed; margin-bottom: .35rem; }
-.msc-title { text-align: center; margin: 0 auto .8rem; max-width: 48rem; color: var(--spring-ink); font-size: 1.65rem; font-weight: 850; line-height: 1.24; letter-spacing: -.015em; }
-.msc-summary { text-align: center; margin: 0 auto 1.75rem; max-width: 46rem; color: #315f51; font-size: 1rem; line-height: 1.6; }
+.msc-title { text-align: center; margin: 0 auto .8rem; max-width: 84rem; color: var(--spring-ink); font-size: 1.65rem; font-weight: 850; line-height: 1.24; letter-spacing: -.015em; }
 
-.msc-intro { max-width: 54rem; margin: 0 auto; text-align: center; }
+.msc-summary { text-align: center; margin: 0 auto 1.75rem; max-width: 84rem; color: #315f51; font-size: 1rem; line-height: 1.6; }
+.msc-intro { max-width: 84rem; margin: 0 auto; text-align: center; }
 .msc-intro + .msc-intro { margin-top: 1.75rem; }
 .msc-block-label { display: inline-block; margin-bottom: .4rem; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: #7c3aed; }
 .msc-intro p { margin: 0; color: #4d7c68; font-size: .96rem; line-height: 1.62; text-align: justify; text-align-last: center; }
@@ -959,8 +961,8 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 .msc-repo:hover { background: #fff; transform: translateY(-2px); }
 .msc-repo-icon { width: 1.05rem; height: 1.05rem; }
 
-.detail-list { display: grid; gap: .65rem; margin: 1rem auto 1rem 0; padding-left: 1.15rem; padding-right: 0; color: #315f51; line-height: 1.52; text-align: left; max-width: 46rem; }
-.detail-list strong { font-weight: 700; }
+.detail-list { display: grid; gap: .65rem; margin: 1rem 0; padding-left: 1.15rem; padding-right: 0; color: #315f51; font-size: .92rem; line-height: 1.6; text-align: left; }
+.detail-list strong { font-weight: 700; color: #0f766e; }
 .detail-list li::marker { color: #fb7185; }
 .compact-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: 1rem; justify-content: flex-end; }
 .compact-tags .tag-chip { font-family: Consolas, monospace; font-size: .68rem; }

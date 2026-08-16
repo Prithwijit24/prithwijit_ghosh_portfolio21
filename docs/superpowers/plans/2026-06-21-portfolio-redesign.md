@@ -805,7 +805,7 @@ export const Hero = () => {
                   <h3 className="text-3xl font-bold spring-gradient-text">About Me</h3>
                 </div>
                 <p className="text-spring-muted text-lg leading-relaxed">
-                  <b>Data Scientist Specialist</b> at Accenture with 2.9+ years of experience and an IIT Kanpur Master&apos;s in Statistics. I build and deploy forecasting, risk, and analytics systems across finance, payments-adjacent, sales, and operations domains.
+                  <b>Data Scientist Specialist</b> at Accenture with 3+ years of experience and an IIT Kanpur Master&apos;s in Statistics. I build and deploy forecasting, risk, and analytics systems across finance, payments-adjacent, sales, and operations domains.
                 </p>
                 <p className="text-spring-muted text-lg mt-4 leading-relaxed">
                   My work spans sales and guest-count forecasting, accounts receivable forecasting, late-payment prediction, cash-flow forecasting, marketing analytics, Power BI dashboards, and production MLOps with Docker, GitHub Actions, Airflow, Astronomer, and AWS Fargate.

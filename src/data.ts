@@ -59,62 +59,78 @@ export const tagAccent = (tag: string): SpringAccent =>
   SKILL_ACCENT.get(tag.toLowerCase()) ?? TAG_ACCENT_OVERRIDES[tag.toLowerCase()] ?? 'sky';
 
 export const EXPERIENCE_ITEMS: ExperienceItem[] = [
-  { title: 'Multi-Country Forecasting System', client: 'Accenture · Global QSR Brand', timeline: 'Jul 2023 – Present',
+  {
+    title: 'Sales and Guest-Count Forecasting System', client: 'Global QSR Brand',
     summary: 'Multi-country sales & guest-count forecasting system for long-range planning.',
     bullets: [
-      'Ensemble forecasts up to **48 months ahead** (Prophet, Theta, MSTL, LightGBM) across **6 countries**, blended with macroeconomic indicators.',
-      'Horizon-aware evaluation framework spanning **450+ models** — **97–99% accuracy** on 24-month forecasts.',
-      'Shipped an **MLOps pipeline** on Docker, GitHub Actions, Airflow, Astronomer and AWS Fargate, gated by SonarQube, Snyk and JFrog.'
-    ], tags: ['Python','SQL','Git','Time Series','MLOps','AWS Fargate','Airflow'] },
-  { title: 'Late-Payment Risk Prediction', client: 'Accenture · Water Treatment Brand', timeline: 'Jul 2023 – Present',
+      'Designed and productionized an ensemble forecasting system predicting sales and guest counts up to **48 months** ahead using Prophet, Theta, MSTL, LightGBM, and Naïve models with macroeconomic indicators for **6 countries**.',
+      'Engineered a custom horizon-aware evaluation framework (trend & seasonal MAPE) across **450+ forecasting models** with an ensemble balancing strategy, stabilizing long-range forecasts to **97–99% at 24 months** and **95–96% at 48 months**.',
+      'Implemented a production-grade MLOps pipeline on Docker and GitHub Actions for CI/CD, with unit and integration testing plus security scanning (**SonarQube, Snyk**) before artifact deployment to **JFrog Artifactory**.',
+      'Deployed automated monthly forecasting workflows via Astronomer on Apache Airflow DAGs on **AWS Fargate**, enabling reliable large-scale production forecasting.'
+    ], tags: ['Python', 'SQL', 'Git', 'Time Series', 'MLOps', 'AWS Fargate', 'Airflow'],
+    timeline: ''
+  },
+  {
+    title: 'Late-Payment Risk Prediction', client: 'Water Treatment Brand',
     summary: 'Customer-level late-payment prediction, calibrated risk scoring & AR forecasting.',
     bullets: [
-      'Selected **50 of 1000+** engineered features; XGBoost across a **10K+** monthly customer base, reaching **90% due-month AUC**.',
-      'Cut overdue amounts by **38%**, lowered AR by **15%** and lifted collections by **12%** post go-live.',
-      'Power BI dashboards delivering **95–98% accuracy** across Not Yet Due, Current Due and Over Due categories.'
-    ], tags: ['Python','SQL','XGBoost','Risk Scoring','Power BI','AR Forecasting','Collections'] },
-  { title: 'Cash-Flow & Marketing Analytics', client: 'Accenture · Power Utility & Liquor Brand Clients', timeline: 'Jul 2023 – Present',
+      'Built customer-level late-payment prediction models using **XGBoost** with **50 selected features** from **1000+ derived features**, achieving **84% AUC (due-date)** and **90% AUC (due-month)** across a **10K+ monthly customer base**.',
+      'Developed calibrated **risk scoring and risk categorization** using **quantile calibration**, cutting overdue amounts by **38%**, lowering open Accounts Receivable by **15%**, and lifting collections by **12%** over the next 2 years after go-live.',
+      'Designed short-term **AR forecasting models (1–6 month horizon)** across client segments using statistical methods (SMA, EWMA, ARIMA, SARIMA, Theta, MSTL) and ML/DL models (XGBoost, LightGBoost, CatBoost, TCN).',
+      'Achieved **95–98% accuracy** across Not Yet Due, Current Due and Over Due categories, delivered through an interactive **Power BI** dashboard for leadership and client reporting.'
+    ], tags: ['Python','SQL','XGBoost','Risk Scoring','Power BI','AR Forecasting','Collections'],
+    timeline: ''
+  },
+  {
+    title: 'Cash-Flow & Marketing Analytics', client: 'Power Utility & Liquor Brand Clients',
     summary: 'Forecasting & marketing analytics prototypes for cash-flow accuracy and customer growth.',
     bullets: [
-      'B2C cash-flow forecasting over **6M+ records** — Cash-In accuracy **98%** (from 70%), Cash-Out **93%** (from 64%).',
-      'Marketing analytics: subscription behavior, campaigns, funnels, up-sell, cross-sell, churn propensity and **RFM segmentation**.'
-    ], tags: ['Python','SQL','Cash Flow','RFM','Marketing Analytics','Dashboards'] }
+      'Delivered end-to-end **B2C cash flow forecasting** using **6M+ customers** data, improving **Cash-In accuracy to 98% (from 70%)** and **Cash-Out to 93% (from 64%)** through advanced ML modeling.',
+      'Enabled **business insights via interactive dashboards** for the power utility client.',
+      'Analyzed **customer behavior** across subscription patterns, marketing campaigns, conversion funnels, up-sell, cross-sell and churn propensity for an internationally renowned liquor brand.',
+      'Applied **RFM** and advanced analytics to drive data-informed **growth and retention** strategies.'
+    ], tags: ['Python','SQL','Cash Flow','RFM','Marketing Analytics','Dashboards'],
+    timeline: ''
+  }
 ];
 
 export const PROJECTS: ProjectItem[] = [
-  { title: 'Agentic Product Recommender', timeline: 'Jun 2025 – Mar 2026',
-    summary: 'Facial-embedding demographic prediction feeding a bias-aware LangChain agent that recommends products.',
+  { title: 'SkinWise Intelligent Recommender', timeline: 'Jun 2025 – Mar 2026',
+    summary: 'Facial analysis & demographic prediction feeding a LangGraph agent that researches and recommends skincare products.',
     bullets: [
-      'FaceNet **512-dim embeddings** on **23K UTKFace images** — **98% gender** (SVM), **94% race** (KNN), **5.8 age MAPE** (LGBM).',
-      'Bias-aware **LangChain agent** turns predicted demographics into tailored product recommendations.',
-      'End-to-end **Streamlit app** containerized and deployed on **Hugging Face**.'
+      'Facial analysis: **FaceNet 512-D embeddings** → PCA to **50-D**, then **LightGBM** (age ~5.7 yr error), **KNN** (gender ~97%) and **CatBoost** (race ~94%) with Fitzpatrick skin-tone mapping.',
+      '**LangGraph agent** researches skin concerns, ingredients and real products, then a **safety gate** validates the routine before personalized recommendations.',
+      'Product discovery pulls from external sources (**Open Beauty Facts, SerpAPI**) rather than LLM generation; end-to-end **Streamlit app** containerized with **Docker** and deployed on **Hugging Face**.'
     ],
-    link: 'https://github.com/Prithwijit24/product_recommendation_with_agent',
-    tags: ['Python','SQL','LangChain','FaceNet','Streamlit','Recommender'] },
+    link: 'https://github.com/Prithwijit24/skinwise_intelligent_recommender',
+    tags: ['Python','FaceNet','LangGraph','Streamlit','Docker','Recommender'] },
   { title: 'Credit Card Fraud Detection', timeline: 'Jan 2026 – Mar 2026',
-    summary: 'Scalable transaction monitoring for low-latency fraud inference and explainable risk scores.',
+    summary: 'Production-grade fraud detection with leakage-safe features, streaming scoring and explainable risk alerts.',
     bullets: [
-      '**Streaming ML inference** with **explainable risk scoring** on highly imbalanced transaction data.',
-      'Production deployment with **Docker, Kubernetes and FastAPI**.'
+      '**Leakage-safe feature engineering** with chronological splits and a **DuckDB feature store**, training **XGBoost / Random Forest** models optimized for **PR-AUC** via walk-forward CV.',
+      '**Kafka** micro-batch scoring plus **FastAPI** serving with risk-aware alerting (risk bands & reason strings) for explainable fraud triage.',
+      'Fully containerized with **Docker & Kubernetes**, including **CI/CD** and automated unit & integration testing.'
     ],
     link: 'https://github.com/Prithwijit24/credit_card_fraud_detection/tree/fraud_v1',
-    tags: ['Python','SQL','Fraud Detection','FastAPI','Kubernetes','Streaming ML'] },
-  { title: 'Agentic Travel Planner',
-    summary: 'An LLM agent that plans end-to-end trips — itineraries, budgets and routes — using external tools.',
+    tags: ['Python','XGBoost','Kafka','FastAPI','Kubernetes','Fraud Detection','MLOps'] },
+  { title: 'Agentic Travel Planner', timeline: 'Mar 2026 – Present',
+    summary: 'LangGraph + hybrid Graph/Vector RAG travel planner that builds context-aware itineraries with critique agents.',
     bullets: [
-      '**LangGraph agent** orchestrates tools for destinations, routes and day-by-day itineraries.',
-      '**Retrieval-augmented** context produces personalized, budget-aware travel plans.'
+      '**Hybrid Graph + Vector RAG** (**Neo4j** + **ChromaDB**) retrieves real POIs, with deterministic bin-packing for day-by-day itinerary sequencing.',
+      '**LangGraph critique loop** (cost → budget → timing → revise) and specialist workers for routing, budgeting and timing, with heuristic fallbacks.',
+      '**FastAPI** backend (SSE progress + Prometheus metrics) and **Streamlit** UI; cuts planning wall-time from **~745s to ~13–35s** with low hallucination risk.'
     ],
     link: 'https://github.com/Prithwijit24/agentic_travel_planner',
-    tags: ['Python','SQL','LangGraph','AI Agents','RAG','FastAPI'] },
-  { title: 'Music Recommendation System',
-    summary: 'Personalized music recommendations from listening patterns and audio/content features.',
+    tags: ['Python','LangGraph','Neo4j','ChromaDB','RAG','FastAPI','Streamlit'] },
+  { title: 'Music Recommendation System', timeline: 'Dec 2025 – Present',
+    summary: 'Music recommendations from the Million Song Dataset via content-based retrieval, collaborative filtering and hybrid ranking.',
     bullets: [
-      '**Hybrid recommender** blending collaborative filtering with content-based audio features.',
-      '**Embedding-based similarity** for next-track and playlist suggestions.'
+      'Content-based retrieval via **nearest-neighbor search over compressed audio embeddings** from the **Million Song Dataset**.',
+      '**Collaborative filtering** (matrix factorization) and **hybrid ranking** blend content and interaction signals, plus a deep **autoencoder** for latent representations.',
+      'Served through a **REST API** and **Streamlit** UI, fully containerized with **Docker, Kubernetes** and CI/CD.'
     ],
     link: 'https://github.com/Prithwijit24/music_recommendation',
-    tags: ['Python','SQL','Recommender','Embeddings','Collaborative Filtering'] }
+    tags: ['Python','Embeddings','Collaborative Filtering','Autoencoder','FastAPI','Recommender'] }
 ];
 
 export type Achievement = { emoji: string; stat: string; label: string; desc: string; chart?: 'reduction' | 'auc' };

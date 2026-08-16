@@ -51,7 +51,7 @@ const Gate = ({ p, cx, cy, r = 25, label }: { p: string; cx: number; cy: number;
   </g>
 );
 
-/* 1 ── Agentic Product Recommender ──────────────────────────────────── */
+/* 1 ── SkinWise Intelligent Recommender ─────────────────────────────── */
 const Recommender = () => {
   const p = 'r';
   return (
