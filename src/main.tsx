@@ -267,7 +267,7 @@ const ProjectsSection = () => (
             <div className="project-row">
               <TiltCard className="experience-card project-card">
                 {project.timeline && <p className="experience-eyebrow">{project.timeline}</p>}
-                <h3 className="project-card-heading">{project.title}</h3>
+                <h3 className="project-card-heading">{project.title}{index > 0 && <sup className="ongoing-tag"> (*ongoing)</sup>}</h3>
                 <ul className="detail-list">
                   {project.bullets.map(b => <li key={b}>{renderRich(b)}</li>)}
                 </ul>

@@ -63,12 +63,12 @@ const DESKTOP_INPUT_PATHS = [
   "M177 72 C177 130 120 120 120 170",
   "M63 118 C63 135 120 130 120 170",
   "M177 118 C177 135 120 130 120 170",
-  "M120 170 L120 196",
+  "M120 170 L120 196 C112 209 90 205 72 202",
 ];
 
-const DESKTOP_CLOUD_GATE = `M54 640 C54 670 ${CX} 670 ${CX} ${DESKTOP_GY - 42}`;
-const DESKTOP_CLOUD_GATE2 = `M188 640 C188 670 ${CX} 670 ${CX} ${DESKTOP_GY - 42}`;
-const DESKTOP_CLOUD_GATE3 = `M120 646 L${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE = `M120 644 L${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE2 = `M188 642 C188 670 ${CX} 670 ${CX} ${DESKTOP_GY - 42}`;
+const DESKTOP_CLOUD_GATE3 = `M152 606 C160 650 140 672 ${CX} ${DESKTOP_GY - 42}`;
 
 const LAST_OUTPUT_Y = DESKTOP_OUTPUTS[DESKTOP_OUTPUTS.length - 1].y;
 const DESKTOP_GATE_OUTPUT = `M${CX} ${DESKTOP_GY + 42} C${CX} 855 10 850 10 ${DESKTOP_OUTPUTS[0].y}`;
@@ -187,11 +187,10 @@ const MobileSvg = () => (
       </defs>
 
       <g fill="none" stroke="#94a3b8" strokeWidth="1.8" className="eflow-line" strokeLinecap="round" strokeLinejoin="round">
-        {MOBILE_INPUTS.map((n) => <path key={n.label} d={`M${n.x + 124} ${n.y + 17} Q248 ${n.y + 17} 248 152`} />)}
-        <path d="M248 152 H330" markerEnd="url(#efah-m)" />
+        {MOBILE_INPUTS.map((n) => <path key={n.label} d={`M${n.x + 120} ${n.y + 17} Q248 ${n.y + 17} 248 152`} />)}
+        <path d="M248 152 H344" markerEnd="url(#efah-m)" />
         <path d="M620 140 H674" markerEnd="url(#efah-m)" />
-        <path d="M758 65 V197" />
-        {MOBILE_OUTPUTS.map((o) => <path key={o.label} d={`M758 ${o.y + 17} H790`} markerEnd="url(#efah-m)" />)}
+        {MOBILE_OUTPUTS.map((o) => <path key={o.label} d={`M758 140 L790 ${o.y + 17}`} markerEnd="url(#efah-m)" />)}
       </g>
 
       <g fontFamily="ui-sans-serif,system-ui,sans-serif" fontWeight="800" letterSpacing="1.5" fill="#647488" fontSize="12" textAnchor="middle">
