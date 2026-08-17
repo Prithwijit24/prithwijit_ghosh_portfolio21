@@ -1,12 +1,13 @@
 import { createRoot } from 'react-dom/client';
 import type { SyntheticEvent } from 'react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import './style.css';
 
 import {
-  PROFILE_LINKS, SKILL_DOMAINS, EXPERIENCE_ITEMS, PROJECTS, ACHIEVEMENTS_DATA, CERTIFICATIONS, BADGES, MSC_PROJECT, HOBBIES, tagAccent
+  PROFILE_LINKS, SKILL_DOMAINS, EXPERIENCE_ITEMS, PROJECTS, ACHIEVEMENTS_DATA, CERTIFICATIONS, BADGES, MSC_PROJECT, HOBBIES, SHORT_PROJECTS, tagAccent
 } from './data';
 import {
-  FadeIn, SectionHeading, AnimatedCounter, TiltCard, SkillBar
+  FadeIn, SectionHeading, TiltCard, SkillBar
 } from './components/primitives';
 import {
   CursorGlow, ScrollProgress, BackToTop, SectionCorners
@@ -135,24 +136,30 @@ const ExperienceSection = () => (
   <section id="experience" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
     <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="💼" title="Professional Experience" /></FadeIn>
-      <FadeIn delay={60}>
-        <div className="experience-accenture-blurb">
-          <div className="accenture-brand">
-            <img className="accenture-logo" src="/logos/accenture.png" alt="Accenture" />
-            <span className="accenture-role">Data Scientist Specialist · Accenture Technology</span>
+        <FadeIn delay={60}>
+          <div className="experience-accenture-blurb">
+            <p className="accenture-role-centered">Data Scientist Specialist · Accenture Technology</p>
+            <div className="accenture-blurb-body">
+              <div className="accenture-laptop">
+                <DotLottieReact className="accenture-laptop-art" style={{ width: '100%', height: '100%' }} src="/logos/animation.lottie" autoplay loop />
+                <img className="accenture-logo-overlay" src="/logos/accenture.png" alt="Accenture" />
+              </div>
+              <p className="experience-accenture-copy">
+                As a <strong>Data Scientist Specialist, Accenture</strong>, I have delivered end-to-end production machine-learning systems across forecasting, risk, collections, cash-flow and financial decision intelligence for global clients. From multi-country sales forecasts to contract P&L reasoning over <strong>70,000+ contracts</strong>, I turn messy data into reliable, explainable decisions at scale.
+              </p>
+            </div>
           </div>
-          <p className="experience-accenture-copy">
-            As a <strong>Data Scientist Specialist – Accenture Technology</strong>, I have delivered end-to-end production machine-learning systems across forecasting, risk, collections, cash-flow and financial decision intelligence for global clients. From multi-country sales forecasts to contract P&L reasoning over <strong>70,000+ contracts</strong>, I turn messy data into reliable, explainable decisions at scale.
-          </p>
-        </div>
-      </FadeIn>
+        </FadeIn>
       <div className="experience-layout">
         <FadeIn delay={80} direction="left">
           <div className="experience-rail" aria-hidden="true"><ExperienceViz /></div>
         </FadeIn>
         <div className="experience-list">
           <div className="experience-diamond-box">
-            <h3 className="experience-diamond-heading">Diamond Projects</h3>
+            <h3 className="experience-diamond-heading">
+              <svg className="dh-icon dh-icon--diamond" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l10 10-10 10L2 12z" /></svg>
+              Diamond Projects
+            </h3>
             {EXPERIENCE_ITEMS.slice(0, 3).map((item, index) => (
               <FadeIn key={`${item.client}-${item.summary}`} delay={index * 100} direction="left">
                 <TiltCard className="experience-card">
@@ -163,7 +170,7 @@ const ExperienceSection = () => (
                     <span className="experience-eyebrow experience-eyebrow--inline">{item.timeline}</span>
                   </div>
                   <ul className="detail-list">
-                    {item.bullets.map(b => <li key={b}>{renderRich(b)}</li>)}
+                    {item.bullets.map(b => <li key={b}>{renderExp(b)}</li>)}
                   </ul>
                   <div className="compact-tags">
                     {item.tags.map((t) => <span key={t} className={`tag-chip skill-pill--${tagAccent(t)}`}>{t}</span>)}
@@ -172,32 +179,31 @@ const ExperienceSection = () => (
               </FadeIn>
             ))}
           </div>
-          {EXPERIENCE_ITEMS.slice(3).map((item, index) => (
-            <FadeIn key={`${item.client}-${item.summary}`} delay={(3 + index) * 100} direction="left">
-              <TiltCard className="experience-card">
-                <h3 className="experience-role-heading">{item.title}</h3>
-                <div className="experience-meta-row">
-                  <span className="experience-company">{item.client}</span>
-                  <span className="experience-meta-sep" aria-hidden="true">·</span>
-                  <span className="experience-eyebrow experience-eyebrow--inline">{item.timeline}</span>
+        </div>
+      </div>
+      <div className="short-projects-wrap">
+        <div className="experience-diamond-box">
+          <h3 className="experience-diamond-heading">
+            <svg className="dh-icon dh-icon--bolt" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h7l-1 8 11-13h-7z" /></svg>
+            Short Projects
+          </h3>
+          <div className="sp-bento">
+            {SHORT_PROJECTS.map((project, index) => (
+              <FadeIn key={project.title} delay={index * 100} direction="left">
+                <div className="short-project-card">
+                  {project.timeline && <p className="experience-eyebrow">{project.timeline}</p>}
+                  <h3 className="short-project-title">{project.title}</h3>
+                  <p className="short-project-client">{project.client}</p>
+                  <ul className="short-project-bullets">
+                    {project.bullets.slice(0, index === 0 ? 4 : 2).map((b) => <li key={b}>{renderExp(b)}</li>)}
+                  </ul>
+                  <div className="compact-tags">
+                    {project.tags.map((t) => <span key={t} className={`tag-chip skill-pill--${tagAccent(t)}`}>{t}</span>)}
+                  </div>
                 </div>
-                <ul className="detail-list">
-                  {item.bullets.map(b => <li key={b}>{renderRich(b)}</li>)}
-                </ul>
-                <div className="compact-tags">
-                  {item.tags.map((t) => <span key={t} className={`tag-chip skill-pill--${tagAccent(t)}`}>{t}</span>)}
-                </div>
-              </TiltCard>
-            </FadeIn>
-          ))}
-          <FadeIn delay={EXPERIENCE_ITEMS.length * 100} direction="left">
-            <div className="experience-poc-card">
-              <span className="experience-poc-icon" aria-hidden="true">🧪</span>
-              <p>
-                … also POC &amp; experimental projects on <strong>Anomaly Detection</strong>, <strong>Marketing Campaign</strong> analytics, <strong>Upsell</strong> &amp; <strong>Cross-sell</strong>, <strong>Recency–Frequency–Monetary (RFM)</strong> analysis, <strong>Subscription pattern</strong> analysis, <strong>Clickstream</strong> analysis and so on.
-              </p>
-            </div>
-          </FadeIn>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -211,6 +217,39 @@ const renderRich = (text: string) =>
     if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
     if (part.startsWith('*') && part.endsWith('*')) return <em key={i}>{part.slice(1, -1)}</em>;
     return part;
+  });
+
+/* Professional-Experience highlighting: numbers → black bold, model/algorithm
+   names → red italic; existing **bold** markers still render as bold. */
+const EXP_MODELS = [
+  'LightGBoost','LightGBM','XGBoost','CatBoost','Prophet','Theta','MSTL','ARIMA',
+  'SARIMA','EWMA','SMA','TCN','Naïve','Naive','Decision Tree','Random Forest',
+  'KNN','SVM','LSTM','GRU','FaceNet','PCA'
+];
+const EXP_BOUND_L = '(?<![A-Za-z0-9])';
+const EXP_BOUND_R = '(?![A-Za-z0-9])';
+const EXP_MODEL_ALT = EXP_MODELS
+  .map(m => m.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&'))
+  .sort((a, b) => b.length - a.length)
+  .join('|');
+const EXP_NUM_INNER = '\\d+(?:[.,]\\d+)?(?:\\s*[\\u002D\\u2013]\\s*\\d+(?:[.,]\\d+)?)?(?:s(?!\\w))?(?:%|[MK]+)?(?:\\+)?';
+const EXP_TOKEN_RE = new RegExp(`(${EXP_BOUND_L}(?:${EXP_MODEL_ALT}|${EXP_NUM_INNER})${EXP_BOUND_R})`, 'g');
+
+const highlightExp = (s: string): React.ReactNode => {
+  if (!s) return s;
+  return s.split(EXP_TOKEN_RE).map((p, i) => {
+    if (!p) return '';
+    if (EXP_MODELS.includes(p)) return <em key={i} className="hl-model">{p}</em>;
+    if (/^[~]?\d/.test(p)) return <strong key={i} className="hl-num">{p}</strong>;
+    return p;
+  });
+};
+
+const renderExp = (text: string) =>
+  text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/g).map((part, i) => {
+    if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{highlightExp(part.slice(2, -2))}</strong>;
+    if (part.startsWith('*') && part.endsWith('*')) return <em key={i}>{highlightExp(part.slice(1, -1))}</em>;
+    return highlightExp(part);
   });
 
 const MscProjectSection = () => (
@@ -297,21 +336,23 @@ const ProjectsSection = () => (
         {PROJECTS.map((project, index) => (
           <FadeIn key={project.title} delay={index * 80}>
             <div className="project-row">
-              <TiltCard className="experience-card project-card">
-                {project.timeline && <p className="experience-eyebrow">{project.timeline}</p>}
-                <h3 className="project-card-heading">{project.title}{index > 0 && <sup className="ongoing-tag"> (*ongoing)</sup>}</h3>
-                <ul className="detail-list">
-                  {project.bullets.map(b => <li key={b}>{renderRich(b)}</li>)}
-                </ul>
-                <div className="compact-tags">
-                  {project.tags.map((t) => <span key={t} className={`tag-chip skill-pill--${tagAccent(t)}`}>{t}</span>)}
-                </div>
+            <TiltCard className="experience-card project-card">
+              <h3 className="project-card-heading">{project.title}{index > 0 && <sup className="ongoing-tag"> (*ongoing)</sup>}</h3>
+              {project.timeline && <p className="project-card-date">{project.timeline}</p>}
+              <ul className="detail-list">
+                {project.bullets.map(b => <li key={b}>{renderExp(b)}</li>)}
+              </ul>
+              <div className="project-card-footer">
                 {project.link && (
                   <a className="project-repo-link" href={project.link} target="_blank" rel="noopener noreferrer">
                     <GitHubIcon className="project-repo-icon" /> View repository
                   </a>
                 )}
-              </TiltCard>
+                <div className="compact-tags">
+                  {project.tags.map((t) => <span key={t} className={`tag-chip skill-pill--${tagAccent(t)}`}>{t}</span>)}
+                </div>
+              </div>
+            </TiltCard>
               <div className="project-arch-cell" aria-hidden="true">
                 <ProjectArch kind={PROJECT_ARCH[index]} />
               </div>
@@ -356,10 +397,10 @@ const EducationSection = () => (
               </div>
             </div>
             <div className="edu-stats">
-              <div className="edu-stat"><span className="edu-stat-num"><AnimatedCounter target={8} prefix="" suffix="" duration={1500} /></span><span className="edu-stat-dot">.</span><span className="edu-stat-num">9</span><span className="edu-stat-label">CGPA</span></div>
+              <div className="edu-stat"><span className="edu-stat-num">8</span><span className="edu-stat-dot">.</span><span className="edu-stat-num">9</span><span className="edu-stat-label">CGPA</span></div>
               <div className="edu-stats-right">
-                <div className="edu-stat"><span className="edu-stat-num"><AnimatedCounter target={7} duration={1500} /></span><span className="edu-stat-label">JAM AIR</span></div>
-                <div className="edu-stat"><span className="edu-stat-num"><AnimatedCounter target={6} duration={1500} /></span><span className="edu-stat-label">Dept. Rank</span></div>
+                <div className="edu-stat"><span className="edu-stat-num">7</span><span className="edu-stat-label">JAM AIR</span></div>
+                <div className="edu-stat"><span className="edu-stat-num">6</span><span className="edu-stat-label">Dept. Rank</span></div>
               </div>
             </div>
           </TiltCard>
@@ -379,9 +420,9 @@ const EducationSection = () => (
               </div>
             </div>
             <div className="edu-stats">
-              <div className="edu-stat"><span className="edu-stat-num"><AnimatedCounter target={9} prefix="" suffix="" duration={1500} /></span><span className="edu-stat-dot">.</span><span className="edu-stat-num">99</span><span className="edu-stat-label">CGPA</span></div>
+              <div className="edu-stat"><span className="edu-stat-num">9</span><span className="edu-stat-dot">.</span><span className="edu-stat-num">99</span><span className="edu-stat-label">CGPA</span></div>
               <div className="edu-stats-right">
-                <div className="edu-stat"><span className="edu-stat-num"><AnimatedCounter target={1} duration={1500} /></span><span className="edu-stat-label">Dept. Rank</span></div>
+                <div className="edu-stat"><span className="edu-stat-num">1</span><span className="edu-stat-label">Dept. Rank</span></div>
               </div>
             </div>
           </TiltCard>

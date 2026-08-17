@@ -91,17 +91,6 @@ export const EXPERIENCE_ITEMS: ExperienceItem[] = [
       'Deployed **six parallel service variants** (standard, batch, load-balanced, region-specific) on **Google Cloud serverless**, provisioned with **Terraform** across sandbox, staging and production and released through gated **Azure DevOps** pipelines with end-to-end tracing.'
     ], tags: ['Python','SQL','LangGraph','Gemini','BigQuery','Vertex AI','Terraform','Azure DevOps','Decision Intelligence'],
     timeline: ''
-  },
-  {
-    title: 'Cash-Flow & Marketing Analytics', client: 'Power Utility & Liquor Brand Clients',
-    summary: 'Forecasting & marketing analytics prototypes for cash-flow accuracy and customer growth.',
-    bullets: [
-      'Delivered end-to-end **B2C cash flow forecasting** using **6M+ customers** data, improving **Cash-In accuracy to 98% (from 70%)** and **Cash-Out to 93% (from 64%)** through advanced ML modeling.',
-      'Enabled **business insights via interactive dashboards** for the power utility client.',
-      'Analyzed **customer behavior** across subscription patterns, marketing campaigns, conversion funnels, up-sell, cross-sell and churn propensity for an internationally renowned liquor brand.',
-      'Applied **RFM** and advanced analytics to drive data-informed **growth and retention** strategies.'
-    ], tags: ['Python','SQL','Cash Flow','RFM','Marketing Analytics','Dashboards'],
-    timeline: ''
   }
 ];
 
@@ -225,4 +214,42 @@ export const HOBBIES: HobbyColumn[] = [
     photos: ['/hobbies/painting-1.jpg', '/hobbies/painting-2.jpg', '/hobbies/painting-3.jpg', '/hobbies/painting-4.jpg'] },
   { title: 'Books', emoji: '📚', accent: 'mint', quote: 'A reader lives a thousand lives.',
     photos: ['/hobbies/reading-1.jpg', '/hobbies/reading-2.jpg', '/hobbies/reading-3.jpg', '/hobbies/reading-4.jpg'] }
+];
+
+/* ───────── Short Projects (concise highlights) ───────── */
+export type ShortProject = { title: string; client: string; timeline?: string; summary: string; bullets: string[]; tags: string[] };
+
+export const SHORT_PROJECTS: ShortProject[] = [
+  {
+    title: 'Machine Failure Alert System',
+    client: 'Global QSR Brand',
+    summary: 'Productionized machine failure alert system for shake machines.',
+    bullets: [
+      'Designed and productionized a machine failure alert system for shake machines, combining a statistical model (97% accuracy, 76% precision, 89% recall) with an XGBoost/Decision Tree ML ensemble (99% accuracy, 85% precision, 92% recall) against a ~16% baseline failure rate.',
+      'Engineered the statistical layer using conditional-probability-based histogram binning, capable of flagging failures 3–5 minutes ahead of occurrence for early-stage detection.',
+      'Built the ML ensemble to extend lead time up to 30 minutes before failure, giving operations teams meaningfully more time to intervene and prevent downtime.',
+      'Architected the full production pipeline and infrastructure end-to-end — Kafka, GCP logs, and S3 for ingestion; GCP-based training with daily inference on proprietary edge servers; Prometheus/Grafana for monitoring; and NATS for real-time alert delivery.'
+    ],
+    tags: ['XGBoost', 'Kafka', 'GCP', 'Prometheus', 'Grafana', 'NATS', 'S3']
+  },
+  {
+    title: 'Cash Flow Forecasting',
+    client: 'Power Utility Company',
+    summary: 'End-to-end B2C cash flow forecasting for a power utility.',
+    bullets: [
+      'Forecasted cash-in/cash-out for 6M+ customers, lifting Cash-In to 98% (from 70%) and Cash-Out to 93% (from 64%).',
+      'Enabled business insights through interactive, ML-driven dashboards.'
+    ],
+    tags: ['Python', 'SQL', 'Cash Flow', 'Dashboards', 'ML']
+  },
+  {
+    title: 'Marketing Data Analysis',
+    client: 'Internationally Renowned Liquor Brand',
+    summary: 'Customer analytics for an internationally renowned liquor brand.',
+    bullets: [
+      'Segmented customers via RFM and analyzed subscription, campaign, and conversion-funnel behavior.',
+      'Modeled up-sell, cross-sell, and churn propensity to drive retention and growth strategy.'
+    ],
+    tags: ['Python', 'SQL', 'RFM', 'Marketing Analytics', 'Retention']
+  }
 ];

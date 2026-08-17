@@ -59,12 +59,12 @@ export const SiteNav = () => {
         </div>
         <div className="site-nav-right">
           <a href="#contact"
-            className={`site-nav-action${activeId === 'contact' ? ' site-nav-action--active' : ''}`}
+            className={`site-nav-action site-nav-action--contact${activeId === 'contact' ? ' site-nav-action--active' : ''}`}
             onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }}>Contact</a>
-          <a href={PROFILE_LINKS.github} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+          <a href={PROFILE_LINKS.github} className="site-nav-action site-nav-action--icon site-nav-action--github" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
             <GitHubIcon className="site-nav-action-icon" />
           </a>
-          <a href={PROFILE_LINKS.linkedin} className="site-nav-action site-nav-action--icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+          <a href={PROFILE_LINKS.linkedin} className="site-nav-action site-nav-action--icon site-nav-action--linkedin" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
             <LinkedInIcon className="site-nav-action-icon" />
           </a>
         </div>

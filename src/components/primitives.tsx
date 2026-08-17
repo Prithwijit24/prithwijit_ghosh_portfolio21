@@ -35,37 +35,6 @@ export const FadeIn = ({ children, delay = 0, direction = 'up' }: FadeInProps) =
   );
 };
 
-type AnimatedCounterProps = { target: number; suffix?: string; prefix?: string; duration?: number };
-
-export const AnimatedCounter = ({ target, suffix = '', prefix = '', duration = 2000 }: AnimatedCounterProps) => {
-  const [count, setCount] = useState(0);
-  const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-  const startTime = useRef(0);
-  const rafId = useRef(0);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting && !hasStarted) { setHasStarted(true); observer.unobserve(entry.target); } }, { rootMargin: '0px 0px -50px 0px' });
-    const node = ref.current;
-    if (node) observer.observe(node);
-    return () => observer.disconnect();
-  }, [hasStarted]);
-
-  useEffect(() => {
-    if (!hasStarted) return;
-    const animate = (timestamp: number) => {
-      if (!startTime.current) startTime.current = timestamp;
-      const progress = Math.min((timestamp - startTime.current) / duration, 1);
-      setCount(Math.floor((1 - Math.pow(1 - progress, 3)) * target));
-      if (progress < 1) rafId.current = requestAnimationFrame(animate);
-    };
-    rafId.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafId.current);
-  }, [hasStarted, target, duration]);
-
-  return <span ref={ref}>{prefix}{count}{suffix}</span>;
-};
-
 type SkillBarProps = { level: number; accent: SpringAccent };
 
 export const SkillBar = ({ level, accent }: SkillBarProps) => {
