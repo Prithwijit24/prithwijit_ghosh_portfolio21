@@ -151,8 +151,29 @@ const ExperienceSection = () => (
           <div className="experience-rail" aria-hidden="true"><ExperienceViz /></div>
         </FadeIn>
         <div className="experience-list">
-          {EXPERIENCE_ITEMS.map((item, index) => (
-            <FadeIn key={`${item.client}-${item.summary}`} delay={index * 100} direction="left">
+          <div className="experience-diamond-box">
+            <h3 className="experience-diamond-heading">Diamond Projects</h3>
+            {EXPERIENCE_ITEMS.slice(0, 3).map((item, index) => (
+              <FadeIn key={`${item.client}-${item.summary}`} delay={index * 100} direction="left">
+                <TiltCard className="experience-card">
+                  <h3 className="experience-role-heading">{item.title}</h3>
+                  <div className="experience-meta-row">
+                    <span className="experience-company">{item.client}</span>
+                    <span className="experience-meta-sep" aria-hidden="true">·</span>
+                    <span className="experience-eyebrow experience-eyebrow--inline">{item.timeline}</span>
+                  </div>
+                  <ul className="detail-list">
+                    {item.bullets.map(b => <li key={b}>{renderRich(b)}</li>)}
+                  </ul>
+                  <div className="compact-tags">
+                    {item.tags.map((t) => <span key={t} className={`tag-chip skill-pill--${tagAccent(t)}`}>{t}</span>)}
+                  </div>
+                </TiltCard>
+              </FadeIn>
+            ))}
+          </div>
+          {EXPERIENCE_ITEMS.slice(3).map((item, index) => (
+            <FadeIn key={`${item.client}-${item.summary}`} delay={(3 + index) * 100} direction="left">
               <TiltCard className="experience-card">
                 <h3 className="experience-role-heading">{item.title}</h3>
                 <div className="experience-meta-row">

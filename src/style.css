@@ -881,9 +881,9 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 
 /* ────── Experience ────── */
 .experience-card {
-  padding: 1.75rem; border-radius: 1.25rem; border: 2px solid rgba(52,211,153,.35);
+  padding: 1.5rem; border-radius: 1.25rem; border: none;
   background: linear-gradient(145deg, rgba(255,255,255,.92), rgba(254,243,199,.88));
-  box-shadow: 0 16px 40px rgba(190,120,90,.15); will-change: transform; width: 100%; max-width: 100%;
+  box-shadow: 0 12px 28px rgba(244,63,94,.22); will-change: transform; width: 100%; max-width: 100%;
 }
 /* two-column rail + cards */
 .experience-layout { display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
@@ -893,6 +893,16 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 .experience-flow svg { display: block; width: 100%; max-width: 100%; height: auto; min-width: 0; }
 .experience-list { flex: 1; min-width: 0; position: relative; z-index: 1; display: grid; gap: 1.25rem; align-content: start; }
 .experience-list p { text-align: justify; }
+.experience-diamond-box {
+  border: 2px solid rgba(15,118,110,.5); border-radius: 1.5rem;
+  padding: 1.5rem 1.5rem 1.75rem; background: #fff;
+  box-shadow: 0 20px 50px rgba(15,118,110,.14);
+  display: flex; flex-direction: column; gap: 1.25rem;
+}
+.experience-diamond-heading {
+  margin: 0 0 .25rem; color: var(--spring-ink);
+  font-size: 1.5rem; font-weight: 850; letter-spacing: -.01em; line-height: 1.25; text-align: center;
+}
 .experience-row { position: relative; display: flex; justify-content: flex-end; }
 .eflow-bub { animation: eflow-bob 6s ease-in-out infinite; will-change: transform; }
 @keyframes eflow-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
@@ -903,7 +913,7 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 @keyframes timeline-dot-appear { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .timeline-line { width: 2px; flex: 1; background: linear-gradient(to bottom, #fb7185, #fbbf24, #4ade80); margin-top: .3rem; opacity: .4; min-height: 2rem; }
 
-.experience-role-heading { margin: 0 0 .45rem; color: var(--spring-ink); font-size: 1.35rem; font-weight: 850; letter-spacing: -.015em; line-height: 1.25; text-align: left; }
+.experience-role-heading { margin: 0 0 .45rem; color: var(--spring-ink); font-size: 1.05rem; font-weight: 850; letter-spacing: -.015em; line-height: 1.25; text-align: left; }
 .experience-meta-row { display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: .45rem; margin-bottom: 1rem; text-align: left; }
 .experience-company { color: #047857; font-size: .9rem; font-weight: 700; }
 .experience-meta-sep { color: #94a3b8; font-size: .9rem; }
