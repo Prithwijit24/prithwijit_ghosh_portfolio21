@@ -95,7 +95,7 @@ export const EXPERIENCE_ITEMS: ExperienceItem[] = [
 ];
 
 export const PROJECTS: ProjectItem[] = [
-  { title: 'SkinWise Intelligent Recommender', timeline: 'Jun 2025 – Mar 2026',
+  { title: 'SkinWise Intelligent Recommender', timeline: 'Jun 2025 – July 2026',
     summary: 'Facial analysis & demographic prediction feeding a LangGraph agent that researches and recommends skincare products.',
     bullets: [
       'Facial analysis: **FaceNet 512-D embeddings** → PCA to **50-D**, then **LightGBM** (age ~5.7 yr error), **KNN** (gender ~97%) and **CatBoost** (race ~94%) with Fitzpatrick skin-tone mapping.',
@@ -104,10 +104,10 @@ export const PROJECTS: ProjectItem[] = [
     ],
     link: 'https://github.com/Prithwijit24/skinwise_intelligent_recommender',
     tags: ['Python','FaceNet','LangGraph','Streamlit','Docker','Recommender'] },
-  { title: 'Credit Card Fraud Detection', timeline: 'Jan 2026 – Mar 2026',
-    summary: 'Production-grade fraud detection with leakage-safe features, streaming scoring and explainable risk alerts.',
+  { title: 'Credit Card Fraud Detection', timeline: 'Jan 2026 – Present',
+    summary: 'Production-grade fraud detection with derivedfeatures, streaming scoring and explainable risk alerts.',
     bullets: [
-      '**Leakage-safe feature engineering** with chronological splits and a **DuckDB feature store**, training **XGBoost / Random Forest** models optimized for **PR-AUC** via walk-forward CV.',
+      'Feature engineering with chronological splits and a **DuckDB feature store**, training **XGBoost / Random Forest** models optimized for **PR-AUC** via walk-forward CV.',
       '**Kafka** micro-batch scoring plus **FastAPI** serving with risk-aware alerting (risk bands & reason strings) for explainable fraud triage.',
       'Fully containerized with **Docker & Kubernetes**, including **CI/CD** and automated unit & integration testing.'
     ],

@@ -138,14 +138,14 @@ const ExperienceSection = () => (
       <FadeIn><SectionHeading emoji="💼" title="Professional Experience" /></FadeIn>
         <FadeIn delay={60}>
           <div className="experience-accenture-blurb">
-            <p className="accenture-role-centered">Data Scientist Specialist · Accenture Technology</p>
+            <p className="accenture-role-centered">Data Scientist Specialist · <span className="accenture-violet">Accenture Technology</span></p>
             <div className="accenture-blurb-body">
               <div className="accenture-laptop">
                 <DotLottieReact className="accenture-laptop-art" style={{ width: '100%', height: '100%' }} src="/logos/animation.lottie" autoplay loop />
                 <img className="accenture-logo-overlay" src="/logos/accenture.png" alt="Accenture" />
               </div>
               <p className="experience-accenture-copy">
-                As a <strong>Data Scientist Specialist, Accenture</strong>, I have delivered end-to-end production machine-learning systems across forecasting, risk, collections, cash-flow and financial decision intelligence for global clients. From multi-country sales forecasts to contract P&L reasoning over <strong>70,000+ contracts</strong>, I turn messy data into reliable, explainable decisions at scale.
+                As a <strong>Data Scientist Specialist, <span className="accenture-violet">Accenture</span></strong>, I have delivered end-to-end production machine-learning systems across forecasting, risk, collections, cash-flow and financial decision intelligence for global clients. From multi-country sales forecasts to contract P&L reasoning over <strong>70,000+ contracts</strong>, I turn messy data into reliable, explainable decisions at scale.
               </p>
             </div>
           </div>
@@ -165,7 +165,7 @@ const ExperienceSection = () => (
                 <TiltCard className="experience-card">
                   <h3 className="experience-role-heading">{item.title}</h3>
                   <div className="experience-meta-row">
-                    <span className="experience-company">{item.client}</span>
+                    <span className={`experience-company${item.client === 'Accenture' ? ' accenture-violet' : ''}`}>{item.client}</span>
                     <span className="experience-meta-sep" aria-hidden="true">·</span>
                     <span className="experience-eyebrow experience-eyebrow--inline">{item.timeline}</span>
                   </div>
@@ -583,7 +583,7 @@ const HobbiesSection = () => {
 
 /* ───────── Achievements redesigned ───────── */
 const AchievementsSection = () => (
-  <section className="achievements-section py-24 px-6 bg-spring-section blend-section">
+  <section id="achievements" className="achievements-section py-24 px-6 bg-spring-section blend-section">
     <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="🏆" title="Key Achievements" /></FadeIn>
       <div className="achievement-grid">

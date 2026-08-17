@@ -942,6 +942,7 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 }
 .experience-accenture-blurb { margin: 1.5rem 0 2.5rem; }
 .accenture-role-centered { text-align: center; margin: 0 0 1.25rem; font-weight: 800; color: #0f172a; font-size: 1.02rem; letter-spacing: -.01em; }
+.accenture-violet { color: #7c3aed; }
 .accenture-blurb-body { display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
 .accenture-laptop { position: relative; width: 170px; height: 170px; flex: 0 0 auto; overflow: visible; }
 .accenture-laptop-art { width: 100%; height: 100%; display: block; }
