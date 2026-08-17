@@ -886,12 +886,12 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   box-shadow: 0 16px 40px rgba(190,120,90,.15); will-change: transform; width: 100%; max-width: 100%;
 }
 /* two-column rail + cards */
-.experience-layout { display: flex; gap: 2rem; align-items: stretch; flex-wrap: wrap; }
-.experience-layout > .fade-in { flex: 0 0 clamp(6rem, 23%, 18rem); }
-.experience-rail { height: 100%; }
-.experience-flow { width: 100%; margin: 0; overflow: hidden; }
-.experience-flow svg { width: 100%; height: auto; display: block; max-height: 80vh; }
-.experience-list { flex: 1; min-width: 0; display: grid; gap: 1.25rem; align-content: start; }
+.experience-layout { display: flex; gap: 3rem; align-items: center; flex-wrap: wrap; }
+.experience-layout > .fade-in { flex: 0 0 clamp(6rem, 20%, 15rem); min-width: 0; position: relative; z-index: 0; }
+.experience-rail { height: auto; min-width: 0; }
+.experience-flow { width: 100%; max-width: 100%; margin: 0; overflow: hidden; min-width: 0; }
+.experience-flow svg { display: block; width: 100%; max-width: 100%; height: auto; min-width: 0; }
+.experience-list { flex: 1; min-width: 0; position: relative; z-index: 1; display: grid; gap: 1.25rem; align-content: start; }
 .experience-list p { text-align: justify; }
 .experience-row { position: relative; display: flex; justify-content: flex-end; }
 .eflow-bub { animation: eflow-bob 6s ease-in-out infinite; will-change: transform; }
@@ -916,6 +916,12 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
   border: 2px dashed rgba(52,211,153,.4);
   background: linear-gradient(145deg, rgba(255,255,255,.7), rgba(254,243,199,.55));
 }
+.experience-accenture-blurb { margin: 1.5rem 0 2.5rem; }
+.accenture-brand { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.accenture-logo { height: 30px; width: auto; display: block; }
+.accenture-role { font-weight: 800; color: #0f172a; font-size: 1.02rem; letter-spacing: -.01em; }
+.experience-accenture-copy { margin: 0; color: #334155; font-size: .98rem; line-height: 1.62; text-align: left; }
+.experience-accenture-copy strong { color: #0f172a; font-weight: 800; }
 .experience-poc-icon { font-size: 1.5rem; flex-shrink: 0; line-height: 1; }
 .experience-poc-card p { margin: 0; text-align: left; font-size: .86rem; line-height: 1.5; color: #4d7c68; }
 .experience-poc-card strong { color: var(--spring-ink); font-weight: 800; }
@@ -1281,9 +1287,9 @@ h4.hero-title { font-size: clamp(1.75rem,4vw,2.5rem); font-weight: 700; }
 /* Desktop & tablet landscape (≥769px) — experience rail fills card height */
 @media (min-width: 769px) {
   .experience-layout > .fade-in { display: flex; flex-direction: column; }
-  .experience-rail { flex: 1; }
-  .experience-flow { height: 100%; }
-  .experience-flow svg { height: 100%; width: auto; max-height: none; display: block; }
+  .experience-rail { flex: 1; min-width: 0; }
+  .experience-flow { height: auto; min-width: 0; }
+  .experience-flow svg { display: block; width: 100%; max-width: 100%; height: auto; min-width: 0; }
   .dd-dot { r: 2.5; }
 }
 

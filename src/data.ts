@@ -82,6 +82,17 @@ export const EXPERIENCE_ITEMS: ExperienceItem[] = [
     timeline: ''
   },
   {
+    title: 'Financial Forecast Intelligence', client: 'Accenture',
+    summary: 'Natural-language decision intelligence over contract P&L data — answering margin, labour-cost and cost-mix questions with causes and next actions across 70,000+ contracts.',
+    bullets: [
+      'Built a natural-language **decision-intelligence platform** over contract **profit-and-loss data**, answering finance managers’ questions on margin, labour-cost ratio and cost mix — with *why it moved* and *what to do next* — across **70,000+ contracts**.',
+      'Engineered a **multi-agent system** on **LangGraph** and **Gemini 2.5 Flash (Vertex AI)**: a typed intent compiler translating questions into executable **BigQuery SQL**, **8 domain-specialist agents**, and a **53-node decision knowledge graph** mapping business intent to metrics, causal drivers and recommended actions.',
+      'Replaced language-model routing with **deterministic graph traversal**, making reasoning reproducible and owned by finance experts with every figure traced to source data — cutting variance analysis from hours of manual work to **~10 seconds**.',
+      'Deployed **six parallel service variants** (standard, batch, load-balanced, region-specific) on **Google Cloud serverless**, provisioned with **Terraform** across sandbox, staging and production and released through gated **Azure DevOps** pipelines with end-to-end tracing.'
+    ], tags: ['Python','SQL','LangGraph','Gemini','BigQuery','Vertex AI','Terraform','Azure DevOps','Decision Intelligence'],
+    timeline: ''
+  },
+  {
     title: 'Cash-Flow & Marketing Analytics', client: 'Power Utility & Liquor Brand Clients',
     summary: 'Forecasting & marketing analytics prototypes for cash-flow accuracy and customer growth.',
     bullets: [
@@ -161,11 +172,11 @@ export type MscProject = {
 export const MSC_PROJECT: MscProject = {
   title: 'Robust DD-Classifier Under Cell-wise Contamination',
   eyebrow: 'M.Sc. Statistics · IIT Kanpur · 2023',
-  summary: 'A **depth-based classifier** that stays accurate when **individual data cells are corrupted** — by building the *Depth–Depth map* on **cell-wise-robust** estimates of location and scatter.',
-  problem: '**Cell-wise outliers** (corrupted individual entries, not whole rows) break the assumptions behind *LDA, QDA, KNN and SVM*, **collapsing their accuracy** — especially as dimension grows.',
-  approach: 'Map each point from ℝᵈ into a **2-D Depth–Depth space** using *Mahalanobis depth* w.r.t. each class, with μ and Σ estimated by **cell-wise-robust methods** (*CellMCD, 2SGS, Detection–Imputation*) so **contamination barely moves the depths**. Standard classifiers then run in the *bounded, well-separated DD space*.',
-  conclusion: 'Across **100 simulation runs** spanning Normal and t₅ populations, location / scale / location–scale shifts, and **dimensions from 5 to 25**, the *robust DD classifiers* **consistently beat** both their non-robust counterparts and the original-space classifiers under cell-wise contamination. The **2SGS estimator** was the *most reliable across every setting*, and its **advantage widened as dimensionality grew** — precisely where ordinary classifiers degrade the most, because the contaminated class collapses toward the origin and leaves the two classes *cleanly separable*.',
-  future: 'Natural extensions: generalise from the *two-class* to the **J-class problem**, explore *other robust estimators* of location and scale, and establish **formal theoretical guarantees** for the robust DD classifier.',
+  summary: 'A **depth-based classifier** that holds up when **individual data cells are corrupted**, by mapping points into a *Depth–Depth space* built on **cell-wise-robust** estimates of location and scatter.',
+  problem: '**Cell-wise outliers** — corrupted *individual entries*, not whole rows — violate the assumptions of *LDA, QDA, KNN and SVM* and **collapse their accuracy**, especially as dimensionality grows.',
+  approach: 'Each point is lifted from ℝᵈ into a **2-D Depth–Depth space** via *Mahalanobis depth* per class, with μ and Σ estimated by **cell-wise-robust methods** (*CellMCD, 2SGS, Detection–Imputation*) so **contamination barely shifts the depths**. Standard classifiers then operate in that *bounded, well-separated* DD space.',
+  conclusion: 'Across **100 simulation runs** over Normal and t₅ populations with location, scale and location–scale shifts, and **dimensions from 5 to 25**, the *robust DD classifiers* **consistently beat** both their non-robust counterparts and the original feature-space classifiers under cell-wise contamination. The **2SGS estimator** proved *most reliable in every setting*, and its **edge grew with dimensionality** — exactly where ordinary classifiers fail, since the contaminated class collapses toward the origin and the two classes become *cleanly separable* in DD space.',
+  future: 'Natural next steps: extend from the *two-class* setting to the **J-class problem**, test *additional robust estimators* of location and scale, and derive **formal theoretical guarantees** for the robust DD classifier.',
   results: [
     { label: 'Robust DD error', value: '<1%' },
     { label: 'Raw-space error', value: '~52%' },

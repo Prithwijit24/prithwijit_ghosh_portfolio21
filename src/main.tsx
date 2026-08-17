@@ -135,6 +135,17 @@ const ExperienceSection = () => (
   <section id="experience" className="py-32 px-6 bg-spring-section blend-section content-section scroll-section">
     <div className="mx-auto" style={{ width: 'min(84rem,100%)' }}>
       <FadeIn><SectionHeading emoji="💼" title="Professional Experience" /></FadeIn>
+      <FadeIn delay={60}>
+        <div className="experience-accenture-blurb">
+          <div className="accenture-brand">
+            <img className="accenture-logo" src="/logos/accenture.png" alt="Accenture" />
+            <span className="accenture-role">Data Scientist Specialist · Accenture Technology</span>
+          </div>
+          <p className="experience-accenture-copy">
+            As a <strong>Data Scientist Specialist – Accenture Technology</strong>, I have delivered end-to-end production machine-learning systems across forecasting, risk, collections, cash-flow and financial decision intelligence for global clients. From multi-country sales forecasts to contract P&L reasoning over <strong>70,000+ contracts</strong>, I turn messy data into reliable, explainable decisions at scale.
+          </p>
+        </div>
+      </FadeIn>
       <div className="experience-layout">
         <FadeIn delay={80} direction="left">
           <div className="experience-rail" aria-hidden="true"><ExperienceViz /></div>
