@@ -7,8 +7,10 @@ export const NAV_SECTIONS = [
   { id: 'achievements', label: 'Wins', emoji: '🏆' },
   { id: 'skills', label: 'Skills', emoji: '🧰' },
   { id: 'experience', label: 'Experience', emoji: '💼' },
+  { id: 'research', label: 'Research', emoji: '🔬' },
   { id: 'projects', label: 'Projects', emoji: '🧪' },
   { id: 'education', label: 'Education', emoji: '🎓' },
+  { id: 'hobbies', label: 'Hobbies', emoji: '🎯' },
   { id: 'contact', label: 'Contact', emoji: '📬' }
 ] as const;
 

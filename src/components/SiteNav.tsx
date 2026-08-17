@@ -16,17 +16,21 @@ export const SiteNav = () => {
   }, []);
 
   useEffect(() => {
-    const sections = NAV_SECTIONS.map(({ id }) => document.getElementById(id)).filter((node): node is HTMLElement => node !== null);
-    if (sections.length === 0) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target.id) setActiveId(visible[0].target.id);
-      },
-      { rootMargin: '-18% 0px -52% 0px', threshold: [0.12, 0.35, 0.6] }
-    );
-    sections.forEach(s => observer.observe(s));
-    return () => observer.disconnect();
+    const ids = NAV_SECTIONS.map(({ id }) => id);
+    const onScroll = () => {
+      const line = Math.max(80, window.innerHeight * 0.32);
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= line) current = id;
+        else break;
+      }
+      setActiveId(current);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const scrollToSection = (id: string) => {
